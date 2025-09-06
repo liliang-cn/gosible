@@ -1,0 +1,21 @@
+application:
+  name: myapp
+  port: 3000
+  environment: production
+
+database:
+  host: localhost
+  port: 5432
+  name: myapp_db
+  pool_size: 20
+
+redis:
+  host: localhost
+  port: 6379
+  db: 0
+
+logging:
+  level: info
+  file: /var/log/myapp/app.log
+  max_size: 100M
+  max_age: 7

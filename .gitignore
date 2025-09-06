@@ -1,0 +1,98 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Dependency directories (remove the comment below to include it)
+# vendor/
+
+# Go workspace file
+go.work
+
+# Build artifacts
+/gosinble
+/gosinble-vault
+/step_tracking_example
+/type_safe_modules
+/deploy
+/streaming_example
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Log files
+*.log
+*.logs
+
+# Temporary files
+*.tmp
+*.temp
+/tmp/
+
+# Test coverage files
+coverage.out
+coverage.html
+profile.out
+
+# Local configuration files
+.env
+.env.local
+.env.*.local
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Optional npm/yarn cache directory (if using for web assets)
+.npm
+.yarn-cache
+node_modules/
+
+# Output directories
+/dist/
+/build/
+/output/
+
+# Backup files
+*.bak
+*.backup
+
+# Editor temporary files
+.#*
+\#*#
+.*.swp
+.*.swo
+
+# Local inventory files (examples)
+/inventory_local.yml
+/hosts_local.yml
+
+# Vault password files
+.vault_pass*
+
+# Local test files
+/test_output/
+/test_logs/

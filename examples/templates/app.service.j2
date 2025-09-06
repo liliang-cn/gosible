@@ -1,0 +1,30 @@
+[Unit]
+Description={{ app_name }} Application
+After=network.target {{ dependencies | default('') }}
+
+[Service]
+Type=simple
+User={{ app_user | default('app') }}
+Group={{ app_group | default('app') }}
+WorkingDirectory={{ app_dir | default('/opt/' + app_name) }}
+Environment="NODE_ENV={{ environment | default('production') }}"
+Environment="PORT={{ app_port | default('3000') }}"
+{% for key, value in env_vars.items() | default({}) %}
+Environment="{{ key }}={{ value }}"
+{% endfor %}
+ExecStart={{ node_path | default('/usr/bin/node') }} {{ app_dir | default('/opt/' + app_name) }}/{{ entrypoint | default('server.js') }}
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier={{ app_name }}
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths={{ data_dir | default('/var/lib/' + app_name) }} {{ log_dir | default('/var/log/' + app_name) }}
+
+[Install]
+WantedBy=multi-user.target

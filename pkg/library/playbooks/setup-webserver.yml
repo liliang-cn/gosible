@@ -1,0 +1,60 @@
+---
+- name: Setup Web Server
+  hosts: "{{ target_hosts | default('webservers') }}"
+  vars:
+    webserver_type: "{{ webserver | default('nginx') }}"
+    ssl_enabled: "{{ enable_ssl | default(false) }}"
+    firewall_enabled: "{{ enable_firewall | default(true) }}"
+    
+  tasks:
+    - name: Update package cache
+      command: apt-get update
+      when: ansible_os_family == "Debian"
+      
+    - name: Install nginx
+      package:
+        name: nginx
+        state: present
+      when: webserver_type == "nginx"
+      
+    - name: Install apache
+      package:
+        name: "{{ 'apache2' if ansible_os_family == 'Debian' else 'httpd' }}"
+        state: present
+      when: webserver_type == "apache"
+      
+    - name: Create web root directory
+      file:
+        path: /var/www/html
+        state: directory
+        mode: '0755'
+        
+    - name: Configure firewall for HTTP
+      command: ufw allow 80/tcp
+      when: firewall_enabled
+      
+    - name: Configure firewall for HTTPS
+      command: ufw allow 443/tcp
+      when: firewall_enabled and ssl_enabled
+      
+    - name: Start and enable webserver
+      service:
+        name: "{{ webserver_type }}"
+        state: started
+        enabled: yes
+        
+    - name: Create default index page
+      copy:
+        content: |
+          <!DOCTYPE html>
+          <html>
+          <head><title>Welcome</title></head>
+          <body><h1>Web Server Ready</h1></body>
+          </html>
+        dest: /var/www/html/index.html
+        
+  handlers:
+    - name: restart webserver
+      service:
+        name: "{{ webserver_type }}"
+        state: restarted
