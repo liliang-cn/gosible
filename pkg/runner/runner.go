@@ -313,10 +313,16 @@ func (r *TaskRunner) executeOnHost(ctx context.Context, task types.Task, module 
 	}
 	
 	// Add meta variables for check mode, diff mode, etc.
+	// Check both underscore and ansible_ prefixed versions
 	if checkMode, exists := hostVars["_check_mode"]; exists {
 		moduleArgs["_check_mode"] = checkMode
+	} else if checkMode, exists := hostVars["ansible_check_mode"]; exists {
+		moduleArgs["_check_mode"] = checkMode
 	}
+	
 	if diffMode, exists := hostVars["_diff"]; exists {
+		moduleArgs["_diff"] = diffMode
+	} else if diffMode, exists := hostVars["ansible_diff_mode"]; exists {
 		moduleArgs["_diff"] = diffMode
 	}
 	
@@ -335,8 +341,49 @@ func (r *TaskRunner) executeOnHost(ctx context.Context, task types.Task, module 
 			time.Sleep(time.Duration(task.Delay) * time.Second)
 		}
 		
-		// Execute the module
-		result, err = module.Run(ctx, conn, moduleArgs)
+		// Execute the module with check/diff mode support
+		// Check if module supports capabilities and use RunWithModes if appropriate
+		if capModule, ok := module.(interface {
+			RunWithModes(context.Context, types.Module, types.Connection, map[string]interface{}, types.ExecuteOptions) (*types.Result, error)
+			Capabilities() *types.ModuleCapability
+		}); ok {
+			// Create ExecuteOptions from moduleArgs
+			opts := types.ExecuteOptions{}
+			if checkMode, ok := moduleArgs["_check_mode"].(bool); ok && checkMode {
+				opts.CheckMode = true
+			}
+			if diffMode, ok := moduleArgs["_diff"].(bool); ok && diffMode {
+				opts.DiffMode = true
+			}
+			
+			// Validate module supports requested modes
+			caps := capModule.Capabilities()
+			if opts.CheckMode && !caps.CheckMode {
+				// Module doesn't support check mode, skip execution
+				result = &types.Result{
+					Host:       host.Name,
+					Success:    true,
+					Changed:    false,
+					Message:    fmt.Sprintf("Module %s does not support check mode", task.Module.String()),
+					Simulated:  true,
+					TaskName:   task.Name,
+					ModuleName: task.Module.String(),
+					StartTime:  types.GetCurrentTime(),
+					EndTime:    types.GetCurrentTime(),
+					Data:       map[string]interface{}{"skipped": true, "reason": "module_no_check_support"},
+				}
+				err = nil
+			} else if opts.DiffMode && !caps.DiffMode {
+				// Module doesn't support diff mode, continue without diff
+				opts.DiffMode = false
+				result, err = capModule.RunWithModes(ctx, module, conn, moduleArgs, opts)
+			} else {
+				result, err = capModule.RunWithModes(ctx, module, conn, moduleArgs, opts)
+			}
+		} else {
+			// Normal module execution
+			result, err = module.Run(ctx, conn, moduleArgs)
+		}
 		if err != nil && task.IgnoreErrors {
 			// Convert error to result with success = false
 			result = &types.Result{

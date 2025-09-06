@@ -319,6 +319,14 @@ func displayResults(results []types.Result, verbose bool) {
 			fmt.Printf("failed: [%s] => %s: %v\n", result.Host, result.TaskName, result.Error)
 		}
 		
+		// Show diff if available
+		if result.Diff != nil && result.Diff.Prepared {
+			fmt.Printf("--- before\n")
+			fmt.Printf("%s\n", result.Diff.Before)
+			fmt.Printf("+++ after\n")
+			fmt.Printf("%s\n", result.Diff.After)
+		}
+		
 		// Show output if verbose
 		if verbose && result.Message != "" {
 			fmt.Printf("  Output: %s\n", result.Message)
