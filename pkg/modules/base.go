@@ -12,6 +12,7 @@ import (
 type BaseModule struct {
 	name string
 	doc  types.ModuleDoc
+	capabilities *types.ModuleCapability
 }
 
 // NewBaseModule creates a new base module
@@ -19,6 +20,7 @@ func NewBaseModule(name string, doc types.ModuleDoc) *BaseModule {
 	return &BaseModule{
 		name: name,
 		doc:  doc,
+		capabilities: types.DefaultCapabilities(),
 	}
 }
 
@@ -127,6 +129,50 @@ func (m *BaseModule) CreateErrorResult(host string, message string, err error) *
 	return m.CreateResult(host, false, false, message, nil, moduleErr)
 }
 
+// GenerateDiff generates a diff between before and after states
+func (m *BaseModule) GenerateDiff(before, after string) *types.DiffResult {
+	if before == after {
+		return nil
+	}
+	
+	return &types.DiffResult{
+		Before:   before,
+		After:    after,
+		Prepared: true,
+	}
+}
+
+// SetCapabilities sets the module capabilities
+func (m *BaseModule) SetCapabilities(caps *types.ModuleCapability) {
+	m.capabilities = caps
+}
+
+// Capabilities returns the module capabilities
+func (m *BaseModule) Capabilities() *types.ModuleCapability {
+	return m.capabilities
+}
+
+// RunWithModes wraps Run to handle check/diff modes
+func (m *BaseModule) RunWithModes(ctx context.Context, module types.Module, conn types.Connection, args map[string]interface{}, opts types.ExecuteOptions) (*types.Result, error) {
+	// Inject mode flags into args
+	if opts.CheckMode {
+		args["_check_mode"] = true
+	}
+	if opts.DiffMode {
+		args["_diff"] = true
+	}
+	
+	// Validate module supports requested modes
+	if opts.CheckMode && !m.capabilities.CheckMode {
+		return nil, fmt.Errorf("module %s does not support check mode", m.name)
+	}
+	if opts.DiffMode && !m.capabilities.DiffMode {
+		return nil, fmt.Errorf("module %s does not support diff mode", m.name)
+	}
+	
+	return module.Run(ctx, conn, args)
+}
+
 // ExecuteWithTiming wraps execution with timing information
 func (m *BaseModule) ExecuteWithTiming(ctx context.Context, conn types.Connection, args map[string]interface{}, executeFunc func() (*types.Result, error)) (*types.Result, error) {
 	startTime := time.Now()
@@ -148,7 +194,13 @@ func (m *BaseModule) ExecuteWithTiming(ctx context.Context, conn types.Connectio
 
 // CheckMode determines if the module is running in check mode
 func (m *BaseModule) CheckMode(args map[string]interface{}) bool {
-	return m.GetBoolArg(args, "_check_mode", false)
+	if value, exists := args["_check_mode"]; exists {
+		// Only accept actual boolean values for check mode
+		if boolValue, ok := value.(bool); ok {
+			return boolValue
+		}
+	}
+	return false
 }
 
 // DiffMode determines if the module should show diffs
@@ -269,7 +321,11 @@ func (m *BaseModule) CreateCheckModeResult(host string, changed bool, message st
 	if result.Data == nil {
 		result.Data = make(map[string]interface{})
 	}
-	result.Data["_check_mode"] = true
+	result.Data["check_mode"] = true
+	if changed {
+		result.Data["would_change"] = true
+	}
+	result.Simulated = true  // Mark as simulated for check mode
 	return result
 }
 
