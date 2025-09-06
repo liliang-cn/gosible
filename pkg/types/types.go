@@ -77,6 +77,16 @@ const (
 	StateTouch      = "touch"
 )
 
+// DiffResult represents the before/after state for diff mode
+type DiffResult struct {
+	Before      string   `json:"before"`
+	After       string   `json:"after"`
+	BeforeLines []string `json:"before_lines,omitempty"`
+	AfterLines  []string `json:"after_lines,omitempty"`
+	Prepared    bool     `json:"prepared"`
+	Diff        string   `json:"diff,omitempty"` // Unified diff format
+}
+
 // Result represents the outcome of a task execution
 type Result struct {
 	Success    bool                   `json:"success"`
@@ -90,6 +100,8 @@ type Result struct {
 	Host       string                 `json:"host"`
 	TaskName   string                 `json:"task_name"`
 	ModuleName string                 `json:"module_name"`
+	Diff       *DiffResult            `json:"diff,omitempty"`     // Diff output for diff mode
+	Simulated  bool                   `json:"simulated,omitempty"` // True when in check mode
 }
 
 // Host represents a target host in the inventory
@@ -144,6 +156,10 @@ type Task struct {
 	Environment  map[string]string      `yaml:"environment,omitempty" json:"environment,omitempty"`
 	Async        int                    `yaml:"async,omitempty" json:"async,omitempty"`
 	Poll         int                    `yaml:"poll,omitempty" json:"poll,omitempty"`
+	
+	// Execution modes
+	CheckMode    bool                   `yaml:"check_mode,omitempty" json:"check_mode,omitempty"`
+	DiffMode     bool                   `yaml:"diff,omitempty" json:"diff,omitempty"`
 }
 
 // UnmarshalYAML implements custom YAML unmarshalling for Ansible-style task syntax
@@ -346,10 +362,18 @@ type ExecuteOptions struct {
 	User       string
 	Sudo       bool
 	
+	// Execution modes
+	CheckMode    bool `json:"check_mode"`    // Don't make actual changes
+	DiffMode     bool `json:"diff_mode"`     // Show what would change
+	ForceHandler bool `json:"force_handler"` // Force handler execution
+	
 	// Streaming options
 	StreamOutput     bool                              // Enable real-time streaming
 	OutputCallback   func(line string, isStderr bool) // Real-time line callback
 	ProgressCallback func(progress ProgressInfo)       // Progress updates
+	
+	// Module-specific options
+	ModuleOptions map[string]interface{} `json:"module_options,omitempty"` // Module-specific overrides
 }
 
 // StepInfo contains detailed information about a specific step
