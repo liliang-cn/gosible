@@ -382,8 +382,8 @@ func (l *StreamLogger) Close() error {
 		close(l.stopFlush)
 	}
 	
-	// Flush remaining buffer
-	l.flush()
+	// Flush remaining buffer (without additional locking since we already have the lock)
+	l.flushUnsafe()
 	
 	// Close all outputs
 	var lastErr error
@@ -416,17 +416,24 @@ func (l *StreamLogger) writeEntry(entry LogEntry) {
 	}
 }
 
+// Flush forces a flush of the buffer to all outputs
+func (l *StreamLogger) Flush() {
+	l.flush()
+}
+
 func (l *StreamLogger) flush() {
+	l.mu.Lock()
+	defer l.mu.Unlock()
+	l.flushUnsafe()
+}
+
+func (l *StreamLogger) flushUnsafe() {
 	if len(l.buffer) == 0 {
 		return
 	}
 	
-	l.mu.RLock()
-	outputs := make([]LogOutput, len(l.outputs))
-	copy(outputs, l.outputs)
-	l.mu.RUnlock()
-	
-	for _, output := range outputs {
+	// We assume the caller has already acquired the necessary lock
+	for _, output := range l.outputs {
 		for _, entry := range l.buffer {
 			output.Write(entry)
 		}

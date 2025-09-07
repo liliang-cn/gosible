@@ -64,14 +64,18 @@ func (h *SystemdTestHelper) MockSystemdService(serviceName string, config System
 		enabledState = config.UnitFileState
 	}
 	
-	// Mock the 'systemctl show' command
+	// Mock the 'systemctl show --no-page' command (primary method)
 	showOutput := fmt.Sprintf("LoadState=%s\nActiveState=%s\nSubState=%s\nUnitFileState=%s\n",
 		config.LoadState, config.ActiveState, config.SubState, enabledState)
 	
-	h.connection.ExpectCommand(fmt.Sprintf("systemctl show %s", serviceName), &CommandResponse{
+	// Allow multiple calls to show command (module calls it at start and potentially at end)
+	h.connection.ExpectCommand(fmt.Sprintf("systemctl show %s --no-page", serviceName), &CommandResponse{
 		ExitCode: 0,
 		Stdout:   showOutput,
-	})
+	}).SetMaxCalls(3)
+	
+	// Note: Fallback commands (is-active, is-enabled, status) are only called 
+	// when the primary show command fails, so we don't mock them for normal cases
 	
 	return h
 }
@@ -139,15 +143,36 @@ func (h *SystemdTestHelper) MockSystemdDaemonReload() *SystemdTestHelper {
 
 // MockServiceNotFound sets up mock for a service that doesn't exist
 func (h *SystemdTestHelper) MockServiceNotFound(serviceName string) *SystemdTestHelper {
-	h.connection.ExpectCommand(fmt.Sprintf("systemctl show %s", serviceName), &CommandResponse{
+	// Mock the show command failing, which will trigger fallback commands
+	h.connection.ExpectCommand(fmt.Sprintf("systemctl show %s --no-page", serviceName), &CommandResponse{
 		ExitCode: 4, // systemctl returns 4 for unit not found
+		Stdout:   fmt.Sprintf("Unit %s.service could not be found.", serviceName), // Put error in stdout for Message field
 		Stderr:   fmt.Sprintf("Unit %s.service could not be found.", serviceName),
 	})
+	
+	// Mock fallback commands that will be called when show fails
+	h.connection.ExpectCommand(fmt.Sprintf("systemctl is-active %s", serviceName), &CommandResponse{
+		ExitCode: 3, // inactive/unknown
+		Stdout:   "unknown",
+	})
+	
+	h.connection.ExpectCommand(fmt.Sprintf("systemctl is-enabled %s 2>/dev/null", serviceName), &CommandResponse{
+		ExitCode: 1,
+		Stderr:   fmt.Sprintf("Failed to get unit file state for %s: No such file or directory", serviceName),
+	})
+	
+	h.connection.ExpectCommand(fmt.Sprintf("systemctl status %s", serviceName), &CommandResponse{
+		ExitCode: 4,
+		Stdout:   fmt.Sprintf("Unit %s.service could not be found.", serviceName),
+		Stderr:   fmt.Sprintf("Unit %s.service could not be found.", serviceName),
+	})
+	
 	return h
 }
 
 // MockPermissionDenied sets up mock for permission denied errors
 func (h *SystemdTestHelper) MockPermissionDenied(serviceName, operation string) *SystemdTestHelper {
+	// Mock the operation command to fail with permission denied
 	command := fmt.Sprintf("systemctl %s %s", operation, serviceName)
 	h.connection.ExpectCommand(command, &CommandResponse{
 		ExitCode: 1,

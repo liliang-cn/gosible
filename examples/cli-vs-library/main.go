@@ -3,19 +3,15 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
-	"os"
 	"os/exec"
 
+	"github.com/gosinble/gosinble/examples/common"
 	"github.com/gosinble/gosinble/pkg/types"
-	"github.com/gosinble/gosinble/pkg/inventory"
-	"github.com/gosinble/gosinble/pkg/modules"
-	"github.com/gosinble/gosinble/pkg/runner"
 )
 
 // This example demonstrates the difference between CLI and Library usage
 func main() {
-	fmt.Println("=== CLI vs Library Comparison ===\n")
+	fmt.Println("=== CLI vs Library Comparison ===")
 
 	// Example task: Install nginx on web servers
 	
@@ -56,136 +52,33 @@ func useLibrary() {
 	ctx := context.Background()
 	
 	// Create inventory programmatically
-	inv := inventory.New()
-	inv.AddHost(inventory.HostEntry{
-		Name:    "web1.example.com",
-		Address: "192.168.1.10",
-		Groups:  []string{"webservers"},
-	})
-	inv.AddHost(inventory.HostEntry{
-		Name:    "web2.example.com", 
-		Address: "192.168.1.11",
-		Groups:  []string{"webservers"},
-	})
+	_ = common.CreateSampleInventory()
 	
 	// Create task with type-safe fields
-	task := common.Task{
+	task := types.Task{
 		Name:   "Install nginx",
-		Module: common.TypePackage,
+		Module: types.TypePackage,
 		Args: map[string]interface{}{
 			"name":  "nginx",
 			"state": "present",
 		},
 	}
 	
-	// Create runner
-	taskRunner := runner.NewTaskRunner()
-	
-	// Get hosts (with proper error handling)
-	hosts, err := inv.GetHosts("webservers")
+	// Execute task on local host for demonstration
+	result, err := common.ExecuteTaskOnLocal(ctx, task)
 	if err != nil {
-		log.Fatalf("Failed to get hosts: %v", err)
+		fmt.Printf("Task execution failed: %v\n", err)
+		return
 	}
 	
-	// Execute with structured results
-	results, err := taskRunner.Run(ctx, task, hosts, nil)
-	if err != nil {
-		// Proper error handling with context
-		log.Fatalf("Task execution failed: %v", err)
-	}
+	// Rich, structured result object
+	common.PrintResult(result)
 	
-	// Process structured results
-	for _, result := range results {
-		fmt.Printf("Host: %s\n", result.Host)
-		fmt.Printf("  Success: %v\n", result.Success)
-		fmt.Printf("  Changed: %v\n", result.Changed)
-		if result.Error != nil {
-			fmt.Printf("  Error: %v\n", result.Error)
-		}
-		
-		// Can access structured data
-		if data, ok := result.Data["installed_version"]; ok {
-			fmt.Printf("  Installed Version: %v\n", data)
-		}
-	}
-}
-
-// Advanced library usage showing features not available via CLI
-func advancedLibraryFeatures() {
-	ctx := context.Background()
-	runner := runner.NewTaskRunner()
-	
-	// 1. Custom module registration (not possible via CLI)
-	customModule := &CustomModule{
-		name: "my_custom",
-	}
-	runner.RegisterModule(customModule)
-	
-	// 2. Event callbacks (not available in CLI)
-	runner.SetEventCallback(func(event common.Event) {
-		switch event.Type {
-		case common.EventTaskStart:
-			fmt.Printf("[EVENT] Task started: %s on %s\n", event.Task, event.Host)
-		case common.EventTaskComplete:
-			fmt.Printf("[EVENT] Task completed: %s on %s\n", event.Task, event.Host)
-		}
-	})
-	
-	// 3. Progress callbacks for long operations
-	runner.SetProgressCallback(func(progress common.ProgressInfo) {
-		fmt.Printf("Progress: %.1f%% - %s\n", progress.Percentage, progress.Message)
-	})
-	
-	// 4. Custom connection management
-	connMgr := runner.GetConnectionManager()
-	connMgr.SetConnectionTTL(60 * time.Minute)
-	connMgr.SetMaxConnections(100)
-	
-	// 5. Programmatic variable management
-	varMgr := runner.GetVarManager()
-	varMgr.SetVar("environment", "production")
-	varMgr.SetVar("deploy_version", "1.2.3")
-	
-	// 6. Context with timeout (graceful cancellation)
-	ctxWithTimeout, cancel := context.WithTimeout(ctx, 5*time.Minute)
-	defer cancel()
-	
-	// Use all these features together
-	results, err := runner.Run(ctxWithTimeout, task, hosts, varMgr.GetVars())
-	if err != nil {
-		// Check if it was a timeout
-		if errors.Is(err, context.DeadlineExceeded) {
-			fmt.Println("Operation timed out")
-		}
-	}
-}
-
-// CustomModule example - only possible with library
-type CustomModule struct {
-	name string
-}
-
-func (m *CustomModule) Name() string {
-	return m.name
-}
-
-func (m *CustomModule) Run(ctx context.Context, conn common.Connection, args map[string]interface{}) (*common.Result, error) {
-	// Custom implementation
-	return &common.Result{
-		Success: true,
-		Changed: false,
-		Message: "Custom module executed",
-	}, nil
-}
-
-func (m *CustomModule) Validate(args map[string]interface{}) error {
-	// Custom validation
-	return nil
-}
-
-func (m *CustomModule) Documentation() common.ModuleDoc {
-	return common.ModuleDoc{
-		Name:        m.name,
-		Description: "Custom module for specific business logic",
-	}
+	fmt.Println("\n--- Library Advantages ---")
+	fmt.Printf("✅ Type-safe API (no string parsing)\n")
+	fmt.Printf("✅ Rich error handling\n")
+	fmt.Printf("✅ Structured results\n")
+	fmt.Printf("✅ No subprocess overhead\n")
+	fmt.Printf("✅ Direct memory sharing\n")
+	fmt.Printf("✅ Programmatic control\n")
 }

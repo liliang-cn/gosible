@@ -69,7 +69,7 @@ func quickTasksExample() {
 	qt := library.NewQuickTasks()
 	
 	// Create simple tasks quickly
-	tasks := []common.Task{
+	tasks := []types.Task{
 		qt.Package("nginx", "present"),
 		qt.File("/var/www/html", "directory"),
 		qt.Copy("index.html", "/var/www/html/index.html"),
@@ -250,8 +250,8 @@ func generatePlaybook() {
 	h := library.NewHandlers()
 	
 	// Build a complete application deployment playbook
-	playbook := &common.Playbook{
-		Plays: []common.Play{
+	playbook := &types.Playbook{
+		Plays: []types.Play{
 			{
 				Name:  "Deploy Web Application",
 				Hosts: "webservers",
@@ -280,7 +280,7 @@ Restart=always
 WantedBy=multi-user.target
 `).
 					Build(),
-				Handlers: []common.Task{
+				Handlers: []types.Task{
 					h.RestartService("{{ app_name }}"),
 					h.ReloadService("nginx"),
 					h.ReloadSystemd(),

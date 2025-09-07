@@ -11,7 +11,7 @@ import (
 // This example demonstrates how to use the vault package as a library
 // instead of using the CLI command
 func main() {
-	fmt.Println("=== Gosinble Vault Library Usage ===\n")
+	fmt.Println("=== Gosinble Vault Library Usage ===")
 
 	// Example 1: Basic encryption and decryption
 	basicEncryptionExample()
@@ -270,8 +270,7 @@ func printYAML(data map[string]interface{}, indent string) {
 }
 
 func init() {
-	fmt.Println(`
-╔══════════════════════════════════════════════════════════════╗
+	fmt.Print(`╔══════════════════════════════════════════════════════════════╗
 ║         Gosinble Vault - Library Usage Examples             ║
 ╠══════════════════════════════════════════════════════════════╣
 ║                                                              ║

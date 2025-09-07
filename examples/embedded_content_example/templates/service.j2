@@ -1,0 +1,15 @@
+[Unit]
+Description={{ app_name }}
+After=network.target
+
+[Service]
+Type=simple
+User={{ app_user }}
+WorkingDirectory={{ app_dir }}
+ExecStart={{ app_dir }}/{{ app_name }}
+Restart=always
+Environment=PORT={{ app_port }}
+Environment=ENV={{ environment }}
+
+[Install]
+WantedBy=multi-user.target

@@ -113,7 +113,7 @@ func (m *SystemdModule) Run(ctx context.Context, conn types.Connection, args map
 	// Parse and validate arguments
 	serviceName := m.GetStringArg(args, "name", "")
 	if serviceName == "" {
-		return m.CreateErrorResult(hostname, "name parameter is required", fmt.Errorf("missing required parameter")), nil
+		return nil, fmt.Errorf("name parameter is required")
 	}
 	
 	desiredState := m.GetStringArg(args, "state", "")
@@ -126,7 +126,7 @@ func (m *SystemdModule) Run(ctx context.Context, conn types.Connection, args map
 	// Get current service state
 	currentState, err := m.getServiceState(ctx, conn, serviceName)
 	if err != nil {
-		return m.CreateErrorResult(hostname, fmt.Sprintf("Failed to get service state: %v", err), err), nil
+		return nil, fmt.Errorf("failed to get service state: %w", err)
 	}
 
 	// Store original state for diff mode
@@ -147,7 +147,7 @@ func (m *SystemdModule) Run(ctx context.Context, conn types.Connection, args map
 			changes = append(changes, "would reload systemd daemon")
 		} else {
 			if err := m.reloadSystemdDaemon(ctx, conn); err != nil {
-				return m.CreateErrorResult(hostname, fmt.Sprintf("Failed to reload systemd daemon: %v", err), err), nil
+				return nil, fmt.Errorf("failed to reload systemd daemon: %w", err)
 			}
 			changes = append(changes, "reloaded systemd daemon")
 			actuallyChanged = true
@@ -166,7 +166,7 @@ func (m *SystemdModule) Run(ctx context.Context, conn types.Connection, args map
 				currentState.EnabledState = "masked"
 			} else {
 				if err := m.maskService(ctx, conn, serviceName); err != nil {
-					return m.CreateErrorResult(hostname, fmt.Sprintf("Failed to mask service: %v", err), err), nil
+					return nil, fmt.Errorf("failed to mask service: %w", err)
 				}
 				changes = append(changes, fmt.Sprintf("masked service %s", serviceName))
 				actuallyChanged = true
@@ -181,7 +181,7 @@ func (m *SystemdModule) Run(ctx context.Context, conn types.Connection, args map
 				currentState.EnabledState = "disabled" // Default after unmask
 			} else {
 				if err := m.unmaskService(ctx, conn, serviceName); err != nil {
-					return m.CreateErrorResult(hostname, fmt.Sprintf("Failed to unmask service: %v", err), err), nil
+					return nil, fmt.Errorf("failed to unmask service: %w", err)
 				}
 				changes = append(changes, fmt.Sprintf("unmasked service %s", serviceName))
 				actuallyChanged = true
@@ -197,7 +197,7 @@ func (m *SystemdModule) Run(ctx context.Context, conn types.Connection, args map
 	if desiredState != "" && currentState.LoadState != "masked" {
 		stateChanged, stateChangeMsg, err := m.handleServiceStateChange(ctx, conn, serviceName, desiredState, currentState, checkMode, force, noBlock)
 		if err != nil {
-			return m.CreateErrorResult(hostname, fmt.Sprintf("Failed to change service state: %v", err), err), nil
+			return nil, fmt.Errorf("failed to change service state: %w", err)
 		}
 		if stateChanged {
 			changes = append(changes, stateChangeMsg)
@@ -212,7 +212,7 @@ func (m *SystemdModule) Run(ctx context.Context, conn types.Connection, args map
 		shouldBeEnabled := m.IsTruthy(desiredEnabled)
 		enabledChanged, enabledChangeMsg, err := m.handleServiceEnabledChange(ctx, conn, serviceName, shouldBeEnabled, currentState, checkMode)
 		if err != nil {
-			return m.CreateErrorResult(hostname, fmt.Sprintf("Failed to change enabled state: %v", err), err), nil
+			return nil, fmt.Errorf("failed to change enabled state: %w", err)
 		}
 		if enabledChanged {
 			changes = append(changes, enabledChangeMsg)
@@ -288,6 +288,11 @@ func (m *SystemdModule) getServiceState(ctx context.Context, conn types.Connecti
 	if err != nil {
 		// If show fails, try basic status check
 		return m.getBasicServiceState(ctx, conn, serviceName)
+	}
+	
+	// Check if service was not found (exit code 4)
+	if !showResult.Success {
+		return nil, fmt.Errorf("service %s not found", serviceName)
 	}
 
 	// Parse systemctl show output
@@ -368,14 +373,14 @@ func (m *SystemdModule) getBasicServiceState(ctx context.Context, conn types.Con
 	statusResult, _ := conn.Execute(ctx, statusCmd, types.ExecuteOptions{})
 	if statusResult != nil {
 		if strings.Contains(statusResult.Message, "could not be found") {
-			state.LoadState = "not-found"
+			return nil, fmt.Errorf("service %s not found", serviceName)
 		} else if strings.Contains(statusResult.Message, "masked") {
 			state.LoadState = "masked"
 		} else {
 			state.LoadState = "loaded"
 		}
 	} else {
-		state.LoadState = "not-found"
+		return nil, fmt.Errorf("service %s not found", serviceName)
 	}
 
 	return state, nil
@@ -415,9 +420,12 @@ func (m *SystemdModule) handleStartService(ctx context.Context, conn types.Conne
 		cmd += " --no-block"
 	}
 
-	_, err := conn.Execute(ctx, cmd, types.ExecuteOptions{})
+	result, err := conn.Execute(ctx, cmd, types.ExecuteOptions{})
 	if err != nil {
 		return false, "", fmt.Errorf("failed to start service: %w", err)
+	}
+	if !result.Success {
+		return false, "", fmt.Errorf("failed to start service: %s", result.Message)
 	}
 
 	return true, fmt.Sprintf("started service %s", serviceName), nil
@@ -444,9 +452,12 @@ func (m *SystemdModule) handleStopService(ctx context.Context, conn types.Connec
 		cmd += " --no-block"
 	}
 
-	_, err := conn.Execute(ctx, cmd, types.ExecuteOptions{})
+	result, err := conn.Execute(ctx, cmd, types.ExecuteOptions{})
 	if err != nil {
 		return false, "", fmt.Errorf("failed to stop service: %w", err)
+	}
+	if !result.Success {
+		return false, "", fmt.Errorf("failed to stop service: %s", result.Message)
 	}
 
 	return true, fmt.Sprintf("stopped service %s", serviceName), nil
@@ -466,9 +477,12 @@ func (m *SystemdModule) handleRestartService(ctx context.Context, conn types.Con
 		cmd += " --no-block"
 	}
 
-	_, err := conn.Execute(ctx, cmd, types.ExecuteOptions{})
+	result, err := conn.Execute(ctx, cmd, types.ExecuteOptions{})
 	if err != nil {
 		return false, "", fmt.Errorf("failed to restart service: %w", err)
+	}
+	if !result.Success {
+		return false, "", fmt.Errorf("failed to restart service: %s", result.Message)
 	}
 
 	return true, fmt.Sprintf("restarted service %s", serviceName), nil
@@ -521,9 +535,12 @@ func (m *SystemdModule) handleServiceEnabledChange(ctx context.Context, conn typ
 		return true, fmt.Sprintf("would %s service %s", action, serviceName), nil
 	}
 
-	_, err := conn.Execute(ctx, cmd, types.ExecuteOptions{})
+	result, err := conn.Execute(ctx, cmd, types.ExecuteOptions{})
 	if err != nil {
 		return false, "", fmt.Errorf("failed to %s service: %w", action, err)
+	}
+	if !result.Success {
+		return false, "", fmt.Errorf("failed to %s service: %s", action, result.Message)
 	}
 
 	return true, fmt.Sprintf("%s service %s", action, serviceName), nil
@@ -532,22 +549,40 @@ func (m *SystemdModule) handleServiceEnabledChange(ctx context.Context, conn typ
 // maskService masks a systemd service
 func (m *SystemdModule) maskService(ctx context.Context, conn types.Connection, serviceName string) error {
 	cmd := fmt.Sprintf("systemctl mask %s", serviceName)
-	_, err := conn.Execute(ctx, cmd, types.ExecuteOptions{})
-	return err
+	result, err := conn.Execute(ctx, cmd, types.ExecuteOptions{})
+	if err != nil {
+		return err
+	}
+	if !result.Success {
+		return fmt.Errorf("command failed: %s", result.Message)
+	}
+	return nil
 }
 
 // unmaskService unmasks a systemd service
 func (m *SystemdModule) unmaskService(ctx context.Context, conn types.Connection, serviceName string) error {
 	cmd := fmt.Sprintf("systemctl unmask %s", serviceName)
-	_, err := conn.Execute(ctx, cmd, types.ExecuteOptions{})
-	return err
+	result, err := conn.Execute(ctx, cmd, types.ExecuteOptions{})
+	if err != nil {
+		return err
+	}
+	if !result.Success {
+		return fmt.Errorf("command failed: %s", result.Message)
+	}
+	return nil
 }
 
 // reloadSystemdDaemon reloads the systemd daemon
 func (m *SystemdModule) reloadSystemdDaemon(ctx context.Context, conn types.Connection) error {
 	cmd := "systemctl daemon-reload"
-	_, err := conn.Execute(ctx, cmd, types.ExecuteOptions{})
-	return err
+	result, err := conn.Execute(ctx, cmd, types.ExecuteOptions{})
+	if err != nil {
+		return err
+	}
+	if !result.Success {
+		return fmt.Errorf("command failed: %s", result.Message)
+	}
+	return nil
 }
 
 // formatServiceStatus creates a human-readable status string

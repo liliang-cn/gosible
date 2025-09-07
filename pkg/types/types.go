@@ -352,6 +352,15 @@ type ConnectionInfo struct {
 	PrivateKey string        `yaml:"private_key,omitempty" json:"private_key,omitempty"`
 	Timeout    time.Duration `yaml:"timeout,omitempty" json:"timeout,omitempty"`
 	Variables  map[string]interface{} `yaml:"vars,omitempty" json:"vars,omitempty"`
+	
+	// Windows/WinRM specific fields
+	UseSSL     bool          `yaml:"use_ssl,omitempty" json:"use_ssl,omitempty"`
+	SkipVerify bool          `yaml:"skip_verify,omitempty" json:"skip_verify,omitempty"`
+}
+
+// IsWindows returns true if this connection is for a Windows host
+func (c ConnectionInfo) IsWindows() bool {
+	return c.Type == "winrm"
 }
 
 // ExecuteOptions contains options for command execution
@@ -361,6 +370,7 @@ type ExecuteOptions struct {
 	Timeout    time.Duration
 	User       string
 	Sudo       bool
+	Shell      string // For WinRM: "powershell" or "cmd"
 	
 	// Execution modes
 	CheckMode    bool `json:"check_mode"`    // Don't make actual changes

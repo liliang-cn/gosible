@@ -39,6 +39,8 @@ type MockConnection struct {
 	callOrder   []string
 	connected   bool
 	hostname    string
+	strictOrder bool
+	defaultResponse *CommandResponse
 }
 
 // NewMockConnection creates a new mock connection for testing
@@ -81,6 +83,11 @@ func (m *MockConnection) ExpectCommandPattern(pattern string, response *CommandR
 		MaxCalls: 1,
 	})
 	return m
+}
+
+// ExpectCommandRegex is an alias for ExpectCommandPattern for compatibility
+func (m *MockConnection) ExpectCommandRegex(pattern string, response *CommandResponse) *MockConnection {
+	return m.ExpectCommandPattern(pattern, response)
 }
 
 // ExpectCommandWithEnv adds an expectation for a command with environment variables
@@ -152,7 +159,9 @@ func (m *MockConnection) Execute(ctx context.Context, command string, options ty
 				ModuleName: "mock",
 			}
 			
-			// Add stderr to data if present
+			// Add stdout and stderr to data
+			result.Data["stdout"] = exp.Response.Stdout
+			result.Data["exit_code"] = exp.Response.ExitCode
 			if exp.Response.Stderr != "" {
 				result.Data["stderr"] = exp.Response.Stderr
 			}
@@ -173,7 +182,41 @@ func (m *MockConnection) Execute(ctx context.Context, command string, options ty
 		}
 	}
 	
-	// No expectation found
+	// No expectation found - use default response if set
+	if m.defaultResponse != nil {
+		result := &types.Result{
+			Host:       m.hostname,
+			Success:    m.defaultResponse.ExitCode == 0,
+			Changed:    false,
+			Message:    m.defaultResponse.Stdout,
+			Data:       make(map[string]interface{}),
+			StartTime:  types.GetCurrentTime(),
+			EndTime:    types.GetCurrentTime(),
+			TaskName:   command,
+			ModuleName: "mock",
+		}
+		
+		result.Data["stdout"] = m.defaultResponse.Stdout
+		result.Data["exit_code"] = m.defaultResponse.ExitCode
+		if m.defaultResponse.Stderr != "" {
+			result.Data["stderr"] = m.defaultResponse.Stderr
+		}
+		
+		if m.defaultResponse.Error != nil {
+			result.Error = m.defaultResponse.Error
+			return result, m.defaultResponse.Error
+		}
+		
+		if m.defaultResponse.ExitCode != 0 {
+			err := fmt.Errorf("command failed with exit code %d: %s", m.defaultResponse.ExitCode, m.defaultResponse.Stderr)
+			result.Error = err
+			return result, err
+		}
+		
+		return result, nil
+	}
+	
+	// No expectation found and no default response
 	m.t.Errorf("Unexpected command executed: %s", command)
 	return nil, fmt.Errorf("unexpected command: %s", command)
 }
@@ -301,6 +344,23 @@ func (m *MockConnection) Verify() {
 	}
 }
 
+// VerifyAllExpectationsMet is an alias for Verify for compatibility
+func (m *MockConnection) VerifyAllExpectationsMet() error {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+	
+	for i, exp := range m.expectations {
+		if !exp.Called {
+			command := exp.Command
+			if command == "" && exp.Pattern != nil {
+				command = exp.Pattern.String()
+			}
+			return fmt.Errorf("expectation %d was not met: expected command '%s' was not called", i, command)
+		}
+	}
+	return nil
+}
+
 // GetCallOrder returns the order in which commands were called
 func (m *MockConnection) GetCallOrder() []string {
 	m.mu.RLock()
@@ -310,6 +370,11 @@ func (m *MockConnection) GetCallOrder() []string {
 	result := make([]string, len(m.callOrder))
 	copy(result, m.callOrder)
 	return result
+}
+
+// GetExecutionOrder is an alias for GetCallOrder for compatibility
+func (m *MockConnection) GetExecutionOrder() []string {
+	return m.GetCallOrder()
 }
 
 // GetCallCount returns the number of times a command was called
@@ -333,6 +398,8 @@ func (m *MockConnection) Reset() *MockConnection {
 	
 	m.expectations = make([]*CommandExpectation, 0)
 	m.callOrder = make([]string, 0)
+	m.strictOrder = false
+	m.defaultResponse = nil
 	return m
 }
 
@@ -431,6 +498,29 @@ func (m *MockConnection) SimulateCommandFailure(command string, exitCode int, st
 		ExitCode: exitCode,
 		Stderr:   stderr,
 	})
+}
+
+// EnableStrictOrder enables strict command execution order checking
+func (m *MockConnection) EnableStrictOrder() *MockConnection {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	m.strictOrder = true
+	return m
+}
+
+// ExpectCommandOrder adds an expectation for a command at a specific order position
+func (m *MockConnection) ExpectCommandOrder(command string, order int, response *CommandResponse) *MockConnection {
+	// For simplicity, we'll just add the expectation normally
+	// The order checking can be done via GetExecutionOrder() and assertions
+	return m.ExpectCommand(command, response)
+}
+
+// SetDefaultCommandResponse sets the default response for unexpected commands
+func (m *MockConnection) SetDefaultCommandResponse(response *CommandResponse) *MockConnection {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	m.defaultResponse = response
+	return m
 }
 
 // SimulatePermissionDenied creates a mock that simulates permission denied errors

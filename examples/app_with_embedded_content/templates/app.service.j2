@@ -1,0 +1,16 @@
+[Unit]
+Description={{ app_name }}
+After=network.target
+
+[Service]
+Type=simple
+User={{ app_user }}
+WorkingDirectory={{ app_dir }}
+ExecStart=/usr/bin/node {{ app_dir }}/index.js
+Restart=always
+{% for key, value in env_vars.items() %}
+Environment={{ key }}={{ value }}
+{% endfor %}
+
+[Install]
+WantedBy=multi-user.target

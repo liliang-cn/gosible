@@ -70,8 +70,8 @@ func TestStreamLogger_AddMemoryOutput(t *testing.T) {
 	logger.Log(LevelInfo, "Test message 1", nil)
 	logger.Log(LevelWarn, "Test message 2", nil)
 	
-	// Give time for async processing
-	time.Sleep(50 * time.Millisecond)
+	// Force flush to ensure entries are written to outputs
+	logger.Flush()
 	
 	entries := memOutput.GetEntries()
 	if len(entries) < 2 {
@@ -81,6 +81,7 @@ func TestStreamLogger_AddMemoryOutput(t *testing.T) {
 
 func TestStreamLogger_LogStreamEvent(t *testing.T) {
 	logger := NewStreamLogger("test", "session")
+	logger.SetLevel(LevelDebug) // Set to debug level to capture StreamStdout events
 	memOutput := logger.AddMemoryOutput(10)
 	defer logger.Close()
 	
@@ -92,8 +93,8 @@ func TestStreamLogger_LogStreamEvent(t *testing.T) {
 	
 	logger.LogStreamEvent(event, "test_task", "localhost")
 	
-	// Give time for async processing
-	time.Sleep(50 * time.Millisecond)
+	// Force flush to ensure entries are written to outputs
+	logger.Flush()
 	
 	entries := memOutput.GetEntries()
 	if len(entries) == 0 {
@@ -128,8 +129,8 @@ func TestStreamLogger_LogProgress(t *testing.T) {
 	
 	logger.LogProgress(progress, "test_task", "localhost")
 	
-	// Give time for async processing
-	time.Sleep(50 * time.Millisecond)
+	// Force flush to ensure entries are written to outputs
+	logger.Flush()
 	
 	entries := memOutput.GetEntries()
 	if len(entries) == 0 {
@@ -166,8 +167,8 @@ func TestStreamLogger_LogStep(t *testing.T) {
 	
 	logger.LogStep(step, "test_task", "localhost")
 	
-	// Give time for async processing
-	time.Sleep(50 * time.Millisecond)
+	// Force flush to ensure entries are written to outputs
+	logger.Flush()
 	
 	entries := memOutput.GetEntries()
 	if len(entries) == 0 {
@@ -190,6 +191,7 @@ func TestStreamLogger_LogStep(t *testing.T) {
 
 func TestStreamLogger_SetFilters(t *testing.T) {
 	logger := NewStreamLogger("test", "session")
+	logger.SetLevel(LevelDebug) // Set to debug level to capture all events
 	defer logger.Close()
 	
 	// This should not panic
@@ -207,12 +209,13 @@ func TestStreamLogger_SetFilters(t *testing.T) {
 	logger.LogProgress(progress, "task", "host") 
 	logger.LogStep(step, "task", "host")
 	
-	time.Sleep(50 * time.Millisecond)
+	// Force flush to ensure entries are written to outputs
+	logger.Flush()
 	
 	entries := memOutput.GetEntries()
 	// With output filtered out, should have step and progress but not output
-	if len(entries) < 2 {
-		t.Errorf("Expected at least 2 entries with current filters, got %d", len(entries))
+	if len(entries) != 2 {
+		t.Errorf("Expected exactly 2 entries with current filters (step and progress), got %d", len(entries))
 	}
 }
 
@@ -236,7 +239,8 @@ func TestStreamLogger_SetEnabled(t *testing.T) {
 	logger.SetEnabled(true)
 	logger.Log(LevelInfo, "This should be logged", nil)
 	
-	time.Sleep(20 * time.Millisecond)
+	// Force flush to ensure entries are written to outputs
+	logger.Flush()
 	
 	entries = memOutput.GetEntries()
 	if len(entries) == 0 {
@@ -289,6 +293,7 @@ func TestMemoryLogOutput_GetEntries(t *testing.T) {
 
 func TestStreamingLoggerAdapter(t *testing.T) {
 	logger := NewStreamLogger("test", "session")
+	logger.SetLevel(LevelDebug) // Set to debug level to capture StreamStdout events
 	memOutput := logger.AddMemoryOutput(10)
 	defer logger.Close()
 	
@@ -311,6 +316,9 @@ func TestStreamingLoggerAdapter(t *testing.T) {
 	
 	time.Sleep(100 * time.Millisecond)
 	
+	// Force flush to ensure entries are written to outputs
+	logger.Flush()
+	
 	entries := memOutput.GetEntries()
 	if len(entries) == 0 {
 		t.Error("Expected log entry from HandleStreamEvents")
@@ -330,6 +338,9 @@ func TestStreamingLoggerAdapter(t *testing.T) {
 	callback(progress)
 	
 	time.Sleep(50 * time.Millisecond)
+	
+	// Force flush to ensure entries are written to outputs
+	logger.Flush()
 	
 	entries = memOutput.GetEntries()
 	if len(entries) < 2 {

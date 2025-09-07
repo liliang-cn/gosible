@@ -22,7 +22,7 @@ var configFiles embed.FS
 var scriptsDir embed.FS
 
 func main() {
-	fmt.Println("=== Embedded Content Distribution Examples ===\n")
+	fmt.Println("=== Embedded Content Distribution Examples ===")
 	
 	// Example 1: Using ContentTasks for programmatic content
 	programmaticContentExample()
@@ -198,10 +198,10 @@ logging:
 	environment := "production" // This would come from variables
 	configFile := fmt.Sprintf("%s.yml", environment)
 	
-	tasks := []common.Task{}
+	tasks := []types.Task{}
 	
 	// Backup existing config
-	tasks = append(tasks, common.Task{
+	tasks = append(tasks, types.Task{
 		Name:   "Backup existing configuration",
 		Module: "copy",
 		Args: map[string]interface{}{
@@ -216,7 +216,7 @@ logging:
 	tasks = append(tasks, ct.DeployFile(configFile, "/etc/app/config.yml")...)
 	
 	// Validate configuration
-	tasks = append(tasks, common.Task{
+	tasks = append(tasks, types.Task{
 		Name:   "Validate configuration",
 		Module: "command",
 		Args: map[string]interface{}{
@@ -225,7 +225,7 @@ logging:
 	})
 	
 	// Restart service if config is valid
-	tasks = append(tasks, common.Task{
+	tasks = append(tasks, types.Task{
 		Name:   "Restart application",
 		Module: "systemd",
 		Args: map[string]interface{}{
@@ -272,13 +272,13 @@ func syncDirectoryExample() {
 
 // Example of a builder pattern for content distribution
 type ContentDistribution struct {
-	tasks []common.Task
+	tasks []types.Task
 	ct    *library.ContentTasks
 }
 
 func NewContentDistribution() *ContentDistribution {
 	return &ContentDistribution{
-		tasks: []common.Task{},
+		tasks: []types.Task{},
 		ct:    library.NewContentTasks(),
 	}
 }
@@ -303,7 +303,7 @@ func (cd *ContentDistribution) Deploy(deployments map[string]string) *ContentDis
 	return cd
 }
 
-func (cd *ContentDistribution) Build() []common.Task {
+func (cd *ContentDistribution) Build() []types.Task {
 	return cd.tasks
 }
 

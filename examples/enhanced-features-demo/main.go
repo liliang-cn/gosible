@@ -38,7 +38,7 @@ func main() {
 	
 	// Create connection with progress support
 	conn := connection.NewLocalConnection()
-	if err := conn.Connect(ctx, common.ConnectionInfo{}); err != nil {
+	if err := conn.Connect(ctx, types.ConnectionInfo{}); err != nil {
 		log.Fatalf("Failed to connect: %v", err)
 	}
 	defer conn.Close()
@@ -177,8 +177,8 @@ Generated at: ` + time.Now().Format(time.RFC3339) + `
 	})
 	
 	// Broadcast completion to WebSocket clients
-	wsServer.BroadcastStreamEvent(common.StreamEvent{
-		Type: common.StreamDone,
+	wsServer.BroadcastStreamEvent(types.StreamEvent{
+		Type: types.StreamDone,
 		Data: fmt.Sprintf("File copy completed: %s", result.Message),
 		Result: result,
 		Timestamp: time.Now(),
@@ -202,15 +202,15 @@ func demoWebSocketStreaming(ctx context.Context, conn *connection.LocalConnectio
 	fmt.Printf("  👥 Connected WebSocket clients: %d\n", len(clients))
 	
 	// Create some demo events
-	events := []common.StreamEvent{
+	events := []types.StreamEvent{
 		{
-			Type: common.StreamStdout,
+			Type: types.StreamStdout,
 			Data: "Starting demo streaming process...",
 			Timestamp: time.Now(),
 		},
 		{
-			Type: common.StreamProgress,
-			Progress: &common.ProgressInfo{
+			Type: types.StreamProgress,
+			Progress: &types.ProgressInfo{
 				Stage:      "initializing",
 				Percentage: 25.0,
 				Message:    "Initializing streaming demo",
@@ -219,13 +219,13 @@ func demoWebSocketStreaming(ctx context.Context, conn *connection.LocalConnectio
 			Timestamp: time.Now(),
 		},
 		{
-			Type: common.StreamStdout,
+			Type: types.StreamStdout,
 			Data: "Processing demo data...",
 			Timestamp: time.Now(),
 		},
 		{
-			Type: common.StreamProgress,
-			Progress: &common.ProgressInfo{
+			Type: types.StreamProgress,
+			Progress: &types.ProgressInfo{
 				Stage:      "processing",
 				Percentage: 75.0,
 				Message:    "Processing streaming data",
@@ -234,7 +234,7 @@ func demoWebSocketStreaming(ctx context.Context, conn *connection.LocalConnectio
 			Timestamp: time.Now(),
 		},
 		{
-			Type: common.StreamStdout,
+			Type: types.StreamStdout,
 			Data: "Demo streaming completed successfully!",
 			Timestamp: time.Now(),
 		},
@@ -255,10 +255,10 @@ func demoWebSocketStreaming(ctx context.Context, conn *connection.LocalConnectio
 	}
 	
 	// Final completion broadcast
-	wsServer.BroadcastStreamEvent(common.StreamEvent{
-		Type: common.StreamDone,
+	wsServer.BroadcastStreamEvent(types.StreamEvent{
+		Type: types.StreamDone,
 		Data: "WebSocket streaming demo completed",
-		Result: &common.Result{
+		Result: &types.Result{
 			Success: true,
 			Message: "All demo events broadcasted successfully",
 			EndTime: time.Now(),
@@ -320,11 +320,11 @@ func demoLoggingIntegration(ctx context.Context, conn *connection.LocalConnectio
 	}
 	
 	// Demo step logging
-	step := common.StepInfo{
+	step := types.StepInfo{
 		ID:          "demo_step_001",
 		Name:        "Demonstration Step",
 		Description: "Shows step logging capabilities",
-		Status:      common.StepCompleted,
+		Status:      types.StepCompleted,
 		StartTime:   time.Now().Add(-2 * time.Second),
 		EndTime:     time.Now(),
 		Metadata: map[string]interface{}{
@@ -337,7 +337,7 @@ func demoLoggingIntegration(ctx context.Context, conn *connection.LocalConnectio
 	logger.LogStep(step, "logging_demo", "localhost")
 	
 	// Demo progress logging
-	progress := common.ProgressInfo{
+	progress := types.ProgressInfo{
 		Stage:      "demonstration",
 		Percentage: 100.0,
 		Message:    "Logging integration demo completed",

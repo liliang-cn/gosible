@@ -73,6 +73,27 @@ func (m *MockFileSystem) CreateFile(path string, content []byte, mode os.FileMod
 	return m
 }
 
+// AddFile is an alias for CreateFile for compatibility
+func (m *MockFileSystem) AddFile(path string, content []byte, mode os.FileMode) error {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	
+	// Record the write operation for consistency with other methods
+	m.recordOperation("write", path, content, mode, true, nil)
+	
+	m.files[path] = &MockFile{
+		Content: content,
+		Mode:    mode,
+		ModTime: time.Now(),
+		IsDir:   false,
+		Exists:  true,
+		Owner:   "root",
+		Group:   "root",
+	}
+	
+	return nil
+}
+
 // CreateDirectory creates a directory in the mock filesystem
 func (m *MockFileSystem) CreateDirectory(path string, mode os.FileMode) *MockFileSystem {
 	m.mu.Lock()
@@ -88,6 +109,12 @@ func (m *MockFileSystem) CreateDirectory(path string, mode os.FileMode) *MockFil
 	}
 	
 	return m
+}
+
+// AddDir is an alias for CreateDirectory for compatibility
+func (m *MockFileSystem) AddDir(path string, mode os.FileMode) error {
+	m.CreateDirectory(path, mode)
+	return nil
 }
 
 // SetFileOwner sets the owner and group of a file
@@ -151,6 +178,22 @@ func (m *MockFileSystem) EnableErrorSimulation(enable bool) *MockFileSystem {
 	return m
 }
 
+// SimulatePermissionErrors enables permission error simulation for paths containing "restricted"
+func (m *MockFileSystem) SimulatePermissionErrors() *MockFileSystem {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	m.simulateErrors = true
+	return m
+}
+
+// SimulateIOErrors enables IO error simulation for paths containing "broken"
+func (m *MockFileSystem) SimulateIOErrors() *MockFileSystem {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	m.simulateErrors = true
+	return m
+}
+
 // FileExists checks if a file exists in the mock filesystem
 func (m *MockFileSystem) FileExists(path string) bool {
 	m.mu.RLock()
@@ -160,12 +203,82 @@ func (m *MockFileSystem) FileExists(path string) bool {
 	return exists && file.Exists
 }
 
+// Exists is an alias for FileExists for compatibility
+func (m *MockFileSystem) Exists(path string) bool {
+	return m.FileExists(path)
+}
+
+// IsDir checks if a path is a directory in the mock filesystem
+func (m *MockFileSystem) IsDir(path string) bool {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+	
+	file, exists := m.files[path]
+	return exists && file.Exists && file.IsDir
+}
+
+// ReadDir lists directory contents
+func (m *MockFileSystem) ReadDir(dirPath string) ([]os.FileInfo, error) {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+	
+	// Check if directory exists
+	dir, exists := m.files[dirPath]
+	if !exists || !dir.Exists || !dir.IsDir {
+		return nil, &os.PathError{Op: "readdir", Path: dirPath, Err: os.ErrNotExist}
+	}
+	
+	// Find all files in this directory
+	var files []os.FileInfo
+	dirPrefix := dirPath
+	if !strings.HasSuffix(dirPrefix, "/") {
+		dirPrefix += "/"
+	}
+	
+	for path, file := range m.files {
+		if !file.Exists {
+			continue
+		}
+		
+		// Check if this file is directly in the directory (not in subdirectory)
+		if strings.HasPrefix(path, dirPrefix) {
+			relativePath := strings.TrimPrefix(path, dirPrefix)
+			// Only include direct children (no subdirectory separator)
+			if !strings.Contains(relativePath, "/") && relativePath != "" {
+				files = append(files, &MockFileInfo{
+					name:    relativePath,
+					size:    int64(len(file.Content)),
+					mode:    file.Mode,
+					modTime: file.ModTime,
+					isDir:   file.IsDir,
+				})
+			}
+		}
+	}
+	
+	return files, nil
+}
+
 // ReadFile reads a file from the mock filesystem
 func (m *MockFileSystem) ReadFile(path string) ([]byte, error) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	
 	m.recordOperation("read", path, nil, 0, true, nil)
+	
+	// Simulate errors if error simulation is enabled
+	if m.simulateErrors {
+		if strings.Contains(path, "restricted") {
+			err := &os.PathError{Op: "read", Path: path, Err: os.ErrPermission}
+			m.updateLastOperation(false, err)
+			return nil, err
+		}
+		if strings.Contains(path, "broken") {
+			err := &os.PathError{Op: "read", Path: path, Err: fmt.Errorf("input/output error")}
+			m.updateLastOperation(false, err)
+			return nil, err
+		}
+	}
 	
 	file, exists := m.files[path]
 	if !exists || !file.Exists {
@@ -394,6 +507,18 @@ func (m *MockFileSystem) GetOperationCount(operation string) int {
 		}
 	}
 	return count
+}
+
+// GetOperationsCount returns a map of operation types to their counts
+func (m *MockFileSystem) GetOperationsCount() map[string]int {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+	
+	counts := make(map[string]int)
+	for _, op := range m.operations {
+		counts[op.Operation]++
+	}
+	return counts
 }
 
 // Reset clears all files and operations

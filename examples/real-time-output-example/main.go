@@ -18,7 +18,7 @@ import (
 
 // Extended ExecuteOptions with streaming support
 type StreamingExecuteOptions struct {
-	common.ExecuteOptions
+	types.ExecuteOptions
 	
 	// NEW: Real-time streaming options
 	StreamOutput     bool                              // Enable streaming
@@ -52,14 +52,14 @@ type StreamEvent struct {
 	Type      StreamEventType
 	Data      string
 	Progress  *ProgressInfo
-	Result    *common.Result
+	Result    *types.Result
 	Error     error
 	Timestamp time.Time
 }
 
 // Enhanced connection interface
 type StreamingConnection interface {
-	common.Connection
+	types.Connection
 	
 	// NEW: Streaming execution method
 	ExecuteStream(ctx context.Context, command string, options StreamingExecuteOptions) (<-chan StreamEvent, error)
@@ -68,14 +68,14 @@ type StreamingConnection interface {
 // Implementation for LocalConnection with streaming
 type StreamingLocalConnection struct {
 	connected bool
-	info      common.ConnectionInfo
+	info      types.ConnectionInfo
 }
 
 func NewStreamingLocalConnection() *StreamingLocalConnection {
 	return &StreamingLocalConnection{}
 }
 
-func (c *StreamingLocalConnection) Connect(ctx context.Context, info common.ConnectionInfo) error {
+func (c *StreamingLocalConnection) Connect(ctx context.Context, info types.ConnectionInfo) error {
 	c.info = info
 	c.connected = true
 	return nil
@@ -91,7 +91,7 @@ func (c *StreamingLocalConnection) IsConnected() bool {
 }
 
 // Standard Execute method (compatibility)
-func (c *StreamingLocalConnection) Execute(ctx context.Context, command string, options common.ExecuteOptions) (*common.Result, error) {
+func (c *StreamingLocalConnection) Execute(ctx context.Context, command string, options types.ExecuteOptions) (*types.Result, error) {
 	// Convert to streaming options and collect all output
 	streamOpts := StreamingExecuteOptions{
 		ExecuteOptions: options,
@@ -240,13 +240,15 @@ func (c *StreamingLocalConnection) ExecuteStream(ctx context.Context, command st
 		endTime := time.Now()
 		
 		// Create result
-		result := &common.Result{
+		result := &types.Result{
 			Host:       "localhost",
 			Success:    err == nil,
 			Changed:    true, // Assume changed for demo
 			Message:    "Command executed",
-			Stdout:     stdout,
-			Stderr:     stderr,
+			Data: map[string]interface{}{
+				"stdout": stdout,
+				"stderr": stderr,
+			},
 			StartTime:  startTime,
 			EndTime:    endTime,
 			Duration:   endTime.Sub(startTime),
@@ -306,7 +308,7 @@ func main() {
 	ctx := context.Background()
 	
 	// Connect
-	if err := conn.Connect(ctx, common.ConnectionInfo{}); err != nil {
+	if err := conn.Connect(ctx, types.ConnectionInfo{}); err != nil {
 		log.Fatal(err)
 	}
 	defer conn.Close()
@@ -315,7 +317,7 @@ func main() {
 	fmt.Println("\n📡 Example 1: Real-time streaming")
 	
 	options := StreamingExecuteOptions{
-		ExecuteOptions: common.ExecuteOptions{
+		ExecuteOptions: types.ExecuteOptions{
 			Timeout: 30 * time.Second,
 		},
 		StreamOutput: true,
@@ -360,7 +362,7 @@ func main() {
 	fmt.Println("\n📁 Example 2: File operation with progress")
 	
 	copyOptions := StreamingExecuteOptions{
-		ExecuteOptions: common.ExecuteOptions{
+		ExecuteOptions: types.ExecuteOptions{
 			Timeout: 60 * time.Second,
 		},
 		StreamOutput: true,
@@ -406,7 +408,7 @@ func NewStreamingShellModule() *StreamingShellModule {
 
 func (m *StreamingShellModule) Name() string { return m.name }
 
-func (m *StreamingShellModule) Run(ctx context.Context, conn common.Connection, args map[string]interface{}) (*common.Result, error) {
+func (m *StreamingShellModule) Run(ctx context.Context, conn types.Connection, args map[string]interface{}) (*types.Result, error) {
 	cmd := args["cmd"].(string)
 	
 	// Check if connection supports streaming
@@ -414,7 +416,7 @@ func (m *StreamingShellModule) Run(ctx context.Context, conn common.Connection, 
 		fmt.Println("🚀 Using streaming execution...")
 		
 		options := StreamingExecuteOptions{
-			ExecuteOptions: common.ExecuteOptions{
+			ExecuteOptions: types.ExecuteOptions{
 				Timeout: 300 * time.Second,
 			},
 			StreamOutput: true,
@@ -447,7 +449,7 @@ func (m *StreamingShellModule) Run(ctx context.Context, conn common.Connection, 
 	
 	// Fallback to standard execution
 	fmt.Println("📡 Using standard execution...")
-	return conn.Execute(ctx, cmd, common.ExecuteOptions{})
+	return conn.Execute(ctx, cmd, types.ExecuteOptions{})
 }
 
 func (m *StreamingShellModule) Validate(args map[string]interface{}) error {
@@ -457,11 +459,11 @@ func (m *StreamingShellModule) Validate(args map[string]interface{}) error {
 	return nil
 }
 
-func (m *StreamingShellModule) Documentation() common.ModuleDoc {
-	return common.ModuleDoc{
+func (m *StreamingShellModule) Documentation() types.ModuleDoc {
+	return types.ModuleDoc{
 		Name:        "streaming_shell",
 		Description: "Execute shell commands with real-time output streaming",
-		Parameters: map[string]common.ParamDoc{
+		Parameters: map[string]types.ParamDoc{
 			"cmd": {
 				Description: "Command to execute",
 				Required:    true,

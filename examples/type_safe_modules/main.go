@@ -16,7 +16,7 @@ func main() {
 
 	// Create inventory
 	inv := inventory.NewStaticInventory()
-	localhost := &common.Host{
+	localhost := &types.Host{
 		Name:    "localhost",
 		Address: "127.0.0.1",
 		User:    "root",
@@ -30,19 +30,19 @@ func main() {
 	taskRunner := runner.NewTaskRunner()
 
 	// Example 1: Type-safe task creation with constants
-	tasks := []common.Task{
+	tasks := []types.Task{
 		{
 			Name:   "Create directory",
-			Module: common.TypeFile, // Type-safe module reference
+			Module: types.TypeFile, // Type-safe module reference
 			Args: map[string]interface{}{
 				"path":  "/tmp/gosinble-test",
-				"state": common.StateDirectory, // Type-safe state constant
+				"state": types.StateDirectory, // Type-safe state constant
 				"mode":  "0755",
 			},
 		},
 		{
 			Name:   "Copy configuration file",
-			Module: common.TypeCopy,
+			Module: types.TypeCopy,
 			Args: map[string]interface{}{
 				"content": "# Gosinble test configuration\nversion: 1.0\n",
 				"dest":    "/tmp/gosinble-test/config.yml",
@@ -51,14 +51,14 @@ func main() {
 		},
 		{
 			Name:   "Execute test command",
-			Module: common.TypeCommand,
+			Module: types.TypeCommand,
 			Args: map[string]interface{}{
 				"cmd": "ls -la /tmp/gosinble-test",
 			},
 		},
 		{
 			Name:   "Display results",
-			Module: common.TypeDebug,
+			Module: types.TypeDebug,
 			Args: map[string]interface{}{
 				"msg": "Type-safe deployment completed successfully!",
 			},
@@ -100,11 +100,11 @@ func main() {
 	// Example 2: Using module validation
 	fmt.Println("\n📋 Module Type Validation Examples:")
 	
-	testModules := []common.ModuleType{
-		common.TypeService,
-		common.TypePackage,
+	testModules := []types.ModuleType{
+		types.TypeService,
+		types.TypePackage,
 		"invalid_module", // This will be invalid
-		common.TypeTemplate,
+		types.TypeTemplate,
 	}
 
 	for _, moduleType := range testModules {
@@ -117,7 +117,7 @@ func main() {
 
 	// Example 3: List all available module types
 	fmt.Println("\n📦 Available Module Types:")
-	for _, moduleType := range common.AllModuleTypes() {
+	for _, moduleType := range types.AllModuleTypes() {
 		fmt.Printf("  - %s\n", moduleType.String())
 	}
 
@@ -132,26 +132,26 @@ func main() {
 }
 
 // createRustFSDeploymentTasks creates type-safe tasks for OBFY RustFS deployment
-func createRustFSDeploymentTasks() []common.Task {
-	return []common.Task{
+func createRustFSDeploymentTasks() []types.Task {
+	return []types.Task{
 		{
 			Name:   "Test connectivity",
-			Module: common.TypePing,
+			Module: types.TypePing,
 			Args:   map[string]interface{}{},
 		},
 		{
 			Name:   "Create RustFS directories", 
-			Module: common.TypeFile,
+			Module: types.TypeFile,
 			Args: map[string]interface{}{
 				"path":  "{{ item }}",
-				"state": common.StateDirectory,
+				"state": types.StateDirectory,
 				"mode":  "0750",
 			},
 			Loop: []string{"/data/sda", "/data/vda", "/data/nvme0n1", "/var/log/rustfs", "/opt/tls"},
 		},
 		{
 			Name:   "Copy RustFS binary",
-			Module: common.TypeCopy,
+			Module: types.TypeCopy,
 			Args: map[string]interface{}{
 				"src":   "./rustfs",
 				"dest":  "/usr/local/bin/rustfs",
@@ -162,7 +162,7 @@ func createRustFSDeploymentTasks() []common.Task {
 		},
 		{
 			Name:   "Format data disks",
-			Module: common.TypeShell,
+			Module: types.TypeShell,
 			Args: map[string]interface{}{
 				"cmd": "mkfs.xfs -i size=512 -n ftype=1 -L {{ item | basename }} {{ item }}",
 			},
@@ -170,7 +170,7 @@ func createRustFSDeploymentTasks() []common.Task {
 		},
 		{
 			Name:   "Generate RustFS configuration",
-			Module: common.TypeTemplate,
+			Module: types.TypeTemplate,
 			Args: map[string]interface{}{
 				"src":  "rustfs.conf.j2",
 				"dest": "/etc/default/rustfs",
@@ -179,7 +179,7 @@ func createRustFSDeploymentTasks() []common.Task {
 		},
 		{
 			Name:   "Create systemd service file",
-			Module: common.TypeTemplate,
+			Module: types.TypeTemplate,
 			Args: map[string]interface{}{
 				"src":  "rustfs.service.j2",
 				"dest": "/etc/systemd/system/rustfs.service",
@@ -188,24 +188,24 @@ func createRustFSDeploymentTasks() []common.Task {
 		},
 		{
 			Name:   "Start RustFS service",
-			Module: common.TypeService,
+			Module: types.TypeService,
 			Args: map[string]interface{}{
 				"name":          "rustfs",
-				"state":         common.StateStarted,
+				"state":         types.StateStarted,
 				"enabled":       true,
 				"daemon_reload": true,
 			},
 		},
 		{
 			Name:   "Verify RustFS is running",
-			Module: common.TypeCommand,
+			Module: types.TypeCommand,
 			Args: map[string]interface{}{
 				"cmd": "systemctl is-active rustfs",
 			},
 		},
 		{
 			Name:   "Display deployment status",
-			Module: common.TypeDebug,
+			Module: types.TypeDebug,
 			Args: map[string]interface{}{
 				"msg": "RustFS deployment completed! Service is {{ ansible_facts['services']['rustfs']['state'] }}",
 			},

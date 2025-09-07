@@ -71,8 +71,8 @@ func (ad *AppDeployment) Deploy(ctx context.Context, inv *inventory.StaticInvent
 }
 
 // buildDeploymentTasks creates the task sequence for deployment
-func (ad *AppDeployment) buildDeploymentTasks(environment string) []common.Task {
-	var tasks []common.Task
+func (ad *AppDeployment) buildDeploymentTasks(environment string) []types.Task {
+	var tasks []types.Task
 	
 	// 1. Pre-deployment backup
 	tasks = append(tasks, ad.createBackupTasks()...)
@@ -107,12 +107,12 @@ func (ad *AppDeployment) buildDeploymentTasks(environment string) []common.Task 
 }
 
 // createBackupTasks creates backup tasks
-func (ad *AppDeployment) createBackupTasks() []common.Task {
+func (ad *AppDeployment) createBackupTasks() []types.Task {
 	// Deploy backup script
 	tasks := ad.ec.DeployFile("scripts/backup.sh", "/usr/local/bin/backup.sh", "root", "root", "0755")
 	
 	// Run backup
-	tasks = append(tasks, common.Task{
+	tasks = append(tasks, types.Task{
 		Name:   "Create pre-deployment backup",
 		Module: "command",
 		Args: map[string]interface{}{
@@ -125,8 +125,8 @@ func (ad *AppDeployment) createBackupTasks() []common.Task {
 }
 
 // createAppStructureTasks creates the application user and directory structure
-func (ad *AppDeployment) createAppStructureTasks() []common.Task {
-	tasks := []common.Task{
+func (ad *AppDeployment) createAppStructureTasks() []types.Task {
+	tasks := []types.Task{
 		{
 			Name:   "Create application user",
 			Module: "user",
@@ -156,8 +156,8 @@ func (ad *AppDeployment) createAppStructureTasks() []common.Task {
 }
 
 // deployApplicationTasks deploys the application files
-func (ad *AppDeployment) deployApplicationTasks() []common.Task {
-	var tasks []common.Task
+func (ad *AppDeployment) deployApplicationTasks() []types.Task {
+	var tasks []types.Task
 	
 	// Deploy scripts
 	tasks = append(tasks, ad.ec.DeployDirectory("scripts", fmt.Sprintf("/opt/%s/scripts", ad.name), 
@@ -169,7 +169,7 @@ func (ad *AppDeployment) deployApplicationTasks() []common.Task {
 	// - Extract archives
 	// - Install dependencies
 	
-	tasks = append(tasks, common.Task{
+	tasks = append(tasks, types.Task{
 		Name:   "Placeholder for application code deployment",
 		Module: "debug",
 		Args: map[string]interface{}{
@@ -181,15 +181,15 @@ func (ad *AppDeployment) deployApplicationTasks() []common.Task {
 }
 
 // deployConfigurationTasks deploys configuration files
-func (ad *AppDeployment) deployConfigurationTasks(environment string) []common.Task {
-	var tasks []common.Task
+func (ad *AppDeployment) deployConfigurationTasks(environment string) []types.Task {
+	var tasks []types.Task
 	
 	// Deploy main configuration
 	configPath := fmt.Sprintf("/etc/%s/config.yml", ad.name)
 	tasks = append(tasks, ad.ec.DeployFile("configs/app.yml", configPath, ad.name, ad.name, "0644")...)
 	
 	// Override with environment-specific settings
-	tasks = append(tasks, common.Task{
+	tasks = append(tasks, types.Task{
 		Name:   "Set environment in configuration",
 		Module: "lineinfile",
 		Args: map[string]interface{}{
@@ -203,8 +203,8 @@ func (ad *AppDeployment) deployConfigurationTasks(environment string) []common.T
 }
 
 // deployServiceTasks creates and configures the systemd service
-func (ad *AppDeployment) deployServiceTasks() []common.Task {
-	var tasks []common.Task
+func (ad *AppDeployment) deployServiceTasks() []types.Task {
+	var tasks []types.Task
 	
 	// Template variables for service file
 	vars := map[string]interface{}{
@@ -224,7 +224,7 @@ func (ad *AppDeployment) deployServiceTasks() []common.Task {
 	tasks = append(tasks, ad.ec.DeployTemplate("templates/app.service.j2", servicePath, vars, "root", "root", "0644")...)
 	
 	// Reload systemd and start service
-	tasks = append(tasks, common.Task{
+	tasks = append(tasks, types.Task{
 		Name:   "Reload systemd daemon",
 		Module: "systemd",
 		Args: map[string]interface{}{
@@ -232,7 +232,7 @@ func (ad *AppDeployment) deployServiceTasks() []common.Task {
 		},
 	})
 	
-	tasks = append(tasks, common.Task{
+	tasks = append(tasks, types.Task{
 		Name:   fmt.Sprintf("Start and enable %s service", ad.name),
 		Module: "systemd",
 		Args: map[string]interface{}{
@@ -246,8 +246,8 @@ func (ad *AppDeployment) deployServiceTasks() []common.Task {
 }
 
 // configureNginxTasks configures nginx as reverse proxy
-func (ad *AppDeployment) configureNginxTasks() []common.Task {
-	var tasks []common.Task
+func (ad *AppDeployment) configureNginxTasks() []types.Task {
+	var tasks []types.Task
 	
 	// Template variables for nginx vhost
 	vars := map[string]interface{}{
@@ -264,7 +264,7 @@ func (ad *AppDeployment) configureNginxTasks() []common.Task {
 	tasks = append(tasks, ad.ec.DeployTemplate("templates/nginx.vhost.j2", vhostPath, vars, "root", "root", "0644")...)
 	
 	// Enable the site
-	tasks = append(tasks, common.Task{
+	tasks = append(tasks, types.Task{
 		Name:   "Enable nginx site",
 		Module: "file",
 		Args: map[string]interface{}{
@@ -275,7 +275,7 @@ func (ad *AppDeployment) configureNginxTasks() []common.Task {
 	})
 	
 	// Test nginx configuration
-	tasks = append(tasks, common.Task{
+	tasks = append(tasks, types.Task{
 		Name:   "Test nginx configuration",
 		Module: "command",
 		Args: map[string]interface{}{
@@ -284,7 +284,7 @@ func (ad *AppDeployment) configureNginxTasks() []common.Task {
 	})
 	
 	// Reload nginx
-	tasks = append(tasks, common.Task{
+	tasks = append(tasks, types.Task{
 		Name:   "Reload nginx",
 		Module: "systemd",
 		Args: map[string]interface{}{
@@ -297,8 +297,8 @@ func (ad *AppDeployment) configureNginxTasks() []common.Task {
 }
 
 // validationTasks creates post-deployment validation tasks
-func (ad *AppDeployment) validationTasks() []common.Task {
-	return []common.Task{
+func (ad *AppDeployment) validationTasks() []types.Task {
+	return []types.Task{
 		{
 			Name:   "Wait for application to start",
 			Module: "wait_for",
@@ -347,7 +347,7 @@ func (ad *AppDeployment) Rollback(ctx context.Context, inv *inventory.StaticInve
 	}
 	
 	// Rollback tasks
-	tasks := []common.Task{
+	tasks := []types.Task{
 		{
 			Name:   "Stop application service",
 			Module: "systemd",

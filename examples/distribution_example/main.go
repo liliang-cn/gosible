@@ -14,7 +14,7 @@ import (
 )
 
 func main() {
-	fmt.Println("=== External File Distribution Examples ===\n")
+	fmt.Println("=== External File Distribution Examples ===")
 	
 	// Example 1: Distribute binary files
 	distributeBinaryExample()
@@ -185,7 +185,7 @@ func realWorldExample() {
 	fmt.Printf("Complete deployment: %d tasks\n", len(tasks))
 	
 	// Group tasks by phase
-	phases := map[string][]common.Task{
+	phases := map[string][]types.Task{
 		"preparation":  tasks[0:3],
 		"distribution": tasks[3:8],
 		"installation": tasks[8:12],
@@ -273,8 +273,8 @@ func (dm *DeploymentManager) RegisterComponents() error {
 }
 
 // CreateDeploymentTasks creates the complete deployment task sequence
-func (dm *DeploymentManager) CreateDeploymentTasks() []common.Task {
-	var tasks []common.Task
+func (dm *DeploymentManager) CreateDeploymentTasks() []types.Task {
+	var tasks []types.Task
 	
 	// Phase 1: Preparation
 	tasks = append(tasks, dm.preparationTasks()...)
@@ -291,8 +291,8 @@ func (dm *DeploymentManager) CreateDeploymentTasks() []common.Task {
 	return tasks
 }
 
-func (dm *DeploymentManager) preparationTasks() []common.Task {
-	return []common.Task{
+func (dm *DeploymentManager) preparationTasks() []types.Task {
+	return []types.Task{
 		{
 			Name:   "Create deployment directory",
 			Module: "file",
@@ -324,8 +324,8 @@ func (dm *DeploymentManager) preparationTasks() []common.Task {
 	}
 }
 
-func (dm *DeploymentManager) distributionTasks() []common.Task {
-	tasks := []common.Task{}
+func (dm *DeploymentManager) distributionTasks() []types.Task {
+	tasks := []types.Task{}
 	
 	// Distribute binaries
 	dm.dt.AddDestination("app_server", filepath.Join(dm.basePath, dm.version, "bin/server"), "deploy", "deploy", "0755")
@@ -347,11 +347,11 @@ func (dm *DeploymentManager) distributionTasks() []common.Task {
 	return tasks
 }
 
-func (dm *DeploymentManager) installationTasks() []common.Task {
+func (dm *DeploymentManager) installationTasks() []types.Task {
 	versionPath := filepath.Join(dm.basePath, dm.version)
 	currentPath := filepath.Join(dm.basePath, "current")
 	
-	return []common.Task{
+	return []types.Task{
 		{
 			Name:   "Remove old current symlink",
 			Module: "file",
@@ -391,8 +391,8 @@ func (dm *DeploymentManager) installationTasks() []common.Task {
 	}
 }
 
-func (dm *DeploymentManager) validationTasks() []common.Task {
-	return []common.Task{
+func (dm *DeploymentManager) validationTasks() []types.Task {
+	return []types.Task{
 		{
 			Name:   "Start application service",
 			Module: "systemd",

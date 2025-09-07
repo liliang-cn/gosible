@@ -1,0 +1,19 @@
+app:
+  name: example-app
+  version: "1.0.0"
+  port: 8080
+  environment: development
+  
+database:
+  host: localhost
+  port: 5432
+  name: example_db
+  
+logging:
+  level: info
+  file: /var/log/app.log
+  
+features:
+  authentication: true
+  caching: true
+  monitoring: true

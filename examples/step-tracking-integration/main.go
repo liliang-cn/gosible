@@ -28,7 +28,7 @@ func main() {
 	
 	// Create connection
 	conn := connection.NewLocalConnection()
-	if err := conn.Connect(ctx, common.ConnectionInfo{}); err != nil {
+	if err := conn.Connect(ctx, types.ConnectionInfo{}); err != nil {
 		log.Fatalf("Failed to connect: %v", err)
 	}
 	defer conn.Close()
@@ -78,7 +78,7 @@ func demoIntegratedDeployment(ctx context.Context, conn *connection.LocalConnect
 	}
 	
 	totalSteps := len(steps)
-	completedSteps := []common.StepInfo{}
+	completedSteps := []types.StepInfo{}
 	
 	fmt.Printf("📋 Starting deployment with %d steps\n", totalSteps)
 	
@@ -90,8 +90,8 @@ func demoIntegratedDeployment(ctx context.Context, conn *connection.LocalConnect
 	})
 	
 	// Broadcast deployment start
-	wsServer.BroadcastStreamEvent(common.StreamEvent{
-		Type: common.StreamStdout,
+	wsServer.BroadcastStreamEvent(types.StreamEvent{
+		Type: types.StreamStdout,
 		Data: fmt.Sprintf("🚀 Starting deployment with %d steps", totalSteps),
 		Timestamp: time.Now(),
 	}, "deployment")
@@ -101,11 +101,11 @@ func demoIntegratedDeployment(ctx context.Context, conn *connection.LocalConnect
 		stepNumber := i + 1
 		
 		// Create step info
-		step := common.StepInfo{
+		step := types.StepInfo{
 			ID:          stepDef.id,
 			Name:        stepDef.name,
 			Description: stepDef.description,
-			Status:      common.StepRunning,
+			Status:      types.StepRunning,
 			StartTime:   time.Now(),
 			Metadata: map[string]interface{}{
 				"step_number": stepNumber,
@@ -118,8 +118,8 @@ func demoIntegratedDeployment(ctx context.Context, conn *connection.LocalConnect
 		logger.LogStep(step, "deployment", "demo-server")
 		
 		// Broadcast step start
-		wsServer.BroadcastStreamEvent(common.StreamEvent{
-			Type: common.StreamStepStart,
+		wsServer.BroadcastStreamEvent(types.StreamEvent{
+			Type: types.StreamStepStart,
 			Step: &step,
 			Timestamp: time.Now(),
 		}, "deployment")
@@ -132,7 +132,7 @@ func demoIntegratedDeployment(ctx context.Context, conn *connection.LocalConnect
 		executeStepWithProgress(step, stepDef.duration, wsServer, logger)
 		
 		// Complete the step
-		step.Status = common.StepCompleted
+		step.Status = types.StepCompleted
 		step.EndTime = time.Now()
 		step.Duration = step.EndTime.Sub(step.StartTime)
 		completedSteps = append(completedSteps, step)
@@ -141,14 +141,14 @@ func demoIntegratedDeployment(ctx context.Context, conn *connection.LocalConnect
 		logger.LogStep(step, "deployment", "demo-server")
 		
 		// Broadcast step completion
-		wsServer.BroadcastStreamEvent(common.StreamEvent{
-			Type: common.StreamStepEnd,
+		wsServer.BroadcastStreamEvent(types.StreamEvent{
+			Type: types.StreamStepEnd,
 			Step: &step,
 			Timestamp: time.Now(),
 		}, "deployment")
 		
 		// Update overall progress
-		overallProgress := common.ProgressInfo{
+		overallProgress := types.ProgressInfo{
 			Stage:          "deployment",
 			Percentage:     float64(stepNumber) / float64(totalSteps) * 100,
 			Message:        fmt.Sprintf("Completed step %d/%d: %s", stepNumber, totalSteps, step.Name),
@@ -182,10 +182,10 @@ func demoIntegratedDeployment(ctx context.Context, conn *connection.LocalConnect
 	})
 	
 	// Broadcast final completion
-	wsServer.BroadcastStreamEvent(common.StreamEvent{
-		Type: common.StreamDone,
+	wsServer.BroadcastStreamEvent(types.StreamEvent{
+		Type: types.StreamDone,
 		Data: "Deployment completed successfully!",
-		Result: &common.Result{
+		Result: &types.Result{
 			Success:    true,
 			Message:    fmt.Sprintf("All %d deployment steps completed", totalSteps),
 			StartTime:  completedSteps[0].StartTime,
@@ -214,7 +214,7 @@ func demoIntegratedDeployment(ctx context.Context, conn *connection.LocalConnect
 	}
 }
 
-func executeStepWithProgress(step common.StepInfo, duration time.Duration, wsServer *websocket.StreamServer, logger *logging.StreamLogger) {
+func executeStepWithProgress(step types.StepInfo, duration time.Duration, wsServer *websocket.StreamServer, logger *logging.StreamLogger) {
 	// Simulate step execution with periodic progress updates
 	updateInterval := duration / 4 // 4 progress updates per step
 	
@@ -224,7 +224,7 @@ func executeStepWithProgress(step common.StepInfo, duration time.Duration, wsSer
 		percentage := float64(i) * 25.0 // 25%, 50%, 75%, 100%
 		
 		// Create progress update
-		progress := common.ProgressInfo{
+		progress := types.ProgressInfo{
 			Stage:      "step_execution",
 			Percentage: percentage,
 			Message:    fmt.Sprintf("Executing %s... %d%% complete", step.Name, int(percentage)),
@@ -236,8 +236,8 @@ func executeStepWithProgress(step common.StepInfo, duration time.Duration, wsSer
 		logger.LogProgress(progress, "deployment", "demo-server")
 		
 		// Broadcast progress update
-		wsServer.BroadcastStreamEvent(common.StreamEvent{
-			Type: common.StreamStepUpdate,
+		wsServer.BroadcastStreamEvent(types.StreamEvent{
+			Type: types.StreamStepUpdate,
 			Step: &step,
 			Progress: &progress,
 			Timestamp: time.Now(),
