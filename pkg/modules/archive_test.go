@@ -1,10 +1,7 @@
 package modules
 
 import (
-	"context"
 	"testing"
-
-	gotest "github.com/gosinble/gosinble/pkg/testing"
 )
 
 func TestArchiveModule(t *testing.T) {

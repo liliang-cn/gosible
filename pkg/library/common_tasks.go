@@ -14,6 +14,9 @@ type CommonTasks struct {
 	Network      *NetworkTasks
 	Content      *ContentTasks
 	Distribution *DistributionTasks
+	Archive      *ArchiveTasks
+	System       *SystemTasks
+	Development  *DevelopmentTasks
 }
 
 // NewCommonTasks creates a new CommonTasks instance with all task types initialized
@@ -25,6 +28,9 @@ func NewCommonTasks() *CommonTasks {
 		Network:      NewNetworkTasks(),
 		Content:      NewContentTasks(),
 		Distribution: NewDistributionTasks(),
+		Archive:      NewArchiveTasks(),
+		System:       NewSystemTasks(),
+		Development:  NewDevelopmentTasks(),
 	}
 }
 
@@ -265,4 +271,50 @@ func (ct *CommonTasks) CreateUserWithSSHKey(username string, groups []string, ss
 	}
 	
 	return tasks
+}
+
+// Archive operations convenience methods
+
+// CreateArchive creates a compressed archive from files/directories
+func (ct *CommonTasks) CreateArchive(paths []string, dest, format string) []types.Task {
+	return ct.Archive.CreateArchive(paths, dest, format, nil)
+}
+
+// ExtractArchive extracts an archive to a destination
+func (ct *CommonTasks) ExtractArchive(src, dest string) []types.Task {
+	return ct.Archive.ExtractArchive(src, dest, false)
+}
+
+// System configuration convenience methods
+
+// SetSysctl sets a kernel parameter
+func (ct *CommonTasks) SetSysctl(name, value string, persistent bool) []types.Task {
+	return ct.System.SetSysctl(name, value, persistent)
+}
+
+// MountFilesystem mounts a filesystem
+func (ct *CommonTasks) MountFilesystem(src, path, fstype string) []types.Task {
+	return ct.System.MountFilesystem(src, path, fstype, nil)
+}
+
+// AllowFirewallPort opens a firewall port
+func (ct *CommonTasks) AllowFirewallPort(port, protocol string) []types.Task {
+	return ct.System.AddFirewallRule("INPUT", protocol, port, "ACCEPT")
+}
+
+// Development environment convenience methods
+
+// InstallPythonPackage installs a Python package via pip
+func (ct *CommonTasks) InstallPythonPackage(name string) []types.Task {
+	return ct.Development.InstallPythonPackage(name, "", "")
+}
+
+// InstallNodePackage installs a Node.js package via npm
+func (ct *CommonTasks) InstallNodePackage(name string, global bool) []types.Task {
+	return ct.Development.InstallNodePackage(name, "", global)
+}
+
+// InstallRubyGem installs a Ruby gem
+func (ct *CommonTasks) InstallRubyGem(name string) []types.Task {
+	return ct.Development.InstallRubyGem(name, "", false)
 }

@@ -92,12 +92,13 @@ func TestGemModule(t *testing.T) {
 		
 		t.Run("InstallGem", func(t *testing.T) {
 			// Check if gem is installed
-			conn.ExpectCommand("gem list ^bundler$ --installed", &gotest.CommandResponse{
-				ExitCode: 1, // Not installed
+			conn.ExpectCommand("gem list --local bundler 2>/dev/null", &gotest.CommandResponse{
+				Stdout:   "", // Not installed - empty output
+				ExitCode: 0,
 			})
 			
 			// Install gem
-			conn.ExpectCommand("gem install bundler", &gotest.CommandResponse{
+			conn.ExpectCommand("gem install --user-install bundler", &gotest.CommandResponse{
 				Stdout:   "Successfully installed bundler-2.4.0",
 				ExitCode: 0,
 			})
@@ -118,8 +119,9 @@ func TestGemModule(t *testing.T) {
 		t.Run("GemAlreadyInstalled", func(t *testing.T) {
 			conn.Reset()
 			// Check if gem is installed
-			conn.ExpectCommand("gem list ^rails$ --installed", &gotest.CommandResponse{
-				ExitCode: 0, // Already installed
+			conn.ExpectCommand("gem list --local rails 2>/dev/null", &gotest.CommandResponse{
+				Stdout:   "rails (7.0.4)\n", // Already installed
+				ExitCode: 0,
 			})
 			
 			result, err := m.Run(ctx, conn, map[string]interface{}{
@@ -138,12 +140,13 @@ func TestGemModule(t *testing.T) {
 		t.Run("InstallWithVersion", func(t *testing.T) {
 			conn.Reset()
 			// Check if specific version is installed
-			conn.ExpectCommand("gem list ^rails$ --installed --version 7.0.0", &gotest.CommandResponse{
-				ExitCode: 1, // Not installed
+			conn.ExpectCommand("gem list --local rails 2>/dev/null", &gotest.CommandResponse{
+				Stdout:   "rails (6.1.0)\n", // Wrong version installed
+				ExitCode: 0,
 			})
 			
 			// Install specific version
-			conn.ExpectCommand("gem install rails --version 7.0.0", &gotest.CommandResponse{
+			conn.ExpectCommand("gem install --user-install rails --version 7.0.0", &gotest.CommandResponse{
 				Stdout:   "Successfully installed rails-7.0.0",
 				ExitCode: 0,
 			})
@@ -171,12 +174,13 @@ func TestGemModule(t *testing.T) {
 		
 		t.Run("RemoveGem", func(t *testing.T) {
 			// Check if gem is installed
-			conn.ExpectCommand("gem list ^rspec$ --installed", &gotest.CommandResponse{
-				ExitCode: 0, // Installed
+			conn.ExpectCommand("gem list --local rspec 2>/dev/null", &gotest.CommandResponse{
+				Stdout:   "rspec (3.12.0)\n", // Installed
+				ExitCode: 0,
 			})
 			
 			// Uninstall gem
-			conn.ExpectCommand("gem uninstall rspec --all --executables", &gotest.CommandResponse{
+			conn.ExpectCommand("gem uninstall -x rspec --all", &gotest.CommandResponse{
 				Stdout:   "Successfully uninstalled rspec-3.12.0",
 				ExitCode: 0,
 			})
@@ -197,8 +201,9 @@ func TestGemModule(t *testing.T) {
 		t.Run("GemNotInstalled", func(t *testing.T) {
 			conn.Reset()
 			// Check if gem is installed
-			conn.ExpectCommand("gem list ^nonexistent$ --installed", &gotest.CommandResponse{
-				ExitCode: 1, // Not installed
+			conn.ExpectCommand("gem list --local nonexistent 2>/dev/null", &gotest.CommandResponse{
+				Stdout:   "", // Not installed
+				ExitCode: 0,
 			})
 			
 			result, err := m.Run(ctx, conn, map[string]interface{}{

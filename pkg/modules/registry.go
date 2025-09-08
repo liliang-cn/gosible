@@ -141,6 +141,30 @@ func (r *ModuleRegistry) registerBuiltinModules() {
 	
 	// Register group module
 	r.RegisterModule(NewGroupModule())
+	
+	// Register archive module
+	r.RegisterModule(NewArchiveModule())
+	
+	// Register unarchive module
+	r.RegisterModule(NewUnarchiveModule())
+	
+	// Register gem module
+	r.RegisterModule(NewGemModule())
+	
+	// Register mount module
+	r.RegisterModule(NewMountModule())
+	
+	// Register npm module
+	r.RegisterModule(NewNpmModule())
+	
+	// Register pip module
+	r.RegisterModule(NewPipModule())
+	
+	// Register sysctl module
+	r.RegisterModule(NewSysctlModule())
+	
+	// Register iptables module
+	r.RegisterModule(NewIPTablesModule())
 }
 
 // DefaultModuleRegistry provides a default module registry instance
