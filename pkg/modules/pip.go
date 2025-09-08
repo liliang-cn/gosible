@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gosinble/gosinble/pkg/types"
+	"github.com/liliang-cn/gosinble/pkg/types"
 )
 
 // PipModule manages Python packages via pip

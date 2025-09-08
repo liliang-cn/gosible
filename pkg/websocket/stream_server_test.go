@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
-	"github.com/gosinble/gosinble/pkg/types"
+	"github.com/liliang-cn/gosinble/pkg/types"
 )
 
 func TestNewStreamServer(t *testing.T) {

@@ -9,11 +9,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gosinble/gosinble/pkg/types"
-	"github.com/gosinble/gosinble/pkg/connection"
-	"github.com/gosinble/gosinble/pkg/logging"
-	"github.com/gosinble/gosinble/pkg/modules"
-	"github.com/gosinble/gosinble/pkg/websocket"
+	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosinble/pkg/connection"
+	"github.com/liliang-cn/gosinble/pkg/logging"
+	"github.com/liliang-cn/gosinble/pkg/modules"
+	"github.com/liliang-cn/gosinble/pkg/websocket"
 )
 
 // EnhancedFeaturesDemo demonstrates all the enhanced gosinble features:

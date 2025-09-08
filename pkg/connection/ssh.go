@@ -17,7 +17,7 @@ import (
 
 	"golang.org/x/crypto/ssh"
 
-	"github.com/gosinble/gosinble/pkg/types"
+	"github.com/liliang-cn/gosinble/pkg/types"
 )
 
 // SSHConnection implements the Connection interface for SSH connections

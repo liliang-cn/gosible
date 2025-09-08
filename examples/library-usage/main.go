@@ -7,13 +7,13 @@ import (
 	"log"
 	"os"
 
-	"github.com/gosinble/gosinble/pkg/types"
-	"github.com/gosinble/gosinble/pkg/config"
-	"github.com/gosinble/gosinble/pkg/inventory"
-	"github.com/gosinble/gosinble/pkg/playbook"
-	"github.com/gosinble/gosinble/pkg/runner"
-	"github.com/gosinble/gosinble/pkg/template"
-	"github.com/gosinble/gosinble/pkg/vars"
+	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosinble/pkg/config"
+	"github.com/liliang-cn/gosinble/pkg/inventory"
+	"github.com/liliang-cn/gosinble/pkg/playbook"
+	"github.com/liliang-cn/gosinble/pkg/runner"
+	"github.com/liliang-cn/gosinble/pkg/template"
+	"github.com/liliang-cn/gosinble/pkg/vars"
 )
 
 func main() {

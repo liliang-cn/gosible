@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os/exec"
 
-	"github.com/gosinble/gosinble/examples/common"
-	"github.com/gosinble/gosinble/pkg/types"
+	"github.com/liliang-cn/gosinble/examples/common"
+	"github.com/liliang-cn/gosinble/pkg/types"
 )
 
 // This example demonstrates the difference between CLI and Library usage

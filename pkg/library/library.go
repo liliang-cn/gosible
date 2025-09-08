@@ -9,7 +9,7 @@ import (
 	"strings"
 	
 	// "gopkg.in/yaml.v3"  // Uncomment when we have embedded content
-	"github.com/gosinble/gosinble/pkg/types"
+	"github.com/liliang-cn/gosinble/pkg/types"
 )
 
 // Commented out until we have actual embedded content

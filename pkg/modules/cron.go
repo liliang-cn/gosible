@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gosinble/gosinble/pkg/types"
+	"github.com/liliang-cn/gosinble/pkg/types"
 )
 
 // CronModule manages cron jobs

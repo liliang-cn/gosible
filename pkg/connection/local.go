@@ -13,7 +13,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/gosinble/gosinble/pkg/types"
+	"github.com/liliang-cn/gosinble/pkg/types"
 )
 
 // LocalConnection implements the Connection interface for local execution

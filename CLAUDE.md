@@ -3,9 +3,11 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
+
 Gosinble is a **Go library first, CLI second** that implements the main features of Ansible for configuration management and automation. It's designed to be imported and used programmatically in other Go applications, providing a powerful API for infrastructure automation, configuration management, and orchestration tasks.
 
 ### Key Design Philosophy
+
 - **Library-First Design**: All functionality is exposed through a clean Go API
 - **Type-Safe**: Full Go type checking and IDE support
 - **Native Integration**: No subprocess calls or CLI parsing needed
@@ -14,6 +16,7 @@ Gosinble is a **Go library first, CLI second** that implements the main features
 - **Testable**: Easy to mock and unit test
 
 ### Primary Use Cases
+
 1. **Embedded Automation**: Add automation capabilities to existing Go applications
 2. **Custom Orchestration**: Build custom deployment and configuration tools
 3. **Kubernetes Operators**: Implement operators with infrastructure automation
@@ -24,12 +27,14 @@ Gosinble is a **Go library first, CLI second** that implements the main features
 ## Development Commands
 
 ### Go Module Management
+
 ```bash
 go mod tidy          # Clean up dependencies
 go mod vendor        # Vendor dependencies (if using vendoring)
 ```
 
 ### Building and Testing
+
 ```bash
 go build ./...       # Build all packages
 go test ./...        # Run all tests
@@ -38,12 +43,14 @@ go test -race ./...  # Run tests with race detection
 ```
 
 ### Single Package Operations
+
 ```bash
 go test ./pkg/inventory    # Test specific package
 go run ./cmd/example       # Run example programs
 ```
 
 ### Code Quality
+
 ```bash
 go fmt ./...              # Format code
 go vet ./...              # Static analysis
@@ -54,14 +61,15 @@ staticcheck ./...         # Advanced static analysis (requires staticcheck)
 ## Library Usage
 
 ### Quick Import Example
+
 ```go
 import (
-    "github.com/gosinble/gosinble/pkg/inventory"
-    "github.com/gosinble/gosinble/pkg/runner"
-    "github.com/gosinble/gosinble/pkg/modules"
-    "github.com/gosinble/gosinble/pkg/playbook"
-    "github.com/gosinble/gosinble/pkg/library"
-    "github.com/gosinble/gosinble/pkg/vault"
+    "github.com/liliang-cn/gosinble/pkg/inventory"
+    "github.com/liliang-cn/gosinble/pkg/runner"
+    "github.com/liliang-cn/gosinble/pkg/modules"
+    "github.com/liliang-cn/gosinble/pkg/playbook"
+    "github.com/liliang-cn/gosinble/pkg/library"
+    "github.com/liliang-cn/gosinble/pkg/vault"
 )
 
 // Use gosinble in your application
@@ -69,17 +77,18 @@ func deployApp(ctx context.Context) error {
     inv, _ := inventory.NewFromFile("inventory.yml")
     runner := runner.NewTaskRunner()
     tasks := library.NewCommonTasks()
-    
+
     // Build deployment tasks programmatically
     deployTasks := tasks.Package.InstallDependencies([]string{"nginx"})
     deployTasks = append(deployTasks, tasks.Service.EnsureServiceRunning("nginx")...)
-    
+
     results, err := runner.ExecuteTasks(ctx, deployTasks, inv, "web_servers")
     return err
 }
 ```
 
 ### Key Library Features
+
 - **Programmatic Task Building**: Create tasks in Go code, not YAML
 - **Custom Module Development**: Implement custom modules as Go types
 - **Event Callbacks**: Hook into task execution lifecycle
@@ -92,6 +101,7 @@ For detailed library usage examples, see [LIBRARY_USAGE.md](LIBRARY_USAGE.md)
 ## Architecture
 
 ### Core Components
+
 - **Inventory Management**: Host and group management with dynamic inventory support
 - **Module System**: Extensible module architecture for different automation tasks
 - **Playbook Engine**: YAML-based playbook parsing and execution
@@ -101,6 +111,7 @@ For detailed library usage examples, see [LIBRARY_USAGE.md](LIBRARY_USAGE.md)
 - **Variable Management**: Fact gathering, variable precedence, and scoping
 
 ### Package Structure
+
 ```
 pkg/
 ├── inventory/     # Host and group management
@@ -114,6 +125,7 @@ pkg/
 ```
 
 ### Key Design Patterns
+
 - **Plugin Architecture**: Modules, connections, and callbacks use plugin interfaces
 - **Context Propagation**: Use context.Context for cancellation and timeouts
 - **Concurrent Execution**: Goroutines with proper synchronization for parallel tasks
@@ -123,8 +135,9 @@ pkg/
 ## Library Usage Patterns
 
 ### Initialization
+
 ```go
-import "github.com/gosinble/gosinble"
+import "github.com/liliang-cn/gosinble"
 
 // Initialize with inventory
 inv, err := inventory.NewFromFile("hosts.yml")
@@ -132,11 +145,13 @@ runner := gosinble.NewRunner(inv)
 ```
 
 ### Common Interfaces
+
 - All modules implement `Module` interface with `Run(ctx context.Context, args map[string]interface{}) error`
 - Connection plugins implement `Connection` interface for remote execution
 - Inventory sources implement `InventorySource` interface for dynamic inventory
 
 ## Testing Strategy
+
 - Unit tests for individual components in `*_test.go` files
 - Integration tests in `integration/` directory
 - Mock implementations for external dependencies

@@ -4,7 +4,7 @@
 # Project Configuration
 PROJECT_NAME := gosinble
 CLI_BINARY := gosinble
-MODULE := github.com/gosinble/gosinble
+MODULE := github.com/liliang-cn/gosinble
 
 # Build Configuration
 BUILD_DIR := build

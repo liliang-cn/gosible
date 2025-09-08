@@ -5,7 +5,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/gosinble/gosinble/pkg/vault"
+	"github.com/liliang-cn/gosinble/pkg/vault"
 )
 
 // This example demonstrates how to use the vault package as a library

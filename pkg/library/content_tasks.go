@@ -4,7 +4,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"path/filepath"
-	"github.com/gosinble/gosinble/pkg/types"
+	"github.com/liliang-cn/gosinble/pkg/types"
 )
 
 // ContentTasks provides operations for distributing built-in files and folders

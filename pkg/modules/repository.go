@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gosinble/gosinble/pkg/types"
+	"github.com/liliang-cn/gosinble/pkg/types"
 )
 
 // RepositoryModule manages package repositories (APT/YUM/DNF)

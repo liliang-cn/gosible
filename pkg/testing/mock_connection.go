@@ -9,7 +9,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/gosinble/gosinble/pkg/types"
+	"github.com/liliang-cn/gosinble/pkg/types"
 )
 
 // CommandResponse represents the expected response from a command

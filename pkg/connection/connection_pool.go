@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gosinble/gosinble/pkg/types"
+	"github.com/liliang-cn/gosinble/pkg/types"
 )
 
 // ConnectionPoolConfig holds configuration for connection pooling

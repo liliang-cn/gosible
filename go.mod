@@ -1,4 +1,4 @@
-module github.com/gosinble/gosinble
+module github.com/liliang-cn/gosinble
 
 go 1.25.0
 

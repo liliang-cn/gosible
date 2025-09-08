@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/gosinble/gosinble/pkg/types"
-	"github.com/gosinble/gosinble/pkg/connection"
+	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosinble/pkg/connection"
 )
 
 func TestNewModuleRegistry(t *testing.T) {

@@ -10,7 +10,7 @@ import (
 	"sync"
 	"text/template"
 
-	"github.com/gosinble/gosinble/pkg/types"
+	"github.com/liliang-cn/gosinble/pkg/types"
 )
 
 // Engine implements the TemplateEngine interface

@@ -7,7 +7,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/gosinble/gosinble/pkg/types"
+	"github.com/liliang-cn/gosinble/pkg/types"
 )
 
 // VarManager implements variable management with proper precedence

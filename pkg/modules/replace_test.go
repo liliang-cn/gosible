@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	testhelper "github.com/gosinble/gosinble/pkg/testing"
-	"github.com/gosinble/gosinble/pkg/types"
+	testhelper "github.com/liliang-cn/gosinble/pkg/testing"
+	"github.com/liliang-cn/gosinble/pkg/types"
 )
 
 func TestReplaceModule(t *testing.T) {
