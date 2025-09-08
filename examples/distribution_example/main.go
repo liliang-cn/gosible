@@ -7,10 +7,10 @@ import (
 	"os"
 	"path/filepath"
 	
-	"github.com/gosinble/gosinble/pkg/inventory"
-	"github.com/gosinble/gosinble/pkg/library"
-	"github.com/gosinble/gosinble/pkg/runner"
-	"github.com/gosinble/gosinble/pkg/types"
+	"github.com/liliang-cn/gosinble/pkg/inventory"
+	"github.com/liliang-cn/gosinble/pkg/library"
+	"github.com/liliang-cn/gosinble/pkg/runner"
+	"github.com/liliang-cn/gosinble/pkg/types"
 )
 
 func main() {

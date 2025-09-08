@@ -5,6 +5,7 @@ This directory contains the main command-line interface for gosinble.
 ## Available Command
 
 ### gosinble - Main CLI
+
 **Location**: `cmd/gosinble/`
 **Purpose**: Main gosinble CLI for running playbooks and ad-hoc commands
 
@@ -18,6 +19,7 @@ go build -o gosinble cmd/gosinble/main.go
 ```
 
 **Features**:
+
 - Run playbooks with inventory
 - Execute ad-hoc commands
 - Variable management
@@ -40,7 +42,7 @@ go install ./cmd/gosinble
 
 ```bash
 # Install to $GOPATH/bin
-go install github.com/gosinble/gosinble/cmd/gosinble@latest
+go install github.com/liliang-cn/gosinble/cmd/gosinble@latest
 
 # Or copy built binary to PATH
 cp bin/gosinble /usr/local/bin/
@@ -49,6 +51,7 @@ cp bin/gosinble /usr/local/bin/
 ## Configuration
 
 ### Environment Variables
+
 ```bash
 export GOSINBLE_CONFIG=/path/to/config.yml
 export GOSINBLE_INVENTORY=/path/to/inventory
@@ -56,7 +59,9 @@ export GOSINBLE_VAULT_PASSWORD_FILE=/path/to/vault_pass
 ```
 
 ### Configuration File
+
 Create `~/.gosinble.yml`:
+
 ```yaml
 defaults:
   inventory: /path/to/inventory
@@ -70,6 +75,7 @@ defaults:
 ## Examples
 
 ### Running Playbooks
+
 ```bash
 # Basic playbook execution
 gosinble -i hosts.yml -p deploy.yml
@@ -85,6 +91,7 @@ gosinble -i hosts.yml -p deploy.yml -v
 ```
 
 ### Ad-hoc Commands
+
 ```bash
 # Run command on all hosts
 gosinble -i hosts.yml -m shell -a "uptime" all
@@ -106,8 +113,9 @@ The vault functionality is integrated directly into gosinble via the library. Fo
 For manual vault operations in shell scripts or command line, you can:
 
 1. **Use the library programmatically** (recommended for Go applications)
+
    ```go
-   import "github.com/gosinble/gosinble/pkg/vault"
+   import "github.com/liliang-cn/gosinble/pkg/vault"
    ```
 
 2. **Create a simple vault utility** using the library if needed:
@@ -118,6 +126,7 @@ For manual vault operations in shell scripts or command line, you can:
 ## Development
 
 ### Testing the CLI
+
 ```bash
 # Run tests
 go test ./cmd/gosinble/...
@@ -129,15 +138,15 @@ go build -o gosinble cmd/gosinble/main.go
 
 ## Comparison with Ansible
 
-| Feature | Gosinble | Ansible |
-|---------|----------|---------|
-| Language | Go | Python |
-| Performance | Fast (compiled) | Slower (interpreted) |
-| Dependencies | Single binary | Python + dependencies |
-| Modules | Go functions | Python scripts |
-| Playbooks | YAML (compatible) | YAML |
-| Vault | Library integrated | Separate tool |
-| API | Native Go library | Python API |
+| Feature      | Gosinble           | Ansible               |
+| ------------ | ------------------ | --------------------- |
+| Language     | Go                 | Python                |
+| Performance  | Fast (compiled)    | Slower (interpreted)  |
+| Dependencies | Single binary      | Python + dependencies |
+| Modules      | Go functions       | Python scripts        |
+| Playbooks    | YAML (compatible)  | YAML                  |
+| Vault        | Library integrated | Separate tool         |
+| API          | Native Go library  | Python API            |
 
 ## Why Only One CLI?
 
@@ -148,6 +157,7 @@ Gosinble follows the **library-first** philosophy:
 3. **Programmatic access preferred**: For Go applications, use the library directly for better performance and type safety
 
 This design provides:
+
 - Simpler deployment (single binary)
 - Better performance (no subprocess calls)
 - Easier testing and mocking

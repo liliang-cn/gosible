@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gosinble/gosinble/pkg/types"
+	"github.com/liliang-cn/gosinble/pkg/types"
 )
 
 // LogLevel represents the severity of a log entry

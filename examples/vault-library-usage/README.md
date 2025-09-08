@@ -21,14 +21,16 @@ go run examples/vault-library-usage/main.go
 ### Embedding in Applications
 
 Instead of using the CLI tool:
+
 ```bash
 # CLI approach (requires external command)
 gosinble-vault -action encrypt -password mysecret file.yml
 ```
 
 Use the library directly:
+
 ```go
-import "github.com/gosinble/gosinble/pkg/vault"
+import "github.com/liliang-cn/gosinble/pkg/vault"
 
 func encryptConfig(data []byte, password string) (string, error) {
     v := vault.New(password)
@@ -42,7 +44,7 @@ func encryptConfig(data []byte, password string) (string, error) {
 // Encrypt sensitive configuration
 func protectConfig(config map[string]interface{}) error {
     v := vault.New(os.Getenv("VAULT_PASSWORD"))
-    
+
     // Encrypt password field
     if password, ok := config["password"].(string); ok {
         encrypted, err := v.Encrypt([]byte(password))
@@ -51,7 +53,7 @@ func protectConfig(config map[string]interface{}) error {
         }
         config["password"] = encrypted
     }
-    
+
     return nil
 }
 ```
@@ -73,13 +75,13 @@ prodSecret, _ := manager.Encrypt(data, "prod")
 
 ### Over CLI Tool
 
-| Aspect | Library | CLI Tool |
-|--------|---------|----------|
-| **Performance** | Direct function calls | Subprocess overhead |
-| **Error Handling** | Go errors | Exit codes + parsing |
-| **Integration** | Native Go types | String parsing |
-| **Testing** | Easy mocking | Complex subprocess mocking |
-| **Type Safety** | Compile-time checks | Runtime errors |
+| Aspect             | Library               | CLI Tool                   |
+| ------------------ | --------------------- | -------------------------- |
+| **Performance**    | Direct function calls | Subprocess overhead        |
+| **Error Handling** | Go errors             | Exit codes + parsing       |
+| **Integration**    | Native Go types       | String parsing             |
+| **Testing**        | Easy mocking          | Complex subprocess mocking |
+| **Type Safety**    | Compile-time checks   | Runtime errors             |
 
 ### API Benefits
 
@@ -92,17 +94,18 @@ prodSecret, _ := manager.Encrypt(data, "prod")
 ## Common Patterns
 
 ### Secret Rotation
+
 ```go
 func rotateSecrets(oldPassword, newPassword string) error {
     oldVault := vault.New(oldPassword)
     newVault := vault.New(newPassword)
-    
+
     // Decrypt with old password
     decrypted, err := oldVault.Decrypt(encryptedData)
     if err != nil {
         return err
     }
-    
+
     // Re-encrypt with new password
     reencrypted, err := newVault.Encrypt(decrypted)
     return err
@@ -110,6 +113,7 @@ func rotateSecrets(oldPassword, newPassword string) error {
 ```
 
 ### Conditional Encryption
+
 ```go
 func processConfig(config map[string]interface{}, v *vault.Vault) {
     for key, value := range config {
@@ -124,6 +128,7 @@ func processConfig(config map[string]interface{}, v *vault.Vault) {
 ```
 
 ### Vault Detection
+
 ```go
 func loadConfig(data []byte) ([]byte, error) {
     if vault.IsVaultFile(data) {

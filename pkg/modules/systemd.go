@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gosinble/gosinble/pkg/types"
+	"github.com/liliang-cn/gosinble/pkg/types"
 )
 
 // SystemdModule manages systemd services with full check/diff mode support

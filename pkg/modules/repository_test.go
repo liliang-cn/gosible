@@ -3,7 +3,7 @@ package modules
 import (
 	"testing"
 
-	testhelper "github.com/gosinble/gosinble/pkg/testing"
+	testhelper "github.com/liliang-cn/gosinble/pkg/testing"
 )
 
 func TestRepositoryModule(t *testing.T) {

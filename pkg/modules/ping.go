@@ -3,7 +3,7 @@ package modules
 import (
 	"context"
 	
-	"github.com/gosinble/gosinble/pkg/types"
+	"github.com/liliang-cn/gosinble/pkg/types"
 )
 
 // PingModule implements a simple connectivity test

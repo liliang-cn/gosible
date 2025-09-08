@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 	
-	"github.com/gosinble/gosinble/pkg/types"
+	"github.com/liliang-cn/gosinble/pkg/types"
 	"github.com/stretchr/testify/assert"
 )
 

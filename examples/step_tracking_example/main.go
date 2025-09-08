@@ -7,11 +7,11 @@ import (
 	"log"
 	"time"
 
-	"github.com/gosinble/gosinble/pkg/types"
-	"github.com/gosinble/gosinble/pkg/connection"
-	"github.com/gosinble/gosinble/pkg/inventory"
-	"github.com/gosinble/gosinble/pkg/modules"
-	"github.com/gosinble/gosinble/pkg/runner"
+	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosinble/pkg/connection"
+	"github.com/liliang-cn/gosinble/pkg/inventory"
+	"github.com/liliang-cn/gosinble/pkg/modules"
+	"github.com/liliang-cn/gosinble/pkg/runner"
 )
 
 func main() {

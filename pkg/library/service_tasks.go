@@ -1,7 +1,7 @@
 package library
 
 import (
-	"github.com/gosinble/gosinble/pkg/types"
+	"github.com/liliang-cn/gosinble/pkg/types"
 )
 
 // ServiceTasks provides common service management operations

@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 	
-	"github.com/gosinble/gosinble/pkg/types"
+	"github.com/liliang-cn/gosinble/pkg/types"
 )
 
 // UserModule manages user accounts

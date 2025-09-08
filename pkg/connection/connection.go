@@ -5,7 +5,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/gosinble/gosinble/pkg/types"
+	"github.com/liliang-cn/gosinble/pkg/types"
 )
 
 // ConnectionType defines the type of connection

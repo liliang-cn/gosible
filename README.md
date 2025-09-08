@@ -17,7 +17,7 @@ Gosinble is a **Go library first, CLI second** that implements Ansible's core fe
 ## Installation
 
 ```bash
-go get github.com/gosinble/gosinble
+go get github.com/liliang-cn/gosinble
 ```
 
 ## Quick Start
@@ -28,9 +28,9 @@ package main
 import (
     "context"
     "log"
-    
-    "github.com/gosinble/gosinble/pkg/inventory"
-    "github.com/gosinble/gosinble/pkg/runner"
+
+    "github.com/liliang-cn/gosinble/pkg/inventory"
+    "github.com/liliang-cn/gosinble/pkg/runner"
 )
 
 func main() {
@@ -38,7 +38,7 @@ func main() {
     inv := inventory.New()
     inv.AddHost("web1.example.com", "webservers")
     inv.AddHost("web2.example.com", "webservers")
-    
+
     // Build and execute tasks
     taskRunner := runner.NewTaskRunner()
     tasks := []runner.Task{
@@ -53,14 +53,14 @@ func main() {
             Args:   map[string]interface{}{"name": "nginx", "state": "started"},
         },
     }
-    
+
     // Execute with proper error handling
     ctx := context.Background()
     results, err := taskRunner.RunTasks(ctx, tasks, inv, "webservers")
     if err != nil {
         log.Fatal(err)
     }
-    
+
     // Process results
     for _, result := range results {
         log.Printf("Task %s: %v", result.TaskName, result.Success)
@@ -80,6 +80,7 @@ func main() {
 ## Core Components
 
 ### Package Structure
+
 ```
 pkg/
 ├── inventory/     # Host and group management
@@ -93,8 +94,9 @@ pkg/
 ```
 
 ### Available Modules
+
 - **command/shell**: Execute commands on target hosts
-- **copy/file**: File and directory management  
+- **copy/file**: File and directory management
 - **template**: Template rendering with variables
 - **service**: Service management
 - **package**: Package installation and removal
@@ -104,6 +106,7 @@ pkg/
 ## Advanced Usage
 
 ### Custom Module Development
+
 ```go
 type CustomModule struct{}
 
@@ -117,6 +120,7 @@ modules.Register("custom", &CustomModule{})
 ```
 
 ### Event Callbacks
+
 ```go
 runner.OnTaskComplete(func(result TaskResult) {
     log.Printf("Task completed: %s", result.TaskName)
@@ -124,6 +128,7 @@ runner.OnTaskComplete(func(result TaskResult) {
 ```
 
 ### Testing Your Automation
+
 ```go
 // Use mock connections for unit tests
 conn := connection.NewMockConnection()

@@ -20,12 +20,14 @@ go run examples/library-usage/main.go
 ## Example Components
 
 ### 1. Inventory Management
+
 - Loading inventory from YAML
 - Adding hosts and groups programmatically
 - Setting and getting host variables
 - Querying inventory structure
 
 ### 2. Module Execution
+
 - Running shell commands
 - File operations (copy, template)
 - Service management
@@ -33,24 +35,28 @@ go run examples/library-usage/main.go
 - User management
 
 ### 3. Template Rendering
+
 - Jinja2-compatible template processing
 - Variable substitution
 - Conditional rendering
 - Loop processing
 
 ### 4. Configuration Management
+
 - Loading configuration from file
 - Setting configuration programmatically
 - Managing connection parameters
 - Configuring parallel execution
 
 ### 5. Playbook Execution
+
 - Loading playbooks from YAML
 - Executing playbooks with inventory
 - Handling results and errors
 - Task callbacks
 
 ### 6. Facts Gathering
+
 - Collecting system information
 - OS details
 - Network configuration
@@ -96,10 +102,11 @@ Architecture: x86_64
 ## Use Cases
 
 ### Embedding in Applications
+
 ```go
 import (
-    "github.com/gosinble/gosinble/pkg/inventory"
-    "github.com/gosinble/gosinble/pkg/runner"
+    "github.com/liliang-cn/gosinble/pkg/inventory"
+    "github.com/liliang-cn/gosinble/pkg/runner"
 )
 
 func deployApplication(hosts []string) error {
@@ -107,7 +114,7 @@ func deployApplication(hosts []string) error {
     for _, host := range hosts {
         inv.AddHost(host, "production")
     }
-    
+
     runner := runner.NewTaskRunner()
     // Run deployment tasks...
     return nil
@@ -115,6 +122,7 @@ func deployApplication(hosts []string) error {
 ```
 
 ### Custom Automation Tools
+
 ```go
 func createCustomTool() {
     // Use gosinble as a library to build
@@ -124,6 +132,7 @@ func createCustomTool() {
 ```
 
 ### CI/CD Integration
+
 ```go
 func runDeploymentPipeline() {
     // Integrate gosinble into your

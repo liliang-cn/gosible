@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	testhelper "github.com/gosinble/gosinble/pkg/testing"
+	testhelper "github.com/liliang-cn/gosinble/pkg/testing"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/masterzen/winrm"
-	"github.com/gosinble/gosinble/pkg/types"
+	"github.com/liliang-cn/gosinble/pkg/types"
 )
 
 // WinRMConnection implements the Connection interface for Windows Remote Management
