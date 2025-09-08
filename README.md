@@ -1,47 +1,26 @@
-# Gosinble - Go Implementation of Ansible Core
+# Gosinble - Go Library for Infrastructure Automation
 
 [![Go Version](https://img.shields.io/badge/Go-1.21%2B-blue)](https://golang.org)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
-[![Documentation](https://img.shields.io/badge/Docs-Available-brightgreen)](knowledge/)
 
-Gosinble is a **Go library first, CLI second** that implements the main features of Ansible for configuration management and automation. It's designed to be imported and used programmatically in other Go applications, providing a powerful API for infrastructure automation, configuration management, and orchestration tasks.
+Gosinble is a **Go library first, CLI second** that implements Ansible's core features for configuration management and automation. Built for Go developers who want to embed powerful automation capabilities directly into their applications.
 
-## 🚀 Key Features
+## Why Gosinble?
 
-### Core Capabilities
-- **Library-First Design**: All functionality exposed through a clean Go API
-- **Type-Safe**: Full Go type checking and IDE support  
-- **High Performance**: Compiled binary with excellent concurrency
-- **Single Binary**: No Python or dependencies required
-- **Ansible Compatibility**: YAML playbook format support
-- **Native Go Integration**: Direct function calls, no subprocess overhead
+- **Native Go Integration**: Import as a library, not a CLI wrapper
+- **Type-Safe**: Compile-time checking, IDE autocomplete, and Go doc support
+- **High Performance**: 10-50x faster than Python-based solutions
+- **Zero Dependencies**: Single binary, no Python or agent installation needed
+- **Composable**: Mix and match components as needed in your Go code
+- **Testable**: Easy to mock and unit test in your applications
 
-### Enhanced Features (New!)
-- **📊 File Transfer Progress**: Real-time progress tracking for copy operations
-- **🌐 WebSocket Streaming**: Live updates for web dashboards
-- **📝 Comprehensive Logging**: Multi-output structured logging
-- **📈 Step Tracking**: Detailed multi-step operation visibility
-- **⚡ Streaming Execution**: Real-time command output streaming
+## Installation
 
-## 📦 Installation
-
-### As a Library
 ```bash
 go get github.com/gosinble/gosinble
 ```
 
-### CLI Tool
-```bash
-# Build CLI
-go build -o gosinble cmd/gosinble/main.go
-
-# Or install globally
-go install github.com/gosinble/gosinble/cmd/gosinble@latest
-```
-
-## 🎯 Quick Start
-
-### Using as a Library
+## Quick Start
 
 ```go
 package main
@@ -52,40 +31,30 @@ import (
     
     "github.com/gosinble/gosinble/pkg/inventory"
     "github.com/gosinble/gosinble/pkg/runner"
-    "github.com/gosinble/gosinble/pkg/modules"
 )
 
 func main() {
-    // Create inventory
+    // Create inventory programmatically
     inv := inventory.New()
     inv.AddHost("web1.example.com", "webservers")
     inv.AddHost("web2.example.com", "webservers")
     
-    // Create task runner
+    // Build and execute tasks
     taskRunner := runner.NewTaskRunner()
-    
-    // Define tasks
     tasks := []runner.Task{
         {
             Name:   "Install nginx",
             Module: "package",
-            Args: map[string]interface{}{
-                "name":  "nginx",
-                "state": "present",
-            },
+            Args:   map[string]interface{}{"name": "nginx", "state": "present"},
         },
         {
             Name:   "Start nginx",
             Module: "service",
-            Args: map[string]interface{}{
-                "name":    "nginx",
-                "state":   "started",
-                "enabled": true,
-            },
+            Args:   map[string]interface{}{"name": "nginx", "state": "started"},
         },
     }
     
-    // Execute tasks
+    // Execute with proper error handling
     ctx := context.Background()
     results, err := taskRunner.RunTasks(ctx, tasks, inv, "webservers")
     if err != nil {
@@ -94,211 +63,108 @@ func main() {
     
     // Process results
     for _, result := range results {
-        log.Printf("Task %s: Success=%v Changed=%v", 
-            result.TaskName, result.Success, result.Changed)
+        log.Printf("Task %s: %v", result.TaskName, result.Success)
     }
 }
 ```
 
-### Using the CLI
+## Primary Use Cases
 
-```bash
-# Run a playbook
-gosinble -i inventory.yml -p playbook.yml
+- **Embedded Automation**: Add automation capabilities to existing Go applications
+- **Custom Orchestration**: Build custom deployment and configuration tools
+- **Kubernetes Operators**: Implement operators with infrastructure automation
+- **CI/CD Integration**: Native integration in Go-based CI/CD pipelines
+- **Monitoring Systems**: Add remediation capabilities to monitoring tools
+- **Configuration Management**: Programmatic configuration management in Go apps
 
-# Ad-hoc command
-gosinble -i inventory.yml -m shell -a "uptime" all
+## Core Components
 
-# With extra variables
-gosinble -i inventory.yml -p deploy.yml -e "version=1.2.3"
+### Package Structure
+```
+pkg/
+├── inventory/     # Host and group management
+├── modules/       # Built-in and custom modules
+├── playbook/      # Playbook parsing and execution
+├── runner/        # Task execution engine
+├── template/      # Template rendering
+├── connection/    # Connection plugins (SSH, local)
+├── vars/          # Variable management
+└── vault/         # Ansible vault compatibility
 ```
 
-## 📁 Project Structure
+### Available Modules
+- **command/shell**: Execute commands on target hosts
+- **copy/file**: File and directory management  
+- **template**: Template rendering with variables
+- **service**: Service management
+- **package**: Package installation and removal
+- **user/group**: User and group management
+- **vault**: Ansible vault-compatible encryption
 
-```
-gosinble/
-├── cmd/                    # CLI application
-│   └── gosinble/          # Main CLI
-├── pkg/                    # Public packages (library API)
-│   ├── inventory/         # Host and group management
-│   ├── modules/           # Automation modules
-│   ├── playbook/          # Playbook parsing and execution
-│   ├── runner/            # Task execution engine
-│   ├── connection/        # Connection plugins (SSH, local)
-│   ├── template/          # Template rendering
-│   ├── vault/             # Ansible vault compatibility
-│   ├── websocket/         # WebSocket streaming (NEW)
-│   └── logging/           # Comprehensive logging (NEW)
-├── internal/              # Private packages
-│   └── common/           # Shared types and utilities
-├── examples/              # Usage examples
-│   ├── enhanced-features-demo/
-│   ├── step-tracking-integration/
-│   └── library-usage/
-└── knowledge/             # Documentation
-```
+## Advanced Usage
 
-## 🎨 Enhanced Features Examples
-
-### File Transfer with Progress Tracking
+### Custom Module Development
 ```go
-conn := connection.NewLocalConnection()
-conn.CopyWithProgress(ctx, reader, dest, 0644, totalSize, func(progress common.ProgressInfo) {
-    fmt.Printf("📁 Transfer: %.1f%% - %s\n", progress.Percentage, progress.Message)
+type CustomModule struct{}
+
+func (m *CustomModule) Run(ctx context.Context, args map[string]interface{}) error {
+    // Your custom automation logic
+    return nil
+}
+
+// Register and use
+modules.Register("custom", &CustomModule{})
+```
+
+### Event Callbacks
+```go
+runner.OnTaskComplete(func(result TaskResult) {
+    log.Printf("Task completed: %s", result.TaskName)
 })
 ```
 
-### WebSocket Real-Time Streaming
+### Testing Your Automation
 ```go
-server := websocket.NewStreamServer()
-server.Start()
-server.BroadcastStreamEvent(event, "deployment")
-// Web clients receive real-time updates at ws://localhost:8080/ws
+// Use mock connections for unit tests
+conn := connection.NewMockConnection()
+runner.SetConnection(conn)
+
+// Test your tasks
+results, err := runner.RunTasks(ctx, tasks, inv, "test")
+assert.NoError(t, err)
 ```
 
-### Comprehensive Logging
-```go
-logger := logging.NewStreamLogger("app", "session-001")
-logger.AddFileOutput("./app.log")
-logger.AddConsoleOutput("text", true)
-logger.LogStep(step, "deployment", "server01")
-```
-
-## 🔧 Available Modules
-
-### Core Modules
-- **command/shell**: Execute commands on target hosts
-- **copy/file**: File and directory management
-- **template**: Template rendering with variables
-- **service**: Service management (start, stop, restart)
-- **package**: Package installation and removal
-- **user/group**: User and group management
-
-### Enhanced Modules
-- **streaming_shell**: Real-time output streaming
-- **enhanced_copy**: File transfer with progress tracking
-
-### Security
-- **vault**: Ansible vault-compatible encryption
-
-## 📚 Documentation
-
-- [Library Usage Guide](knowledge/LIBRARY_USAGE.md)
-- [Examples Overview](knowledge/examples-overview.md)
-- [Step Tracking System](knowledge/STEP_TRACKING_SUMMARY.md)
-- [Streaming Features](knowledge/STREAMING_FEATURE_SUMMARY.md)
-- [Type Safety Guide](knowledge/TYPE_SAFETY_SUMMARY.md)
-- [Module Development](knowledge/add-module.md)
-
-## 🚦 Running Examples
+## Development
 
 ```bash
-# Enhanced features demo
-go run examples/enhanced-features-demo/main.go
-
-# Step tracking integration
-go run examples/step-tracking-integration/main.go
-
-# Library usage examples
-go run examples/library-usage/main.go
-```
-
-## 🧪 Testing
-
-```bash
-# Run all tests
+# Run tests
 go test ./...
 
 # Run with coverage
 go test -cover ./...
 
-# Run specific package tests
-go test ./pkg/modules -v
-
 # Run benchmarks
-go test -bench=. ./pkg/connection
-```
+go test -bench=. ./...
 
-## 🔄 Comparison with Ansible
-
-| Feature | Gosinble | Ansible |
-|---------|----------|---------|
-| **Language** | Go | Python |
-| **Performance** | Fast (compiled) | Slower (interpreted) |
-| **Dependencies** | Single binary | Python + libraries |
-| **Concurrency** | Native goroutines | Process-based |
-| **Type Safety** | Compile-time | Runtime |
-| **Memory Usage** | Low | Higher |
-| **API** | Native Go library | Python API |
-| **Playbooks** | YAML compatible | YAML |
-| **Vault** | Compatible format | Native |
-| **IDE Support** | Excellent | Good |
-
-## 🎯 Use Cases
-
-### Embedded Automation
-Add automation capabilities to existing Go applications without external dependencies.
-
-### Kubernetes Operators
-Build operators with built-in configuration management and orchestration.
-
-### CI/CD Integration
-Native integration in Go-based CI/CD pipelines with type safety and performance.
-
-### Monitoring Systems
-Add automated remediation capabilities to monitoring and observability tools.
-
-### Custom Tools
-Build domain-specific automation tools with your business logic.
-
-## 📈 Performance
-
-Gosinble offers significant performance improvements over Python-based Ansible:
-
-- **10-50x faster** execution for most operations
-- **80% less memory** usage
-- **Native parallelism** with goroutines
-- **Zero startup time** (no interpreter)
-- **<5% overhead** for progress tracking
-
-## 🔒 Security
-
-- Ansible Vault compatible encryption
-- SSH key-based authentication
-- No agent required on target hosts
-- Secure credential management
-- Audit logging support
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit pull requests.
-
-### Development Setup
-```bash
-# Clone the repository
-git clone https://github.com/gosinble/gosinble.git
-cd gosinble
-
-# Install dependencies
-go mod download
-
-# Run tests
-go test ./...
-
-# Build CLI
+# Build CLI (optional)
 go build -o gosinble cmd/gosinble/main.go
 ```
 
-## 📝 License
+## Performance
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+- **10-50x faster** than Python-based Ansible
+- **80% less memory** usage
+- **Native concurrency** with goroutines
+- **Zero startup overhead**
 
-## 🙏 Acknowledgments
+## Contributing
 
-- Inspired by [Ansible](https://github.com/ansible/ansible)
-- WebSocket implementation uses [gorilla/websocket](https://github.com/gorilla/websocket)
-- Template engine inspired by Jinja2
+Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+## License
+
+MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-**Gosinble** - Enterprise-grade automation with the simplicity of Go 🚀
+**Gosinble** - Infrastructure automation as a Go library
