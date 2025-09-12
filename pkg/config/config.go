@@ -1,4 +1,4 @@
-// Package config provides configuration management functionality for gosinble.
+// Package config provides configuration management functionality for gosible.
 package config
 
 import (
@@ -10,7 +10,7 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosiblepkg/types"
 )
 
 // Config implements configuration management
@@ -215,31 +215,31 @@ func (c *Config) loadDefaults() {
 // loadFromEnv loads configuration from environment variables
 func (c *Config) loadFromEnv() {
 	envVars := map[string]string{
-		"GOSINBLE_TIMEOUT":               "timeout",
-		"GOSINBLE_FORKS":                 "forks",
-		"GOSINBLE_GATHER_FACTS":          "gather_facts",
-		"GOSINBLE_HOST_KEY_CHECKING":     "host_key_checking",
-		"GOSINBLE_RETRY_FILES_ENABLED":   "retry_files_enabled",
-		"GOSINBLE_LOG_PATH":              "log_path",
-		"GOSINBLE_PRIVATE_KEY_FILE":      "private_key_file",
-		"GOSINBLE_REMOTE_USER":           "remote_user",
-		"GOSINBLE_BECOME":                "become",
-		"GOSINBLE_BECOME_METHOD":         "become_method",
-		"GOSINBLE_BECOME_USER":           "become_user",
-		"GOSINBLE_BECOME_ASK_PASS":       "become_ask_pass",
-		"GOSINBLE_ASK_PASS":              "ask_pass",
-		"GOSINBLE_TRANSPORT":             "transport",
-		"GOSINBLE_REMOTE_PORT":           "remote_port",
-		"GOSINBLE_MODULE_LANG":           "module_lang",
-		"GOSINBLE_GATHERING":             "gathering",
-		"GOSINBLE_FACT_CACHING":          "fact_caching",
-		"GOSINBLE_STDOUT_CALLBACK":       "stdout_callback",
-		"GOSINBLE_DISPLAY_SKIPPED_HOSTS": "display_skipped_hosts",
-		"GOSINBLE_DISPLAY_OK_HOSTS":      "display_ok_hosts",
-		"GOSINBLE_ERROR_ON_UNDEFINED_VARS": "error_on_undefined_vars",
-		"GOSINBLE_SYSTEM_WARNINGS":       "system_warnings",
-		"GOSINBLE_DEPRECATION_WARNINGS":  "deprecation_warnings",
-		"GOSINBLE_COMMAND_WARNINGS":      "command_warnings",
+		"gosible_TIMEOUT":               "timeout",
+		"gosible_FORKS":                 "forks",
+		"gosible_GATHER_FACTS":          "gather_facts",
+		"gosible_HOST_KEY_CHECKING":     "host_key_checking",
+		"gosible_RETRY_FILES_ENABLED":   "retry_files_enabled",
+		"gosible_LOG_PATH":              "log_path",
+		"gosible_PRIVATE_KEY_FILE":      "private_key_file",
+		"gosible_REMOTE_USER":           "remote_user",
+		"gosible_BECOME":                "become",
+		"gosible_BECOME_METHOD":         "become_method",
+		"gosible_BECOME_USER":           "become_user",
+		"gosible_BECOME_ASK_PASS":       "become_ask_pass",
+		"gosible_ASK_PASS":              "ask_pass",
+		"gosible_TRANSPORT":             "transport",
+		"gosible_REMOTE_PORT":           "remote_port",
+		"gosible_MODULE_LANG":           "module_lang",
+		"gosible_GATHERING":             "gathering",
+		"gosible_FACT_CACHING":          "fact_caching",
+		"gosible_STDOUT_CALLBACK":       "stdout_callback",
+		"gosible_DISPLAY_SKIPPED_HOSTS": "display_skipped_hosts",
+		"gosible_DISPLAY_OK_HOSTS":      "display_ok_hosts",
+		"gosible_ERROR_ON_UNDEFINED_VARS": "error_on_undefined_vars",
+		"gosible_SYSTEM_WARNINGS":       "system_warnings",
+		"gosible_DEPRECATION_WARNINGS":  "deprecation_warnings",
+		"gosible_COMMAND_WARNINGS":      "command_warnings",
 	}
 
 	for envVar, configKey := range envVars {
@@ -320,22 +320,22 @@ func GetConfigPaths() []string {
 	var paths []string
 	
 	// Current directory
-	paths = append(paths, "./gosinble.yaml")
-	paths = append(paths, "./gosinble.yml")
-	paths = append(paths, "./.gosinble.yaml")
-	paths = append(paths, "./.gosinble.yml")
+	paths = append(paths, "./gosibleyaml")
+	paths = append(paths, "./gosibleyml")
+	paths = append(paths, "./.gosibleyaml")
+	paths = append(paths, "./.gosibleyml")
 	
 	// Home directory
 	if home, err := os.UserHomeDir(); err == nil {
-		paths = append(paths, filepath.Join(home, ".gosinble.yaml"))
-		paths = append(paths, filepath.Join(home, ".gosinble.yml"))
-		paths = append(paths, filepath.Join(home, ".config", "gosinble", "config.yaml"))
-		paths = append(paths, filepath.Join(home, ".config", "gosinble", "config.yml"))
+		paths = append(paths, filepath.Join(home, ".gosibleyaml"))
+		paths = append(paths, filepath.Join(home, ".gosibleyml"))
+		paths = append(paths, filepath.Join(home, ".config", "gosible, "config.yaml"))
+		paths = append(paths, filepath.Join(home, ".config", "gosible, "config.yml"))
 	}
 	
 	// System paths
-	paths = append(paths, "/etc/gosinble/config.yaml")
-	paths = append(paths, "/etc/gosinble/config.yml")
+	paths = append(paths, "/etc/gosibleconfig.yaml")
+	paths = append(paths, "/etc/gosibleconfig.yml")
 	
 	return paths
 }

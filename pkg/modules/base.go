@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 // BaseModule provides common functionality for all modules

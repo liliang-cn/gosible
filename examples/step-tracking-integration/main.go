@@ -6,36 +6,36 @@ import (
 	"log"
 	"time"
 
-	"github.com/liliang-cn/gosinble/pkg/types"
-	"github.com/liliang-cn/gosinble/pkg/connection"
-	"github.com/liliang-cn/gosinble/pkg/logging"
-	"github.com/liliang-cn/gosinble/pkg/websocket"
+	"github.com/liliang-cn/gosible/pkg/types"
+	"github.com/liliang-cn/gosiblepkg/connection"
+	"github.com/liliang-cn/gosiblepkg/logging"
+	"github.com/liliang-cn/gosiblepkg/websocket"
 )
 
 // StepTrackingIntegrationDemo demonstrates how the enhanced features
 // work together with the existing step tracking system
 func main() {
-	fmt.Println("🎯 Gosinble Step Tracking Integration Demo")
+	fmt.Println("🎯 gosible Step Tracking Integration Demo")
 	fmt.Println("==========================================")
-	
+
 	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancel()
-	
+
 	// Set up integrated logging and WebSocket
 	logger, wsServer := setupIntegratedSystems()
 	defer logger.Close()
 	defer wsServer.Stop()
-	
+
 	// Create connection
 	conn := connection.NewLocalConnection()
 	if err := conn.Connect(ctx, types.ConnectionInfo{}); err != nil {
 		log.Fatalf("Failed to connect: %v", err)
 	}
 	defer conn.Close()
-	
+
 	// Demonstrate integration with step tracking
 	demoIntegratedDeployment(ctx, conn, wsServer, logger)
-	
+
 	fmt.Println("\n✅ Step tracking integration demo completed!")
 }
 
@@ -46,19 +46,19 @@ func setupIntegratedSystems() (*logging.StreamLogger, *websocket.StreamServer) {
 	logger.AddMemoryOutput(100)
 	logger.SetLevel(logging.LevelDebug)
 	logger.SetFilters(true, true, true, true)
-	
+
 	// Set up WebSocket server
 	wsServer := websocket.NewStreamServer()
 	wsServer.Start()
-	
+
 	fmt.Println("📡 Integrated systems ready (logging + WebSocket)")
-	
+
 	return logger, wsServer
 }
 
 func demoIntegratedDeployment(ctx context.Context, conn *connection.LocalConnection, wsServer *websocket.StreamServer, logger *logging.StreamLogger) {
 	fmt.Println("\n🚀 Simulating Multi-Step Deployment with Full Integration")
-	
+
 	// Define deployment steps
 	steps := []struct {
 		id          string
@@ -76,30 +76,30 @@ func demoIntegratedDeployment(ctx context.Context, conn *connection.LocalConnect
 		{"start", "Start Services", "Start application services", 2 * time.Second, true},
 		{"verify", "Health Check", "Verify application is running correctly", 3 * time.Second, true},
 	}
-	
+
 	totalSteps := len(steps)
 	completedSteps := []types.StepInfo{}
-	
+
 	fmt.Printf("📋 Starting deployment with %d steps\n", totalSteps)
-	
+
 	// Log deployment start
 	logger.Log(logging.LevelInfo, "Deployment started", map[string]interface{}{
 		"total_steps": totalSteps,
 		"target":      "demo-server",
 		"version":     "v2.1.0",
 	})
-	
+
 	// Broadcast deployment start
 	wsServer.BroadcastStreamEvent(types.StreamEvent{
-		Type: types.StreamStdout,
-		Data: fmt.Sprintf("🚀 Starting deployment with %d steps", totalSteps),
+		Type:      types.StreamStdout,
+		Data:      fmt.Sprintf("🚀 Starting deployment with %d steps", totalSteps),
 		Timestamp: time.Now(),
 	}, "deployment")
-	
+
 	// Execute each step with full integration
 	for i, stepDef := range steps {
 		stepNumber := i + 1
-		
+
 		// Create step info
 		step := types.StepInfo{
 			ID:          stepDef.id,
@@ -113,40 +113,40 @@ func demoIntegratedDeployment(ctx context.Context, conn *connection.LocalConnect
 				"critical":    stepDef.critical,
 			},
 		}
-		
+
 		// Log step start
 		logger.LogStep(step, "deployment", "demo-server")
-		
+
 		// Broadcast step start
 		wsServer.BroadcastStreamEvent(types.StreamEvent{
-			Type: types.StreamStepStart,
-			Step: &step,
+			Type:      types.StreamStepStart,
+			Step:      &step,
 			Timestamp: time.Now(),
 		}, "deployment")
-		
+
 		// Show progress
 		fmt.Printf("🔄 Step %d/%d: %s\n", stepNumber, totalSteps, step.Name)
 		fmt.Printf("   📝 %s\n", step.Description)
-		
+
 		// Simulate step execution with progress updates
 		executeStepWithProgress(step, stepDef.duration, wsServer, logger)
-		
+
 		// Complete the step
 		step.Status = types.StepCompleted
 		step.EndTime = time.Now()
 		step.Duration = step.EndTime.Sub(step.StartTime)
 		completedSteps = append(completedSteps, step)
-		
+
 		// Log step completion
 		logger.LogStep(step, "deployment", "demo-server")
-		
+
 		// Broadcast step completion
 		wsServer.BroadcastStreamEvent(types.StreamEvent{
-			Type: types.StreamStepEnd,
-			Step: &step,
+			Type:      types.StreamStepEnd,
+			Step:      &step,
 			Timestamp: time.Now(),
 		}, "deployment")
-		
+
 		// Update overall progress
 		overallProgress := types.ProgressInfo{
 			Stage:          "deployment",
@@ -158,29 +158,29 @@ func demoIntegratedDeployment(ctx context.Context, conn *connection.LocalConnect
 			TotalSteps:     totalSteps,
 			StepNumber:     stepNumber,
 		}
-		
+
 		// Log progress
 		logger.LogProgress(overallProgress, "deployment", "demo-server")
-		
+
 		// Broadcast progress
 		wsServer.BroadcastProgress(overallProgress, "deployment")
-		
+
 		fmt.Printf("   ✅ %s completed in %v\n", step.Name, step.Duration)
-		
+
 		// Small delay between steps
 		time.Sleep(500 * time.Millisecond)
 	}
-	
+
 	// Final deployment completion
 	totalDuration := time.Since(completedSteps[0].StartTime)
-	
+
 	logger.Log(logging.LevelInfo, "Deployment completed successfully", map[string]interface{}{
 		"total_steps":     totalSteps,
 		"completed_steps": len(completedSteps),
 		"total_duration":  totalDuration.String(),
 		"success_rate":    "100%",
 	})
-	
+
 	// Broadcast final completion
 	wsServer.BroadcastStreamEvent(types.StreamEvent{
 		Type: types.StreamDone,
@@ -200,14 +200,14 @@ func demoIntegratedDeployment(ctx context.Context, conn *connection.LocalConnect
 		},
 		Timestamp: time.Now(),
 	}, "deployment")
-	
+
 	// Show final summary
 	fmt.Println("\n🎉 Deployment Summary")
 	fmt.Println("=====================")
 	fmt.Printf("📊 Total steps: %d/%d completed\n", len(completedSteps), totalSteps)
 	fmt.Printf("⏱️  Total time: %v\n", totalDuration)
 	fmt.Printf("📈 Success rate: 100%%\n")
-	
+
 	fmt.Println("\n📋 Step Details:")
 	for i, step := range completedSteps {
 		fmt.Printf("  %d. %-25s %v\n", i+1, step.Name, step.Duration)
@@ -217,32 +217,32 @@ func demoIntegratedDeployment(ctx context.Context, conn *connection.LocalConnect
 func executeStepWithProgress(step types.StepInfo, duration time.Duration, wsServer *websocket.StreamServer, logger *logging.StreamLogger) {
 	// Simulate step execution with periodic progress updates
 	updateInterval := duration / 4 // 4 progress updates per step
-	
+
 	for i := 1; i <= 4; i++ {
 		time.Sleep(updateInterval)
-		
+
 		percentage := float64(i) * 25.0 // 25%, 50%, 75%, 100%
-		
+
 		// Create progress update
 		progress := types.ProgressInfo{
-			Stage:      "step_execution",
-			Percentage: percentage,
-			Message:    fmt.Sprintf("Executing %s... %d%% complete", step.Name, int(percentage)),
-			Timestamp:  time.Now(),
+			Stage:       "step_execution",
+			Percentage:  percentage,
+			Message:     fmt.Sprintf("Executing %s... %d%% complete", step.Name, int(percentage)),
+			Timestamp:   time.Now(),
 			CurrentStep: &step,
 		}
-		
+
 		// Log progress
 		logger.LogProgress(progress, "deployment", "demo-server")
-		
+
 		// Broadcast progress update
 		wsServer.BroadcastStreamEvent(types.StreamEvent{
-			Type: types.StreamStepUpdate,
-			Step: &step,
-			Progress: &progress,
+			Type:      types.StreamStepUpdate,
+			Step:      &step,
+			Progress:  &progress,
 			Timestamp: time.Now(),
 		}, "deployment")
-		
+
 		if i < 4 { // Don't show 100% here as it will be shown in completion
 			fmt.Printf("   📊 %s: %.0f%% complete\n", step.Name, percentage)
 		}
@@ -281,7 +281,7 @@ func init() {
 • Error handling with precise step failure identification
 • Performance analysis and optimization opportunities
 
-This demonstrates how gosinble's enhanced features provide
+This demonstrates how gosibles enhanced features provide
 enterprise-grade visibility and control for complex operations.
 	`)
 }

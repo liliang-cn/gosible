@@ -1,7 +1,7 @@
 package library
 
 import (
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 // PackageTasks provides common package management operations

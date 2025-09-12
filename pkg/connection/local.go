@@ -13,7 +13,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 // LocalConnection implements the Connection interface for local execution
@@ -450,17 +450,17 @@ func (pr *progressReader) Read(p []byte) (int, error) {
 	n, err := pr.reader.Read(p)
 	if n > 0 {
 		pr.bytesRead += int64(n)
-		
+
 		// Update progress every 100ms or on completion
 		now := time.Now()
 		if now.Sub(pr.lastUpdate) > 100*time.Millisecond || err == io.EOF {
 			pr.lastUpdate = now
-			
+
 			percentage := float64(pr.bytesRead) / float64(pr.totalSize) * 100
 			if percentage > 100 {
 				percentage = 100
 			}
-			
+
 			pr.progressCallback(types.ProgressInfo{
 				Stage:      "transferring",
 				Percentage: percentage,
@@ -519,7 +519,7 @@ func (c *LocalConnection) IsConnected() bool {
 // ExecuteScript executes a script file locally
 func (c *LocalConnection) ExecuteScript(ctx context.Context, script string, options types.ExecuteOptions) (*types.Result, error) {
 	// Create temporary script file
-	tempFile, err := os.CreateTemp("", "gosinble-script-*.sh")
+	tempFile, err := os.CreateTemp("", "gosiblescript-*.sh")
 	if err != nil {
 		return nil, types.NewConnectionError("local", "failed to create temp script file", err)
 	}

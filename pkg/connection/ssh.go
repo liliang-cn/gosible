@@ -17,7 +17,7 @@ import (
 
 	"golang.org/x/crypto/ssh"
 
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 // SSHConnection implements the Connection interface for SSH connections
@@ -455,20 +455,20 @@ func (c *SSHConnection) Copy(ctx context.Context, src io.Reader, dest string, mo
 
 	// Encode data as base64
 	encoded := base64.StdEncoding.EncodeToString(data)
-	
+
 	// Sanitize destination path
 	dest = types.SanitizePath(dest)
-	
+
 	// Create destination directory if needed
 	destDir := filepath.Dir(dest)
 	mkdirCmd := fmt.Sprintf("mkdir -p %s", destDir)
 	if _, err := c.Execute(ctx, mkdirCmd, types.ExecuteOptions{}); err != nil {
 		return types.NewConnectionError(c.info.Host, fmt.Sprintf("failed to create directory %s", destDir), err)
 	}
-	
+
 	// Use a temporary file for transfer
-	tempFile := fmt.Sprintf("/tmp/gosinble_copy_%d.b64", time.Now().Unix())
-	
+	tempFile := fmt.Sprintf("/tmp/gosible_copy_%d.b64", time.Now().Unix())
+
 	// Split encoded data into chunks (to avoid command line length limits)
 	chunkSize := 64000 // Safe size for command line
 	for i := 0; i < len(encoded); i += chunkSize {
@@ -477,14 +477,14 @@ func (c *SSHConnection) Copy(ctx context.Context, src io.Reader, dest string, mo
 			end = len(encoded)
 		}
 		chunk := encoded[i:end]
-		
+
 		// Append chunk to temp file
 		appendCmd := fmt.Sprintf("echo -n '%s' >> %s", chunk, tempFile)
 		if i == 0 {
 			// First chunk, create new file
 			appendCmd = fmt.Sprintf("echo -n '%s' > %s", chunk, tempFile)
 		}
-		
+
 		result, err := c.Execute(ctx, appendCmd, types.ExecuteOptions{})
 		if err != nil || !result.Success {
 			// Clean up temp file on error
@@ -492,18 +492,18 @@ func (c *SSHConnection) Copy(ctx context.Context, src io.Reader, dest string, mo
 			return types.NewConnectionError(c.info.Host, fmt.Sprintf("failed to transfer chunk to %s", dest), err)
 		}
 	}
-	
+
 	// Decode and move to final destination with correct permissions
-	finalCmd := fmt.Sprintf("base64 -d < %s > %s && rm -f %s && chmod %04o %s", 
+	finalCmd := fmt.Sprintf("base64 -d < %s > %s && rm -f %s && chmod %04o %s",
 		tempFile, dest, tempFile, mode, dest)
-	
+
 	result, err := c.Execute(ctx, finalCmd, types.ExecuteOptions{})
 	if err != nil {
 		// Clean up temp file on error
 		c.Execute(ctx, fmt.Sprintf("rm -f %s", tempFile), types.ExecuteOptions{})
 		return types.NewConnectionError(c.info.Host, fmt.Sprintf("failed to decode and install file to %s", dest), err)
 	}
-	
+
 	if !result.Success {
 		// Clean up temp file on error
 		c.Execute(ctx, fmt.Sprintf("rm -f %s", tempFile), types.ExecuteOptions{})
@@ -757,7 +757,7 @@ func (c *SSHConnection) ExecuteScript(ctx context.Context, script string, option
 	}
 
 	// Create a temporary script file on the remote host
-	tempPath := fmt.Sprintf("/tmp/gosinble-script-%d.sh", time.Now().UnixNano())
+	tempPath := fmt.Sprintf("/tmp/gosiblescript-%d.sh", time.Now().UnixNano())
 
 	// Upload script content
 	if err := c.Copy(ctx, strings.NewReader(script), tempPath, 0755); err != nil {

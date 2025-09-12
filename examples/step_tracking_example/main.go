@@ -1,4 +1,4 @@
-// Comprehensive example demonstrating step tracking in gosinble
+// Comprehensive example demonstrating step tracking in gosible
 package main
 
 import (
@@ -7,15 +7,15 @@ import (
 	"log"
 	"time"
 
-	"github.com/liliang-cn/gosinble/pkg/types"
-	"github.com/liliang-cn/gosinble/pkg/connection"
-	"github.com/liliang-cn/gosinble/pkg/inventory"
-	"github.com/liliang-cn/gosinble/pkg/modules"
-	"github.com/liliang-cn/gosinble/pkg/runner"
+	"github.com/liliang-cn/gosiblepkg/connection"
+	"github.com/liliang-cn/gosiblepkg/inventory"
+	"github.com/liliang-cn/gosiblepkg/modules"
+	"github.com/liliang-cn/gosiblepkg/runner"
+	"github.com/liliang-cn/gosiblepkg/types"
 )
 
 func main() {
-	fmt.Println("🚀 Gosinble Step Tracking Example")
+	fmt.Println("🚀 gosible Step Tracking Example")
 	fmt.Println("=================================")
 
 	ctx := context.Background()
@@ -97,7 +97,7 @@ func basicStepTrackingExample(ctx context.Context) error {
 
 	for i, stepDef := range steps {
 		stepNumber := i + 1
-		
+
 		// Create step info
 		step := types.StepInfo{
 			ID:          stepDef.id,
@@ -170,7 +170,7 @@ func basicStepTrackingExample(ctx context.Context) error {
 	// Summary
 	fmt.Printf("\n   📊 Summary:\n")
 	fmt.Printf("      ✅ %d steps completed\n", len(completedSteps))
-	
+
 	totalDuration := time.Since(completedSteps[0].StartTime)
 	fmt.Printf("      ⏱️  Total time: %v\n", totalDuration)
 
@@ -181,7 +181,7 @@ func basicStepTrackingExample(ctx context.Context) error {
 func deploymentStepTrackingExample(ctx context.Context) error {
 	// Create deployment module
 	deploymentModule := modules.NewDeploymentModule()
-	
+
 	conn := connection.NewLocalConnection()
 	if err := conn.Connect(ctx, types.ConnectionInfo{}); err != nil {
 		return fmt.Errorf("failed to connect: %v", err)
@@ -248,7 +248,7 @@ func multiStepTaskRunnerExample(ctx context.Context) error {
 		},
 		{
 			Name:   "Install dependencies",
-			Module: "streaming_shell", 
+			Module: "streaming_shell",
 			Args: map[string]interface{}{
 				"cmd":           "echo 'Installing dependencies...' && for dep in dep1 dep2 dep3; do echo \"Installing $dep\"; sleep 0.3; done",
 				"stream_output": true,
@@ -301,7 +301,7 @@ func multiStepTaskRunnerExample(ctx context.Context) error {
 					status = "✅ Changed"
 				}
 				fmt.Printf("      %s: %s\n", status, result.Message)
-				
+
 				// Show progress information
 				progress := float64(taskNumber) / float64(totalTasks) * 100
 				fmt.Printf("      📊 Overall Progress: %.1f%% (%d/%d tasks)\n", progress, taskNumber, totalTasks)
@@ -342,7 +342,7 @@ func stepFailureExample(ctx context.Context) error {
 			critical:    true,
 		},
 		{
-			id:          "step2", 
+			id:          "step2",
 			name:        "Failing Step",
 			description: "This step will fail but is non-critical",
 			command:     "echo 'Step 2 attempting...' && sleep 0.2 && exit 1",
@@ -365,7 +365,7 @@ func stepFailureExample(ctx context.Context) error {
 
 	for i, stepDef := range steps {
 		stepNumber := i + 1
-		
+
 		step := types.StepInfo{
 			ID:          stepDef.id,
 			Name:        stepDef.name,
@@ -453,7 +453,7 @@ func stepFailureExample(ctx context.Context) error {
 	fmt.Printf("      ✅ Successful steps: %d\n", successfulSteps)
 	fmt.Printf("      ❌ Failed steps: %d\n", failedSteps)
 	fmt.Printf("      📋 Total steps: %d\n", totalSteps)
-	
+
 	if failedSteps > 0 && successfulSteps > 0 {
 		fmt.Printf("      🎯 Successfully demonstrated graceful failure handling\n")
 	}

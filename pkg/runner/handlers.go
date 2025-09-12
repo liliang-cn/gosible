@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"sync"
 	
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 // HandlerManager manages task handlers for notifications

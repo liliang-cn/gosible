@@ -1,21 +1,21 @@
-# Gosinble Command Line Tool
+# gosible Command Line Tool
 
-This directory contains the main command-line interface for gosinble.
+This directory contains the main command-line interface for gosible.
 
 ## Available Command
 
-### gosinble - Main CLI
+### gosible - Main CLI
 
-**Location**: `cmd/gosinble/`
-**Purpose**: Main gosinble CLI for running playbooks and ad-hoc commands
+**Location**: `cmd/gosible/`
+**Purpose**: Main gosible CLI for running playbooks and ad-hoc commands
 
 ```bash
 # Build
-go build -o gosinble cmd/gosinble/main.go
+go build -o gosible cmd/gosible/main.go
 
 # Usage
-./gosinble -i inventory.yml -p playbook.yml
-./gosinble -i inventory.yml -m shell -a "uptime" all
+./gosible -i inventory.yml -p playbook.yml
+./gosible -i inventory.yml -m shell -a "uptime" all
 ```
 
 **Features**:
@@ -32,20 +32,20 @@ go build -o gosinble cmd/gosinble/main.go
 
 ```bash
 # Build the CLI
-go build -o bin/gosinble cmd/gosinble/main.go
+go build -o bin/gosible cmd/gosible/main.go
 
 # Or install to $GOPATH/bin
-go install ./cmd/gosinble
+go install ./cmd/gosible
 ```
 
 ## Installation
 
 ```bash
 # Install to $GOPATH/bin
-go install github.com/liliang-cn/gosinble/cmd/gosinble@latest
+go install github.com/liliang-cn/gosible/cmd/gosible@latest
 
 # Or copy built binary to PATH
-cp bin/gosinble /usr/local/bin/
+cp bin/gosible /usr/local/bin/
 ```
 
 ## Configuration
@@ -53,14 +53,14 @@ cp bin/gosinble /usr/local/bin/
 ### Environment Variables
 
 ```bash
-export GOSINBLE_CONFIG=/path/to/config.yml
-export GOSINBLE_INVENTORY=/path/to/inventory
-export GOSINBLE_VAULT_PASSWORD_FILE=/path/to/vault_pass
+export gosible_CONFIG=/path/to/config.yml
+export gosible_INVENTORY=/path/to/inventory
+export gosible_VAULT_PASSWORD_FILE=/path/to/vault_pass
 ```
 
 ### Configuration File
 
-Create `~/.gosinble.yml`:
+Create `~/.gosible.yml`:
 
 ```yaml
 defaults:
@@ -78,44 +78,44 @@ defaults:
 
 ```bash
 # Basic playbook execution
-gosinble -i hosts.yml -p deploy.yml
+gosible -i hosts.yml -p deploy.yml
 
 # With extra variables
-gosinble -i hosts.yml -p deploy.yml -e "version=1.2.3"
+gosible -i hosts.yml -p deploy.yml -e "version=1.2.3"
 
 # Check mode (dry run)
-gosinble -i hosts.yml -p deploy.yml --check
+gosible -i hosts.yml -p deploy.yml --check
 
 # Verbose output
-gosinble -i hosts.yml -p deploy.yml -v
+gosible -i hosts.yml -p deploy.yml -v
 ```
 
 ### Ad-hoc Commands
 
 ```bash
 # Run command on all hosts
-gosinble -i hosts.yml -m shell -a "uptime" all
+gosible -i hosts.yml -m shell -a "uptime" all
 
 # Copy file to servers
-gosinble -i hosts.yml -m copy -a "src=app.conf dest=/etc/app.conf" webservers
+gosible -i hosts.yml -m copy -a "src=app.conf dest=/etc/app.conf" webservers
 
 # Install package
-gosinble -i hosts.yml -m package -a "name=nginx state=present" webservers
+gosible -i hosts.yml -m package -a "name=nginx state=present" webservers
 
 # Restart service
-gosinble -i hosts.yml -m service -a "name=nginx state=restarted" webservers
+gosible -i hosts.yml -m service -a "name=nginx state=restarted" webservers
 ```
 
 ### Vault Operations (Using Library)
 
-The vault functionality is integrated directly into gosinble via the library. For programmatic vault operations, see the [vault library usage example](../examples/vault-library-usage/).
+The vault functionality is integrated directly into gosible via the library. For programmatic vault operations, see the [vault library usage example](../examples/vault-library-usage/).
 
 For manual vault operations in shell scripts or command line, you can:
 
 1. **Use the library programmatically** (recommended for Go applications)
 
    ```go
-   import "github.com/liliang-cn/gosinble/pkg/vault"
+   import "github.com/liliang-cn/gosible/pkg/vault"
    ```
 
 2. **Create a simple vault utility** using the library if needed:
@@ -129,16 +129,16 @@ For manual vault operations in shell scripts or command line, you can:
 
 ```bash
 # Run tests
-go test ./cmd/gosinble/...
+go test ./cmd/gosible/...
 
 # Build and test locally
-go build -o gosinble cmd/gosinble/main.go
-./gosinble --version
+go build -o gosible cmd/gosible/main.go
+./gosible --version
 ```
 
 ## Comparison with Ansible
 
-| Feature      | Gosinble           | Ansible               |
+| Feature      | gosible            | Ansible               |
 | ------------ | ------------------ | --------------------- |
 | Language     | Go                 | Python                |
 | Performance  | Fast (compiled)    | Slower (interpreted)  |
@@ -150,7 +150,7 @@ go build -o gosinble cmd/gosinble/main.go
 
 ## Why Only One CLI?
 
-Gosinble follows the **library-first** philosophy:
+gosible follows the **library-first** philosophy:
 
 1. **Core functionality as library**: All features (including vault) are available as importable Go packages
 2. **Single CLI for operations**: One command for running playbooks and ad-hoc commands
@@ -165,4 +165,4 @@ This design provides:
 
 ## License
 
-Part of the gosinble project - a Go implementation of Ansible's core functionality.
+Part of the gosible project - a Go implementation of Ansible's core functionality.

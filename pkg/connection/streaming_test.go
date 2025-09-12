@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 // TestLocalConnectionStreaming tests the streaming functionality for LocalConnection

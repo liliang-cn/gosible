@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 // IPTablesModule manages iptables firewall rules

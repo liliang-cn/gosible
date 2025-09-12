@@ -1,11 +1,11 @@
 # Enhanced Features Demo
 
-This example demonstrates all the enhanced gosinble features working together:
+This example demonstrates all the enhanced gosible features working together:
 
 ## Features Demonstrated
 
 - **File Transfer Progress**: Real-time progress tracking for copy operations
-- **WebSocket Streaming**: Live updates broadcasted to web clients  
+- **WebSocket Streaming**: Live updates broadcasted to web clients
 - **Comprehensive Logging**: Multi-output logging with filtering and structured data
 - **Integration**: Shows how all features work together seamlessly
 
@@ -20,15 +20,17 @@ go run examples/enhanced-features-demo/main.go
 Open browser console and connect to the WebSocket server:
 
 ```javascript
-const ws = new WebSocket('ws://localhost:8080/ws');
+const ws = new WebSocket("ws://localhost:8080/ws");
 ws.onmessage = (event) => {
   const data = JSON.parse(event.data);
-  console.log('Received:', data.type, data);
+  console.log("Received:", data.type, data);
 };
-ws.send(JSON.stringify({
-  type: 'subscribe',
-  data: { event_types: ['stream_event', 'progress', 'connection'] }
-}));
+ws.send(
+  JSON.stringify({
+    type: "subscribe",
+    data: { event_types: ["stream_event", "progress", "connection"] },
+  })
+);
 ```
 
 ## Output Files
@@ -40,7 +42,7 @@ ws.send(JSON.stringify({
 ## Expected Output
 
 ```
-🚀 Gosinble Enhanced Features Demo
+🚀 gosible Enhanced Features Demo
 ===================================
 Setting up comprehensive logging...
 Starting WebSocket server for real-time updates...

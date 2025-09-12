@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 	
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 // EmbeddedContent manages files and directories embedded in the binary
@@ -211,7 +211,7 @@ func (ec *EmbeddedContent) DeployTemplate(templatePath, destPath string, vars ma
 	}
 	
 	// Save template to temp location first
-	tempPath := fmt.Sprintf("/tmp/gosinble_embedded_template_%s", filepath.Base(templatePath))
+	tempPath := fmt.Sprintf("/tmp/gosible_embedded_template_%s", filepath.Base(templatePath))
 	
 	return []types.Task{
 		{

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Gosinble is a **Go library first, CLI second** that implements the main features of Ansible for configuration management and automation. It's designed to be imported and used programmatically in other Go applications, providing a powerful API for infrastructure automation, configuration management, and orchestration tasks.
+gosible is a **Go library first, CLI second** that implements the main features of Ansible for configuration management and automation. It's designed to be imported and used programmatically in other Go applications, providing a powerful API for infrastructure automation, configuration management, and orchestration tasks.
 
 ### Key Design Philosophy
 
@@ -64,15 +64,15 @@ staticcheck ./...         # Advanced static analysis (requires staticcheck)
 
 ```go
 import (
-    "github.com/liliang-cn/gosinble/pkg/inventory"
-    "github.com/liliang-cn/gosinble/pkg/runner"
-    "github.com/liliang-cn/gosinble/pkg/modules"
-    "github.com/liliang-cn/gosinble/pkg/playbook"
-    "github.com/liliang-cn/gosinble/pkg/library"
-    "github.com/liliang-cn/gosinble/pkg/vault"
+    "github.com/liliang-cn/gosible/pkg/inventory"
+    "github.com/liliang-cn/gosible/pkg/runner"
+    "github.com/liliang-cn/gosible/pkg/modules"
+    "github.com/liliang-cn/gosible/pkg/playbook"
+    "github.com/liliang-cn/gosible/pkg/library"
+    "github.com/liliang-cn/gosible/pkg/vault"
 )
 
-// Use gosinble in your application
+// Use gosible in your application
 func deployApp(ctx context.Context) error {
     inv, _ := inventory.NewFromFile("inventory.yml")
     runner := runner.NewTaskRunner()
@@ -137,11 +137,11 @@ pkg/
 ### Initialization
 
 ```go
-import "github.com/liliang-cn/gosinble"
+import "github.com/liliang-cn/gosible"
 
 // Initialize with inventory
 inv, err := inventory.NewFromFile("hosts.yml")
-runner := gosinble.NewRunner(inv)
+runner := gosible.NewRunner(inv)
 ```
 
 ### Common Interfaces

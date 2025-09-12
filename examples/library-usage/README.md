@@ -1,13 +1,13 @@
-# Gosinble Library Usage Examples
+# gosible Library Usage Examples
 
-This example demonstrates various ways to use the gosinble library programmatically in your Go applications.
+This example demonstrates various ways to use the gosible library programmatically in your Go applications.
 
 ## Features Demonstrated
 
 - **Inventory Management**: Loading and managing hosts and groups
 - **Module Execution**: Running automation modules directly
 - **Template Rendering**: Processing Jinja2-compatible templates
-- **Configuration Management**: Working with gosinble configuration
+- **Configuration Management**: Working with gosible configuration
 - **Playbook Execution**: Running playbooks programmatically
 - **Facts Gathering**: Collecting system information
 
@@ -66,7 +66,7 @@ go run examples/library-usage/main.go
 ## Example Output
 
 ```
-=== Gosinble Library Examples ===
+=== gosible Library Examples ===
 
 --- Inventory Example ---
 All hosts: [webserver1 webserver2 dbserver]
@@ -105,8 +105,8 @@ Architecture: x86_64
 
 ```go
 import (
-    "github.com/liliang-cn/gosinble/pkg/inventory"
-    "github.com/liliang-cn/gosinble/pkg/runner"
+    "github.com/liliang-cn/gosible/pkg/inventory"
+    "github.com/liliang-cn/gosible/pkg/runner"
 )
 
 func deployApplication(hosts []string) error {
@@ -125,7 +125,7 @@ func deployApplication(hosts []string) error {
 
 ```go
 func createCustomTool() {
-    // Use gosinble as a library to build
+    // Use gosible as a library to build
     // custom automation tools with your
     // specific business logic
 }
@@ -135,7 +135,7 @@ func createCustomTool() {
 
 ```go
 func runDeploymentPipeline() {
-    // Integrate gosinble into your
+    // Integrate gosible into your
     // CI/CD pipeline for infrastructure
     // automation
 }
@@ -150,4 +150,4 @@ func runDeploymentPipeline() {
 - **Testability**: Easy to mock and unit test
 - **Composability**: Mix and match components as needed
 
-This example provides a foundation for using gosinble as a library in your Go applications.
+This example provides a foundation for using gosible as a library in your Go applications.

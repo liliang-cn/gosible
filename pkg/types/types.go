@@ -1,4 +1,4 @@
-// Package types provides core types and interfaces for the gosinble library.
+// Package types provides core types and interfaces for the gosible library.
 // These types are part of the public API and can be used by library consumers.
 package types
 

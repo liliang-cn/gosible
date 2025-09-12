@@ -6,10 +6,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/liliang-cn/gosinble/pkg/types"
-	"github.com/liliang-cn/gosinble/pkg/connection"
-	"github.com/liliang-cn/gosinble/pkg/modules"
-	"github.com/liliang-cn/gosinble/pkg/vars"
+	"github.com/liliang-cn/gosible/pkg/types"
+	"github.com/liliang-cn/gosiblepkg/connection"
+	"github.com/liliang-cn/gosiblepkg/modules"
+	"github.com/liliang-cn/gosiblepkg/vars"
 )
 
 func TestNewTaskRunner(t *testing.T) {
@@ -400,9 +400,9 @@ func TestTaskRunnerExecuteTask(t *testing.T) {
 		{Name: "localhost", Address: "127.0.0.1"},
 	}
 
-	results, err := runner.ExecuteTask(ctx, "Test Task", "debug", 
+	results, err := runner.ExecuteTask(ctx, "Test Task", "debug",
 		map[string]interface{}{"msg": "Hello World"}, hosts, nil)
-	
+
 	if err != nil {
 		t.Fatalf("ExecuteTask failed: %v", err)
 	}
@@ -505,7 +505,7 @@ func TestTaskRunnerClose(t *testing.T) {
 	// Add a mock connection
 	host := types.Host{Name: "testhost", Address: "127.0.0.1"}
 	ctx := context.Background()
-	
+
 	// This should create a connection
 	_, err := runner.getConnection(ctx, host)
 	if err != nil {

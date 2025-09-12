@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	testhelper "github.com/liliang-cn/gosinble/pkg/testing"
-	"github.com/liliang-cn/gosinble/pkg/types"
+	testhelper "github.com/liliang-cn/gosible/pkg/testing"
+	"github.com/liliang-cn/gosiblepkg/types"
 )
 
 func TestSystemdModule(t *testing.T) {
@@ -123,7 +123,7 @@ func testSystemdServiceStates(t *testing.T, helper *testhelper.ModuleTestHelper)
 			Setup: func(h *testhelper.ModuleTestHelper) {
 				systemdHelper := h.GetSystemdHelper()
 				presets := systemdHelper.GetSystemdPresets()
-				
+
 				systemdHelper.MockSystemdService("nginx", presets.InactiveDisabled())
 				systemdHelper.MockSystemdOperations("nginx", testhelper.SystemdOperations{
 					AllowStart: true,
@@ -133,14 +133,14 @@ func testSystemdServiceStates(t *testing.T, helper *testhelper.ModuleTestHelper)
 				h.AssertSuccess(result)
 				h.AssertChanged(result)
 				h.AssertMessageContains(result, "started")
-				
+
 				conn := h.GetConnection()
 				conn.AssertCommandCalled("systemctl show nginx --no-page")
 				conn.AssertCommandCalled("systemctl start nginx")
 			},
 		},
 		{
-			Name: "StartAlreadyActiveService", 
+			Name: "StartAlreadyActiveService",
 			Args: map[string]interface{}{
 				"name":  "nginx",
 				"state": "started",
@@ -148,13 +148,13 @@ func testSystemdServiceStates(t *testing.T, helper *testhelper.ModuleTestHelper)
 			Setup: func(h *testhelper.ModuleTestHelper) {
 				systemdHelper := h.GetSystemdHelper()
 				presets := systemdHelper.GetSystemdPresets()
-				
+
 				systemdHelper.MockSystemdService("nginx", presets.ActiveEnabled())
 			},
 			Assertions: func(h *testhelper.ModuleTestHelper, result *types.Result) {
 				h.AssertSuccess(result)
 				h.AssertNotChanged(result)
-				
+
 				conn := h.GetConnection()
 				conn.AssertCommandCalled("systemctl show nginx --no-page")
 			},
@@ -162,13 +162,13 @@ func testSystemdServiceStates(t *testing.T, helper *testhelper.ModuleTestHelper)
 		{
 			Name: "StopActiveService",
 			Args: map[string]interface{}{
-				"name":  "nginx", 
+				"name":  "nginx",
 				"state": "stopped",
 			},
 			Setup: func(h *testhelper.ModuleTestHelper) {
 				systemdHelper := h.GetSystemdHelper()
 				presets := systemdHelper.GetSystemdPresets()
-				
+
 				systemdHelper.MockSystemdService("nginx", presets.ActiveEnabled())
 				systemdHelper.MockSystemdOperations("nginx", testhelper.SystemdOperations{
 					AllowStop: true,
@@ -178,7 +178,7 @@ func testSystemdServiceStates(t *testing.T, helper *testhelper.ModuleTestHelper)
 				h.AssertSuccess(result)
 				h.AssertChanged(result)
 				h.AssertMessageContains(result, "stopped")
-				
+
 				conn := h.GetConnection()
 				conn.AssertCommandCalled("systemctl show nginx --no-page")
 				conn.AssertCommandCalled("systemctl stop nginx")
@@ -193,7 +193,7 @@ func testSystemdServiceStates(t *testing.T, helper *testhelper.ModuleTestHelper)
 			Setup: func(h *testhelper.ModuleTestHelper) {
 				systemdHelper := h.GetSystemdHelper()
 				presets := systemdHelper.GetSystemdPresets()
-				
+
 				systemdHelper.MockSystemdService("nginx", presets.ActiveEnabled())
 				systemdHelper.MockSystemdOperations("nginx", testhelper.SystemdOperations{
 					AllowRestart: true,
@@ -203,7 +203,7 @@ func testSystemdServiceStates(t *testing.T, helper *testhelper.ModuleTestHelper)
 				h.AssertSuccess(result)
 				h.AssertChanged(result)
 				h.AssertMessageContains(result, "restarted")
-				
+
 				conn := h.GetConnection()
 				conn.AssertCommandCalled("systemctl show nginx --no-page")
 				conn.AssertCommandCalled("systemctl restart nginx")
@@ -218,7 +218,7 @@ func testSystemdServiceStates(t *testing.T, helper *testhelper.ModuleTestHelper)
 			Setup: func(h *testhelper.ModuleTestHelper) {
 				systemdHelper := h.GetSystemdHelper()
 				presets := systemdHelper.GetSystemdPresets()
-				
+
 				systemdHelper.MockSystemdService("nginx", presets.ActiveEnabled())
 				systemdHelper.MockSystemdOperations("nginx", testhelper.SystemdOperations{
 					AllowReload: true,
@@ -228,7 +228,7 @@ func testSystemdServiceStates(t *testing.T, helper *testhelper.ModuleTestHelper)
 				h.AssertSuccess(result)
 				h.AssertChanged(result)
 				h.AssertMessageContains(result, "reloaded")
-				
+
 				conn := h.GetConnection()
 				conn.AssertCommandCalled("systemctl show nginx --no-page")
 				conn.AssertCommandCalled("systemctl reload nginx")
@@ -250,7 +250,7 @@ func testSystemdEnabledStates(t *testing.T, helper *testhelper.ModuleTestHelper)
 			Setup: func(h *testhelper.ModuleTestHelper) {
 				systemdHelper := h.GetSystemdHelper()
 				presets := systemdHelper.GetSystemdPresets()
-				
+
 				systemdHelper.MockSystemdService("nginx", presets.InactiveDisabled())
 				systemdHelper.MockSystemdOperations("nginx", testhelper.SystemdOperations{
 					AllowEnable: true,
@@ -260,7 +260,7 @@ func testSystemdEnabledStates(t *testing.T, helper *testhelper.ModuleTestHelper)
 				h.AssertSuccess(result)
 				h.AssertChanged(result)
 				h.AssertMessageContains(result, "enabled")
-				
+
 				conn := h.GetConnection()
 				conn.AssertCommandCalled("systemctl show nginx --no-page")
 				conn.AssertCommandCalled("systemctl enable nginx")
@@ -275,7 +275,7 @@ func testSystemdEnabledStates(t *testing.T, helper *testhelper.ModuleTestHelper)
 			Setup: func(h *testhelper.ModuleTestHelper) {
 				systemdHelper := h.GetSystemdHelper()
 				presets := systemdHelper.GetSystemdPresets()
-				
+
 				systemdHelper.MockSystemdService("nginx", presets.ActiveEnabled())
 				systemdHelper.MockSystemdOperations("nginx", testhelper.SystemdOperations{
 					AllowDisable: true,
@@ -285,7 +285,7 @@ func testSystemdEnabledStates(t *testing.T, helper *testhelper.ModuleTestHelper)
 				h.AssertSuccess(result)
 				h.AssertChanged(result)
 				h.AssertMessageContains(result, "disabled")
-				
+
 				conn := h.GetConnection()
 				conn.AssertCommandCalled("systemctl show nginx --no-page")
 				conn.AssertCommandCalled("systemctl disable nginx")
@@ -301,7 +301,7 @@ func testSystemdEnabledStates(t *testing.T, helper *testhelper.ModuleTestHelper)
 			Setup: func(h *testhelper.ModuleTestHelper) {
 				systemdHelper := h.GetSystemdHelper()
 				presets := systemdHelper.GetSystemdPresets()
-				
+
 				systemdHelper.MockSystemdService("nginx", presets.InactiveDisabled())
 				systemdHelper.MockSystemdOperations("nginx", testhelper.SystemdOperations{
 					AllowStart:  true,
@@ -312,7 +312,7 @@ func testSystemdEnabledStates(t *testing.T, helper *testhelper.ModuleTestHelper)
 				h.AssertSuccess(result)
 				h.AssertChanged(result)
 				h.AssertMessageContains(result, "started")
-				
+
 				conn := h.GetConnection()
 				conn.AssertCommandCalled("systemctl show nginx --no-page")
 				conn.AssertCommandCalled("systemctl start nginx")
@@ -336,7 +336,7 @@ func testSystemdCheckMode(t *testing.T, helper *testhelper.ModuleTestHelper) {
 			Setup: func(h *testhelper.ModuleTestHelper) {
 				systemdHelper := h.GetSystemdHelper()
 				presets := systemdHelper.GetSystemdPresets()
-				
+
 				systemdHelper.MockSystemdService("nginx", presets.InactiveDisabled())
 			},
 			Assertions: func(h *testhelper.ModuleTestHelper, result *types.Result) {
@@ -344,7 +344,7 @@ func testSystemdCheckMode(t *testing.T, helper *testhelper.ModuleTestHelper) {
 				h.AssertChanged(result)
 				h.AssertSimulated(result)
 				h.AssertCheckModeSimulated(result)
-				
+
 				// Only show command should be called in check mode
 				conn := h.GetConnection()
 				conn.AssertCommandCalled("systemctl show nginx --no-page")
@@ -360,7 +360,7 @@ func testSystemdCheckMode(t *testing.T, helper *testhelper.ModuleTestHelper) {
 			Setup: func(h *testhelper.ModuleTestHelper) {
 				systemdHelper := h.GetSystemdHelper()
 				presets := systemdHelper.GetSystemdPresets()
-				
+
 				systemdHelper.MockSystemdService("nginx", presets.InactiveDisabled())
 			},
 			Assertions: func(h *testhelper.ModuleTestHelper, result *types.Result) {
@@ -368,7 +368,7 @@ func testSystemdCheckMode(t *testing.T, helper *testhelper.ModuleTestHelper) {
 				h.AssertChanged(result)
 				h.AssertSimulated(result)
 				h.AssertCheckModeSimulated(result)
-				
+
 				conn := h.GetConnection()
 				conn.AssertCommandCalled("systemctl show nginx --no-page")
 			},
@@ -390,7 +390,7 @@ func testSystemdDiffMode(t *testing.T, helper *testhelper.ModuleTestHelper) {
 			Setup: func(h *testhelper.ModuleTestHelper) {
 				systemdHelper := h.GetSystemdHelper()
 				presets := systemdHelper.GetSystemdPresets()
-				
+
 				systemdHelper.MockSystemdService("nginx", presets.InactiveDisabled())
 				systemdHelper.MockSystemdOperations("nginx", testhelper.SystemdOperations{
 					AllowStart: true,
@@ -400,13 +400,13 @@ func testSystemdDiffMode(t *testing.T, helper *testhelper.ModuleTestHelper) {
 				h.AssertSuccess(result)
 				h.AssertChanged(result)
 				h.AssertDiffPresent(result)
-				
+
 				// Check that diff contains service state information - use a more flexible check
 				h.AssertDiffPresent(result)
 				if result.Diff != nil && !strings.Contains(result.Diff.Before, "active_state: inactive") {
 					h.AssertMessageContains(result, "nginx") // fallback assertion
 				}
-				
+
 				conn := h.GetConnection()
 				conn.AssertCommandCalled("systemctl show nginx --no-page")
 				conn.AssertCommandCalled("systemctl start nginx")
@@ -422,7 +422,7 @@ func testSystemdDiffMode(t *testing.T, helper *testhelper.ModuleTestHelper) {
 			Setup: func(h *testhelper.ModuleTestHelper) {
 				systemdHelper := h.GetSystemdHelper()
 				presets := systemdHelper.GetSystemdPresets()
-				
+
 				systemdHelper.MockSystemdService("nginx", presets.InactiveDisabled())
 				systemdHelper.MockSystemdOperations("nginx", testhelper.SystemdOperations{
 					AllowEnable: true,
@@ -432,13 +432,13 @@ func testSystemdDiffMode(t *testing.T, helper *testhelper.ModuleTestHelper) {
 				h.AssertSuccess(result)
 				h.AssertChanged(result)
 				h.AssertDiffPresent(result)
-				
+
 				// Check that diff contains enabled state information - use a more flexible check
 				h.AssertDiffPresent(result)
 				if result.Diff != nil && !strings.Contains(result.Diff.Before, "enabled_state: disabled") {
 					h.AssertMessageContains(result, "nginx") // fallback assertion
 				}
-				
+
 				conn := h.GetConnection()
 				conn.AssertCommandCalled("systemctl show nginx --no-page")
 				conn.AssertCommandCalled("systemctl enable nginx")
@@ -473,7 +473,7 @@ func testSystemdErrorHandling(t *testing.T, helper *testhelper.ModuleTestHelper)
 			Setup: func(h *testhelper.ModuleTestHelper) {
 				systemdHelper := h.GetSystemdHelper()
 				presets := systemdHelper.GetSystemdPresets()
-				
+
 				systemdHelper.MockSystemdService("nginx", presets.InactiveDisabled())
 				systemdHelper.MockPermissionDenied("nginx", "start")
 			},

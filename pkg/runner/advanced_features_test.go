@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 	
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 func TestTaskRunnerTags(t *testing.T) {

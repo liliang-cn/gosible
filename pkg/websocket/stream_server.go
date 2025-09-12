@@ -10,29 +10,29 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
-// StreamServer handles WebSocket connections for streaming gosinble events
+// StreamServer handles WebSocket connections for streaming gosibleevents
 type StreamServer struct {
-	upgrader    websocket.Upgrader
-	clients     map[*Client]bool
-	clientsMux  sync.RWMutex
-	broadcast   chan StreamMessage
-	register    chan *Client
-	unregister  chan *Client
-	running     bool
-	runningMux  sync.RWMutex
+	upgrader   websocket.Upgrader
+	clients    map[*Client]bool
+	clientsMux sync.RWMutex
+	broadcast  chan StreamMessage
+	register   chan *Client
+	unregister chan *Client
+	running    bool
+	runningMux sync.RWMutex
 }
 
 // Client represents a WebSocket client connection
 type Client struct {
-	conn        *websocket.Conn
-	send        chan StreamMessage
-	server      *StreamServer
-	id          string
-	sessionInfo ClientSession
-	lastPing    time.Time
+	conn          *websocket.Conn
+	send          chan StreamMessage
+	server        *StreamServer
+	id            string
+	sessionInfo   ClientSession
+	lastPing      time.Time
 	subscriptions map[string]bool // Event type subscriptions
 }
 
@@ -50,13 +50,13 @@ type ClientSession struct {
 type StreamMessage struct {
 	Type      string                 `json:"type"`
 	Timestamp time.Time              `json:"timestamp"`
-	Source    string                 `json:"source,omitempty"`    // Module or connection source
+	Source    string                 `json:"source,omitempty"`     // Module or connection source
 	SessionID string                 `json:"session_id,omitempty"` // Client session ID
 	Data      map[string]interface{} `json:"data,omitempty"`
-	
-	// Gosinble-specific event data
-	StreamEvent *types.StreamEvent `json:"stream_event,omitempty"`
-	StepInfo    *types.StepInfo    `json:"step_info,omitempty"`
+
+	// gosible-specific event data
+	StreamEvent *types.StreamEvent  `json:"stream_event,omitempty"`
+	StepInfo    *types.StepInfo     `json:"step_info,omitempty"`
 	Progress    *types.ProgressInfo `json:"progress,omitempty"`
 }
 
@@ -113,9 +113,9 @@ func (s *StreamServer) Stop() {
 	if !s.running {
 		return
 	}
-	
+
 	s.running = false
-	
+
 	// Close all client connections
 	s.clientsMux.Lock()
 	for client := range s.clients {
@@ -171,7 +171,7 @@ func (s *StreamServer) HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Client connected: %s from %s", sessionID, r.RemoteAddr)
 }
 
-// BroadcastStreamEvent broadcasts a gosinble stream event to all clients
+// BroadcastStreamEvent broadcasts a gosiblestream event to all clients
 func (s *StreamServer) BroadcastStreamEvent(event types.StreamEvent, source string) {
 	message := StreamMessage{
 		Type:        MessageTypeStreamEvent,
@@ -255,8 +255,8 @@ func (s *StreamServer) run() {
 				Timestamp: time.Now(),
 				SessionID: client.id,
 				Data: map[string]interface{}{
-					"status":     "connected",
-					"session_id": client.id,
+					"status":      "connected",
+					"session_id":  client.id,
 					"server_time": time.Now().Unix(),
 				},
 			}
@@ -476,7 +476,7 @@ func getSubscriptionKeys(subscriptions map[string]bool) []string {
 	return keys
 }
 
-// StreamingWebSocketAdapter adapts gosinble streaming to WebSocket
+// StreamingWebSocketAdapter adapts gosiblestreaming to WebSocket
 type StreamingWebSocketAdapter struct {
 	server *StreamServer
 	source string

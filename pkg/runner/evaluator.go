@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 	
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 // ConditionEvaluator evaluates conditional expressions for tasks

@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	testhelper "github.com/liliang-cn/gosinble/pkg/testing"
-	"github.com/liliang-cn/gosinble/pkg/types"
+	testhelper "github.com/liliang-cn/gosible/pkg/testing"
+	"github.com/liliang-cn/gosiblepkg/types"
 )
 
 func TestBlockInFileModule(t *testing.T) {
@@ -157,12 +157,12 @@ func testBlockOperations(t *testing.T, helper *testhelper.ModuleTestHelper) {
 					ExitCode: 0,
 					Stdout:   "127.0.0.1 localhost\n::1 localhost",
 				})
-				
+
 				// Mock file write operations
 				h.GetConnection().ExpectCommandPattern(`echo -n '[\s\S]*' > /etc/hosts\.tmp\.\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
-				
+
 				h.GetConnection().ExpectCommandPattern(`mv /etc/hosts\.tmp\.\d+ /etc/hosts`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
@@ -183,14 +183,14 @@ func testBlockOperations(t *testing.T, helper *testhelper.ModuleTestHelper) {
 				// Mock file read (with existing block)
 				h.GetConnection().ExpectCommand("cat /etc/config.txt", &testhelper.CommandResponse{
 					ExitCode: 0,
-					Stdout: "# Some config\n# BEGIN ANSIBLE MANAGED BLOCK\nold_setting=old_value\n# END ANSIBLE MANAGED BLOCK\n# More config",
+					Stdout:   "# Some config\n# BEGIN ANSIBLE MANAGED BLOCK\nold_setting=old_value\n# END ANSIBLE MANAGED BLOCK\n# More config",
 				})
-				
+
 				// Mock file write operations
 				h.GetConnection().ExpectCommandPattern(`echo -n '[\s\S]*' > /etc/config\.txt\.tmp\.\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
-				
+
 				h.GetConnection().ExpectCommandPattern(`mv /etc/config\.txt\.tmp\.\d+ /etc/config\.txt`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
@@ -211,14 +211,14 @@ func testBlockOperations(t *testing.T, helper *testhelper.ModuleTestHelper) {
 				// Mock file read (with existing block)
 				h.GetConnection().ExpectCommand("cat /etc/config.txt", &testhelper.CommandResponse{
 					ExitCode: 0,
-					Stdout: "# Some config\n# BEGIN ANSIBLE MANAGED BLOCK\nsetting=value\n# END ANSIBLE MANAGED BLOCK\n# More config",
+					Stdout:   "# Some config\n# BEGIN ANSIBLE MANAGED BLOCK\nsetting=value\n# END ANSIBLE MANAGED BLOCK\n# More config",
 				})
-				
+
 				// Mock file write operations
 				h.GetConnection().ExpectCommandPattern(`echo -n '[\s\S]*' > /etc/config\.txt\.tmp\.\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
-				
+
 				h.GetConnection().ExpectCommandPattern(`mv /etc/config\.txt\.tmp\.\d+ /etc/config\.txt`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
@@ -239,7 +239,7 @@ func testBlockOperations(t *testing.T, helper *testhelper.ModuleTestHelper) {
 				// Mock file read (with identical existing block)
 				h.GetConnection().ExpectCommand("cat /etc/config.txt", &testhelper.CommandResponse{
 					ExitCode: 0,
-					Stdout: "# Some config\n# BEGIN ANSIBLE MANAGED BLOCK\nexisting_setting=value\n# END ANSIBLE MANAGED BLOCK\n# More config",
+					Stdout:   "# Some config\n# BEGIN ANSIBLE MANAGED BLOCK\nexisting_setting=value\n# END ANSIBLE MANAGED BLOCK\n# More config",
 				})
 			},
 			Assertions: func(h *testhelper.ModuleTestHelper, result *types.Result) {
@@ -258,7 +258,7 @@ func testBlockOperations(t *testing.T, helper *testhelper.ModuleTestHelper) {
 				// Mock file read (no existing block)
 				h.GetConnection().ExpectCommand("cat /etc/config.txt", &testhelper.CommandResponse{
 					ExitCode: 0,
-					Stdout: "# Some config\n# More config",
+					Stdout:   "# Some config\n# More config",
 				})
 			},
 			Assertions: func(h *testhelper.ModuleTestHelper, result *types.Result) {
@@ -280,12 +280,12 @@ func testBlockOperations(t *testing.T, helper *testhelper.ModuleTestHelper) {
 					ExitCode: 1,
 					Stderr:   "cat: /tmp/newfile.txt: No such file or directory",
 				})
-				
+
 				// Mock file write operations
 				h.GetConnection().ExpectCommandPattern(`echo -n '[\s\S]*' > /tmp/newfile\.txt\.tmp\.\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
-				
+
 				h.GetConnection().ExpectCommandPattern(`mv /tmp/newfile\.txt\.tmp\.\d+ /tmp/newfile\.txt`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
@@ -316,12 +316,12 @@ func testBlockMarkers(t *testing.T, helper *testhelper.ModuleTestHelper) {
 					ExitCode: 0,
 					Stdout:   "// Main config\ndefault_setting=default",
 				})
-				
+
 				// Mock file write operations
 				h.GetConnection().ExpectCommandPattern(`echo -n '[\s\S]*' > /etc/app\.conf\.tmp\.\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
-				
+
 				h.GetConnection().ExpectCommandPattern(`mv /etc/app\.conf\.tmp\.\d+ /etc/app\.conf`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
@@ -352,12 +352,12 @@ func testInsertPositions(t *testing.T, helper *testhelper.ModuleTestHelper) {
 					ExitCode: 0,
 					Stdout:   "# Header\n# Configuration section\nexisting_setting=value\n# Footer",
 				})
-				
+
 				// Mock file write operations
 				h.GetConnection().ExpectCommandPattern(`echo -n '[\s\S]*' > /etc/config\.txt\.tmp\.\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
-				
+
 				h.GetConnection().ExpectCommandPattern(`mv /etc/config\.txt\.tmp\.\d+ /etc/config\.txt`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
@@ -381,12 +381,12 @@ func testInsertPositions(t *testing.T, helper *testhelper.ModuleTestHelper) {
 					ExitCode: 0,
 					Stdout:   "# Header\nexisting_setting=value\n# Footer",
 				})
-				
+
 				// Mock file write operations
 				h.GetConnection().ExpectCommandPattern(`echo -n '[\s\S]*' > /etc/config\.txt\.tmp\.\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
-				
+
 				h.GetConnection().ExpectCommandPattern(`mv /etc/config\.txt\.tmp\.\d+ /etc/config\.txt`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
@@ -446,12 +446,12 @@ func testBlockInFileDiffMode(t *testing.T, helper *testhelper.ModuleTestHelper) 
 					ExitCode: 0,
 					Stdout:   "name=myapp\nport=8080",
 				})
-				
+
 				// Mock file write operations
 				h.GetConnection().ExpectCommandPattern(`echo -n '[\s\S]*' > /etc/app\.conf\.tmp\.\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
-				
+
 				h.GetConnection().ExpectCommandPattern(`mv /etc/app\.conf\.tmp\.\d+ /etc/app\.conf`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
@@ -497,7 +497,7 @@ func testBlockInFileErrorHandling(t *testing.T, helper *testhelper.ModuleTestHel
 					ExitCode: 0,
 					Stdout:   "existing_setting=value",
 				})
-				
+
 				// Mock write failure
 				h.GetConnection().ExpectCommandPattern(`echo -n '[\s\S]*' > /etc/readonly\.conf\.tmp\.\d+`, &testhelper.CommandResponse{
 					ExitCode: 1,
@@ -519,7 +519,7 @@ func testBlockInFileErrorHandling(t *testing.T, helper *testhelper.ModuleTestHel
 					ExitCode: 0,
 					Stdout:   "existing_setting=old",
 				})
-				
+
 				// Mock backup creation failure
 				h.GetConnection().ExpectCommandPattern(`cp /etc/test\.conf /etc/test\.conf\.backup\.\d+`, &testhelper.CommandResponse{
 					ExitCode: 1,
@@ -541,16 +541,16 @@ func testBlockInFileErrorHandling(t *testing.T, helper *testhelper.ModuleTestHel
 					ExitCode: 0,
 					Stdout:   "user nginx;\nevents { worker_connections 1024; }",
 				})
-				
+
 				// Mock file write operations
 				h.GetConnection().ExpectCommandPattern(`echo -n '[\s\S]*' > /etc/nginx/nginx\.conf\.tmp\.\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
-				
+
 				h.GetConnection().ExpectCommandPattern(`mv /etc/nginx/nginx\.conf\.tmp\.\d+ /etc/nginx/nginx\.conf`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
-				
+
 				// Mock validation failure
 				h.GetConnection().ExpectCommand("nginx -t -c /etc/nginx/nginx.conf", &testhelper.CommandResponse{
 					ExitCode: 1,

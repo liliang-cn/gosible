@@ -1,4 +1,4 @@
-// Real-Time Output Implementation for Gosinble
+// Real-Time Output Implementation for gosible
 // This demonstrates how to add streaming output capability
 
 package main
@@ -13,7 +13,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 // Extended ExecuteOptions with streaming support

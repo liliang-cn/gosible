@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	testhelper "github.com/liliang-cn/gosinble/pkg/testing"
-	"github.com/liliang-cn/gosinble/pkg/types"
+	testhelper "github.com/liliang-cn/gosible/pkg/testing"
+	"github.com/liliang-cn/gosiblepkg/types"
 )
 
 func TestLineInFileModule(t *testing.T) {
@@ -109,9 +109,9 @@ func testLineInFileValidation(t *testing.T) {
 		{
 			name: "MutuallyExclusiveInserts",
 			args: map[string]interface{}{
-				"path":        "/tmp/test",
-				"line":        "test line",
-				"insertafter": "pattern1",
+				"path":         "/tmp/test",
+				"line":         "test line",
+				"insertafter":  "pattern1",
 				"insertbefore": "pattern2",
 			},
 			shouldFail:  true,
@@ -148,18 +148,18 @@ func testLineInFilePresent(t *testing.T, helper *testhelper.ModuleTestHelper) {
 			Setup: func(h *testhelper.ModuleTestHelper) {
 				fileHelper := h.GetFileHelper()
 				fileHelper.CreateTestFile("/tmp/test.conf", "existing_line=old\n")
-				
+
 				// Mock cat command to read file
 				h.GetConnection().ExpectCommand("cat /tmp/test.conf", &testhelper.CommandResponse{
 					ExitCode: 0,
 					Stdout:   "existing_line=old\n",
 				})
-				
+
 				// Mock write operations
 				h.GetConnection().ExpectCommand("echo -n 'existing_line=old\nnew_setting=value\n' > /tmp/test.conf.tmp", &testhelper.CommandResponse{
 					ExitCode: 0,
 				})
-				
+
 				h.GetConnection().ExpectCommand("mv /tmp/test.conf.tmp /tmp/test.conf", &testhelper.CommandResponse{
 					ExitCode: 0,
 				})
@@ -168,7 +168,7 @@ func testLineInFilePresent(t *testing.T, helper *testhelper.ModuleTestHelper) {
 				h.AssertSuccess(result)
 				h.AssertChanged(result)
 				h.AssertMessageContains(result, "added line")
-				
+
 				// Verify file operations were called
 				conn := h.GetConnection()
 				conn.AssertCommandCalled("cat /tmp/test.conf")
@@ -183,7 +183,7 @@ func testLineInFilePresent(t *testing.T, helper *testhelper.ModuleTestHelper) {
 			Setup: func(h *testhelper.ModuleTestHelper) {
 				fileHelper := h.GetFileHelper()
 				fileHelper.CreateTestFile("/tmp/test.conf", "existing_line=old\n")
-				
+
 				// Mock cat command to read file
 				h.GetConnection().ExpectCommand("cat /tmp/test.conf", &testhelper.CommandResponse{
 					ExitCode: 0,
@@ -194,7 +194,7 @@ func testLineInFilePresent(t *testing.T, helper *testhelper.ModuleTestHelper) {
 				h.AssertSuccess(result)
 				h.AssertNotChanged(result)
 				h.AssertMessageContains(result, "already in desired state")
-				
+
 				conn := h.GetConnection()
 				conn.AssertCommandCalled("cat /tmp/test.conf")
 			},
@@ -212,12 +212,12 @@ func testLineInFilePresent(t *testing.T, helper *testhelper.ModuleTestHelper) {
 					ExitCode: 1,
 					Stderr:   "cat: /tmp/new_file.conf: No such file or directory",
 				})
-				
+
 				// Mock write operations for new file
 				h.GetConnection().ExpectCommand("echo -n 'first_line=value\n' > /tmp/new_file.conf.tmp", &testhelper.CommandResponse{
 					ExitCode: 0,
 				})
-				
+
 				h.GetConnection().ExpectCommand("mv /tmp/new_file.conf.tmp /tmp/new_file.conf", &testhelper.CommandResponse{
 					ExitCode: 0,
 				})
@@ -245,18 +245,18 @@ func testLineInFileAbsent(t *testing.T, helper *testhelper.ModuleTestHelper) {
 			Setup: func(h *testhelper.ModuleTestHelper) {
 				fileHelper := h.GetFileHelper()
 				fileHelper.CreateTestFile("/tmp/test.conf", "keep_line=value\nremove_me=value\nother_line=value\n")
-				
+
 				// Mock cat command
 				h.GetConnection().ExpectCommand("cat /tmp/test.conf", &testhelper.CommandResponse{
 					ExitCode: 0,
 					Stdout:   "keep_line=value\nremove_me=value\nother_line=value\n",
 				})
-				
+
 				// Mock write operations
 				h.GetConnection().ExpectCommand("echo -n 'keep_line=value\nother_line=value\n' > /tmp/test.conf.tmp", &testhelper.CommandResponse{
 					ExitCode: 0,
 				})
-				
+
 				h.GetConnection().ExpectCommand("mv /tmp/test.conf.tmp /tmp/test.conf", &testhelper.CommandResponse{
 					ExitCode: 0,
 				})
@@ -277,7 +277,7 @@ func testLineInFileAbsent(t *testing.T, helper *testhelper.ModuleTestHelper) {
 			Setup: func(h *testhelper.ModuleTestHelper) {
 				fileHelper := h.GetFileHelper()
 				fileHelper.CreateTestFile("/tmp/test.conf", "existing_line=value\n")
-				
+
 				// Mock cat command
 				h.GetConnection().ExpectCommand("cat /tmp/test.conf", &testhelper.CommandResponse{
 					ExitCode: 0,
@@ -307,18 +307,18 @@ func testLineInFileRegex(t *testing.T, helper *testhelper.ModuleTestHelper) {
 			Setup: func(h *testhelper.ModuleTestHelper) {
 				fileHelper := h.GetFileHelper()
 				fileHelper.CreateTestFile("/etc/ssh/sshd_config", "#PermitRootLogin yes\nPort 22\n")
-				
+
 				// Mock cat command
 				h.GetConnection().ExpectCommand("cat /etc/ssh/sshd_config", &testhelper.CommandResponse{
 					ExitCode: 0,
 					Stdout:   "#PermitRootLogin yes\nPort 22\n",
 				})
-				
+
 				// Mock write operations
 				h.GetConnection().ExpectCommand("echo -n 'PermitRootLogin no\nPort 22\n' > /etc/ssh/sshd_config.tmp", &testhelper.CommandResponse{
 					ExitCode: 0,
 				})
-				
+
 				h.GetConnection().ExpectCommand("mv /etc/ssh/sshd_config.tmp /etc/ssh/sshd_config", &testhelper.CommandResponse{
 					ExitCode: 0,
 				})
@@ -339,18 +339,18 @@ func testLineInFileRegex(t *testing.T, helper *testhelper.ModuleTestHelper) {
 			Setup: func(h *testhelper.ModuleTestHelper) {
 				fileHelper := h.GetFileHelper()
 				fileHelper.CreateTestFile("/tmp/hosts", "127.0.0.1 localhost\n192.168.1.100 server\n192.168.1.101 client\n")
-				
+
 				// Mock cat command
 				h.GetConnection().ExpectCommand("cat /tmp/hosts", &testhelper.CommandResponse{
 					ExitCode: 0,
 					Stdout:   "127.0.0.1 localhost\n192.168.1.100 server\n192.168.1.101 client\n",
 				})
-				
+
 				// Mock write operations (both lines removed)
 				h.GetConnection().ExpectCommand("echo -n '127.0.0.1 localhost\n' > /tmp/hosts.tmp", &testhelper.CommandResponse{
 					ExitCode: 0,
 				})
-				
+
 				h.GetConnection().ExpectCommand("mv /tmp/hosts.tmp /tmp/hosts", &testhelper.CommandResponse{
 					ExitCode: 0,
 				})
@@ -378,18 +378,18 @@ func testLineInFileInsertPosition(t *testing.T, helper *testhelper.ModuleTestHel
 			Setup: func(h *testhelper.ModuleTestHelper) {
 				fileHelper := h.GetFileHelper()
 				fileHelper.CreateTestFile("/etc/fstab", "# /etc/fstab\n# Static information about the filesystems\n/dev/sda1 / ext4 defaults 0 1\n")
-				
+
 				// Mock cat command
 				h.GetConnection().ExpectCommand("cat /etc/fstab", &testhelper.CommandResponse{
 					ExitCode: 0,
 					Stdout:   "# /etc/fstab\n# Static information about the filesystems\n/dev/sda1 / ext4 defaults 0 1\n",
 				})
-				
+
 				// Mock write operations (line inserted after first line)
 				h.GetConnection().ExpectCommand("echo -n '# /etc/fstab\n/dev/sdb1 /mnt/backup ext4 defaults 0 2\n# Static information about the filesystems\n/dev/sda1 / ext4 defaults 0 1\n' > /etc/fstab.tmp", &testhelper.CommandResponse{
 					ExitCode: 0,
 				})
-				
+
 				h.GetConnection().ExpectCommand("mv /etc/fstab.tmp /etc/fstab", &testhelper.CommandResponse{
 					ExitCode: 0,
 				})
@@ -410,18 +410,18 @@ func testLineInFileInsertPosition(t *testing.T, helper *testhelper.ModuleTestHel
 			Setup: func(h *testhelper.ModuleTestHelper) {
 				fileHelper := h.GetFileHelper()
 				fileHelper.CreateTestFile("/tmp/config", "setting1=value1\nsetting2=value2\n# End of config\n")
-				
+
 				// Mock cat command
 				h.GetConnection().ExpectCommand("cat /tmp/config", &testhelper.CommandResponse{
 					ExitCode: 0,
 					Stdout:   "setting1=value1\nsetting2=value2\n# End of config\n",
 				})
-				
+
 				// Mock write operations (line inserted before last line)
 				h.GetConnection().ExpectCommand("echo -n 'setting1=value1\nsetting2=value2\nnew_setting=value\n# End of config\n' > /tmp/config.tmp", &testhelper.CommandResponse{
 					ExitCode: 0,
 				})
-				
+
 				h.GetConnection().ExpectCommand("mv /tmp/config.tmp /tmp/config", &testhelper.CommandResponse{
 					ExitCode: 0,
 				})
@@ -449,7 +449,7 @@ func testLineInFileCheckMode(t *testing.T, helper *testhelper.ModuleTestHelper) 
 			Setup: func(h *testhelper.ModuleTestHelper) {
 				fileHelper := h.GetFileHelper()
 				fileHelper.CreateTestFile("/tmp/test.conf", "existing_line=old\n")
-				
+
 				// Mock cat command to read file
 				h.GetConnection().ExpectCommand("cat /tmp/test.conf", &testhelper.CommandResponse{
 					ExitCode: 0,
@@ -463,7 +463,7 @@ func testLineInFileCheckMode(t *testing.T, helper *testhelper.ModuleTestHelper) 
 				h.AssertSimulated(result)
 				h.AssertCheckModeSimulated(result)
 				h.AssertMessageContains(result, "Would modify")
-				
+
 				conn := h.GetConnection()
 				conn.AssertCommandCalled("cat /tmp/test.conf")
 			},
@@ -485,18 +485,18 @@ func testLineInFileDiffMode(t *testing.T, helper *testhelper.ModuleTestHelper) {
 			Setup: func(h *testhelper.ModuleTestHelper) {
 				fileHelper := h.GetFileHelper()
 				fileHelper.CreateTestFile("/tmp/test.conf", "existing_line=old\n")
-				
+
 				// Mock cat command
 				h.GetConnection().ExpectCommand("cat /tmp/test.conf", &testhelper.CommandResponse{
 					ExitCode: 0,
 					Stdout:   "existing_line=old\n",
 				})
-				
+
 				// Mock write operations
 				h.GetConnection().ExpectCommand("echo -n 'existing_line=old\nnew_setting=value\n' > /tmp/test.conf.tmp", &testhelper.CommandResponse{
 					ExitCode: 0,
 				})
-				
+
 				h.GetConnection().ExpectCommand("mv /tmp/test.conf.tmp /tmp/test.conf", &testhelper.CommandResponse{
 					ExitCode: 0,
 				})
@@ -505,7 +505,7 @@ func testLineInFileDiffMode(t *testing.T, helper *testhelper.ModuleTestHelper) {
 				h.AssertSuccess(result)
 				h.AssertChanged(result)
 				h.AssertDiffPresent(result)
-				
+
 				// Check that diff contains file changes
 				if result.Diff != nil && !strings.Contains(result.Diff.Before, "existing_line=old") {
 					h.AssertMessageContains(result, "Modified file") // fallback assertion
@@ -529,23 +529,23 @@ func testLineInFileBackup(t *testing.T, helper *testhelper.ModuleTestHelper) {
 			Setup: func(h *testhelper.ModuleTestHelper) {
 				fileHelper := h.GetFileHelper()
 				fileHelper.CreateTestFile("/tmp/important.conf", "existing_line=old\n")
-				
+
 				// Mock cat command
 				h.GetConnection().ExpectCommand("cat /tmp/important.conf", &testhelper.CommandResponse{
 					ExitCode: 0,
 					Stdout:   "existing_line=old\n",
 				})
-				
+
 				// Mock backup creation (use regex pattern for timestamp)
 				h.GetConnection().ExpectCommandPattern("cp /tmp/important.conf /tmp/important.conf\\.[0-9]{8}-[0-9]{6}\\.backup", &testhelper.CommandResponse{
 					ExitCode: 0,
 				})
-				
+
 				// Mock write operations
 				h.GetConnection().ExpectCommand("echo -n 'existing_line=old\nnew_setting=value\n' > /tmp/important.conf.tmp", &testhelper.CommandResponse{
 					ExitCode: 0,
 				})
-				
+
 				h.GetConnection().ExpectCommand("mv /tmp/important.conf.tmp /tmp/important.conf", &testhelper.CommandResponse{
 					ExitCode: 0,
 				})
@@ -591,7 +591,7 @@ func testLineInFileErrorHandling(t *testing.T, helper *testhelper.ModuleTestHelp
 					ExitCode: 0,
 					Stdout:   "existing_line=old\n",
 				})
-				
+
 				// Mock write operation failing (permission denied)
 				h.GetConnection().ExpectCommand("echo -n 'existing_line=old\ntest_line=value\n' > /etc/readonly.conf.tmp", &testhelper.CommandResponse{
 					ExitCode: 1,

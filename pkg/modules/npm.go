@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 // NpmModule manages Node.js packages via npm

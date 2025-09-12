@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	testhelper "github.com/liliang-cn/gosinble/pkg/testing"
-	"github.com/liliang-cn/gosinble/pkg/types"
+	testhelper "github.com/liliang-cn/gosible/pkg/testing"
+	"github.com/liliang-cn/gosiblepkg/types"
 )
 
 func TestCronModule(t *testing.T) {
@@ -100,7 +100,7 @@ func testCronValidation(t *testing.T) {
 		{
 			name: "InvalidMinute",
 			args: map[string]interface{}{
-				"name":   "test job", 
+				"name":   "test job",
 				"job":    "/bin/echo test",
 				"minute": "60",
 			},
@@ -111,7 +111,7 @@ func testCronValidation(t *testing.T) {
 			name: "InvalidHour",
 			args: map[string]interface{}{
 				"name": "test job",
-				"job":  "/bin/echo test", 
+				"job":  "/bin/echo test",
 				"hour": "25",
 			},
 			shouldFail:  true,
@@ -166,16 +166,16 @@ func testCronJobs(t *testing.T, helper *testhelper.ModuleTestHelper) {
 					ExitCode: 1,
 					Stderr:   "no crontab for user",
 				})
-				
+
 				// Mock successful crontab write
 				h.GetConnection().ExpectCommandPattern(`echo '[\s\S]*' > /tmp/crontab_\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
-				
+
 				h.GetConnection().ExpectCommandPattern(`crontab /tmp/crontab_\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
-				
+
 				h.GetConnection().ExpectCommandPattern(`rm -f /tmp/crontab_\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
@@ -200,16 +200,16 @@ func testCronJobs(t *testing.T, helper *testhelper.ModuleTestHelper) {
 					ExitCode: 0,
 					Stdout:   "0 2 * * * /usr/bin/backup.sh # Ansible: backup job\n",
 				})
-				
+
 				// Mock successful crontab write
 				h.GetConnection().ExpectCommandPattern(`echo '[\s\S]*' > /tmp/crontab_\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
-				
+
 				h.GetConnection().ExpectCommandPattern(`crontab /tmp/crontab_\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
-				
+
 				h.GetConnection().ExpectCommandPattern(`rm -f /tmp/crontab_\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
@@ -232,16 +232,16 @@ func testCronJobs(t *testing.T, helper *testhelper.ModuleTestHelper) {
 					ExitCode: 0,
 					Stdout:   "0 2 * * * /usr/bin/backup.sh # Ansible: backup job\n",
 				})
-				
+
 				// Mock successful crontab write (empty)
 				h.GetConnection().ExpectCommandPattern(`echo '[\s\S]*' > /tmp/crontab_\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
-				
+
 				h.GetConnection().ExpectCommandPattern(`crontab /tmp/crontab_\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
-				
+
 				h.GetConnection().ExpectCommandPattern(`rm -f /tmp/crontab_\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
@@ -289,16 +289,16 @@ func testCronJobs(t *testing.T, helper *testhelper.ModuleTestHelper) {
 					ExitCode: 1,
 					Stderr:   "no crontab for testuser",
 				})
-				
+
 				// Mock successful crontab write for user
 				h.GetConnection().ExpectCommandPattern(`echo '[\s\S]*' > /tmp/crontab_\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
-				
+
 				h.GetConnection().ExpectCommandPattern(`crontab -u testuser /tmp/crontab_\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
-				
+
 				h.GetConnection().ExpectCommandPattern(`rm -f /tmp/crontab_\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
@@ -515,4 +515,3 @@ func testCronErrorHandling(t *testing.T, helper *testhelper.ModuleTestHelper) {
 
 	helper.RunTestCases(testCases)
 }
-

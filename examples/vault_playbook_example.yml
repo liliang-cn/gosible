@@ -6,22 +6,22 @@
     # Plain variables
     app_name: myapp
     app_port: 8080
-    
-    # Vault-encrypted inline values (encrypt with gosinble-vault)
+
+    # Vault-encrypted inline values (encrypt with gosible-vault)
     # These would be encrypted in production:
     database_password: !vault |
       $ANSIBLE_VAULT;1.1;AES256
       <encrypted_content_here>
-    
+
     api_key: !vault |
       $ANSIBLE_VAULT;1.1;AES256
       <encrypted_content_here>
-  
+
   tasks:
     - name: Debug vault variables
       debug:
         msg: "App {{ app_name }} on port {{ app_port }}"
-    
+
     - name: Create config file
       template:
         src: app_config.j2
@@ -29,20 +29,19 @@
       vars:
         db_pass: "{{ database_password | vault_decrypt }}"
         api_key: "{{ api_key | vault_decrypt }}"
-    
+
     - name: Set database password
       command: |
         mysql -e "ALTER USER 'app'@'localhost' IDENTIFIED BY '{{ database_password }}'"
-      no_log: true  # Don't log sensitive data
+      no_log: true # Don't log sensitive data
       when: database_password is defined
-    
+
     - name: Configure API client
       lineinfile:
         path: /etc/app/api.conf
         line: "API_KEY={{ api_key }}"
         create: yes
       no_log: true
-
 # Example of entirely encrypted file
 # You can encrypt this entire file with:
-# gosinble-vault -action encrypt -password yourpass secrets.yml
+# gosiblevault -action encrypt -password yourpass secrets.yml

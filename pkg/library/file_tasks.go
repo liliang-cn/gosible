@@ -1,7 +1,7 @@
 package library
 
 import (
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 // FileTasks provides common file and directory operations
@@ -90,7 +90,7 @@ func (ft *FileTasks) BackupFile(path string) []types.Task {
 			Name:   "Create backup directory",
 			Module: "file",
 			Args: map[string]interface{}{
-				"path":  "/var/backups/gosinble",
+				"path":  "/var/backups/gosible,
 				"state": "directory",
 				"mode":  "0755",
 			},
@@ -101,7 +101,7 @@ func (ft *FileTasks) BackupFile(path string) []types.Task {
 			Module: "copy",
 			Args: map[string]interface{}{
 				"src":    path,
-				"dest":   "/var/backups/gosinble/{{ inventory_hostname }}-{{ path | basename }}-{{ ansible_date_time.epoch }}",
+				"dest":   "/var/backups/gosible{{ inventory_hostname }}-{{ path | basename }}-{{ ansible_date_time.epoch }}",
 				"remote_src": true,
 			},
 			When: "file_to_backup.stat.exists",

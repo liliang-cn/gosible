@@ -8,10 +8,10 @@ import (
 	"os"
 	"strings"
 	
-	"github.com/liliang-cn/gosinble/pkg/inventory"
-	"github.com/liliang-cn/gosinble/pkg/playbook"
-	"github.com/liliang-cn/gosinble/pkg/runner"
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/inventory"
+	"github.com/liliang-cn/gosible/pkg/playbook"
+	"github.com/liliang-cn/gosible/pkg/runner"
+	"github.com/liliang-cn/gosible/pkg/types"
 	"gopkg.in/yaml.v3"
 )
 
@@ -41,7 +41,7 @@ func main() {
 	)
 	
 	flag.Usage = func() {
-		fmt.Fprintf(os.Stderr, "Gosinble - Ansible-compatible automation tool in Go\n\n")
+		fmt.Fprintf(os.Stderr, "gosible - Ansible-compatible automation tool in Go\n\n")
 		fmt.Fprintf(os.Stderr, "Usage:\n")
 		fmt.Fprintf(os.Stderr, "  %s -i INVENTORY -p PLAYBOOK [options]\n", os.Args[0])
 		fmt.Fprintf(os.Stderr, "  %s -i INVENTORY -m MODULE -a ARGS [options]\n", os.Args[0])
@@ -60,7 +60,7 @@ func main() {
 	
 	// Show version
 	if *versionFlag {
-		fmt.Printf("Gosinble version %s (commit: %s, built: %s)\n", version, commit, date)
+		fmt.Printf("gosible version %s (commit: %s, built: %s)\n", version, commit, date)
 		os.Exit(0)
 	}
 	

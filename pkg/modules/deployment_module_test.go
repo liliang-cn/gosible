@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/mock"
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 func TestDeploymentModule(t *testing.T) {

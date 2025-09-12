@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 // SysctlModule manages kernel parameters via sysctl
@@ -315,7 +315,7 @@ func (m *SysctlModule) formatSysctlConfig(config map[string]string) string {
 	var lines []string
 	
 	// Add header comment
-	lines = append(lines, "# Sysctl configuration managed by Gosinble")
+	lines = append(lines, "# Sysctl configuration managed by gosible")
 	lines = append(lines, fmt.Sprintf("# Generated at %s", time.Now().Format(time.RFC3339)))
 	lines = append(lines, "")
 	
