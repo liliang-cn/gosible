@@ -10,7 +10,7 @@ import (
 	"sync"
 	"text/template"
 
-	"github.com/liliang-cn/gosiblepkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 // Engine implements the TemplateEngine interface

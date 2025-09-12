@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/liliang-cn/gosible/pkg/types"
-	"github.com/liliang-cn/gosiblepkg/connection"
+	"github.com/liliang-cn/gosible/pkg/connection"
 )
 
 func TestNewVarManager(t *testing.T) {

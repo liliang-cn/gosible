@@ -1,0 +1,2052 @@
+?   	github.com/liliang-cn/gosible/cmd/gosible	[no test files]
+?   	github.com/liliang-cn/gosible/examples	[no test files]
+?   	github.com/liliang-cn/gosible/examples/app_with_embedded_content	[no test files]
+?   	github.com/liliang-cn/gosible/examples/cli-vs-library	[no test files]
+?   	github.com/liliang-cn/gosible/examples/common	[no test files]
+?   	github.com/liliang-cn/gosible/examples/common_tasks_example	[no test files]
+?   	github.com/liliang-cn/gosible/examples/distribution_example	[no test files]
+?   	github.com/liliang-cn/gosible/examples/embedded_content_example	[no test files]
+?   	github.com/liliang-cn/gosible/examples/enhanced-features-demo	[no test files]
+?   	github.com/liliang-cn/gosible/examples/library-usage	[no test files]
+?   	github.com/liliang-cn/gosible/examples/real-time-output-example	[no test files]
+?   	github.com/liliang-cn/gosible/examples/remote_execution	[no test files]
+?   	github.com/liliang-cn/gosible/examples/step-tracking-integration	[no test files]
+?   	github.com/liliang-cn/gosible/examples/step_tracking_example	[no test files]
+?   	github.com/liliang-cn/gosible/examples/streaming_example	[no test files]
+?   	github.com/liliang-cn/gosible/examples/systemd_service	[no test files]
+?   	github.com/liliang-cn/gosible/examples/type_safe_modules	[no test files]
+?   	github.com/liliang-cn/gosible/examples/vault-library-usage	[no test files]
+?   	github.com/liliang-cn/gosible/examples/vault_example	[no test files]
+?   	github.com/liliang-cn/gosible/examples/windows_example	[no test files]
+=== RUN   TestNewConfig
+--- PASS: TestNewConfig (0.00s)
+=== RUN   TestConfigGetSet
+--- PASS: TestConfigGetSet (0.00s)
+=== RUN   TestConfigGetStringSlice
+--- PASS: TestConfigGetStringSlice (0.00s)
+=== RUN   TestConfigLoadSave
+--- PASS: TestConfigLoadSave (0.00s)
+=== RUN   TestConfigEnvironmentVariables
+--- PASS: TestConfigEnvironmentVariables (0.00s)
+=== RUN   TestConfigHasDelete
+--- PASS: TestConfigHasDelete (0.00s)
+=== RUN   TestConfigGetAll
+--- PASS: TestConfigGetAll (0.00s)
+=== RUN   TestConfigClearReset
+--- PASS: TestConfigClearReset (0.00s)
+=== RUN   TestConfigValidate
+--- PASS: TestConfigValidate (0.00s)
+=== RUN   TestConfigDefaults
+--- PASS: TestConfigDefaults (0.00s)
+=== RUN   TestGetConfigPaths
+    config_test.go:301: GetConfigPaths should include current directory paths
+--- FAIL: TestGetConfigPaths (0.00s)
+=== RUN   TestConfigLoadFromDefaultPaths
+--- PASS: TestConfigLoadFromDefaultPaths (0.00s)
+=== RUN   TestConfigConcurrency
+--- PASS: TestConfigConcurrency (0.00s)
+FAIL
+FAIL	github.com/liliang-cn/gosible/pkg/config	0.005s
+=== RUN   TestConnectionPool_Get
+Connection attempt 1 failed for testhost: connection to testhost: failed to connect to testhost:22: ssh: handshake failed: ssh: unable to authenticate, attempted methods [none], no supported methods remain, retrying...
+--- PASS: TestConnectionPool_Get (0.14s)
+=== RUN   TestConnectionPool_Stats
+--- PASS: TestConnectionPool_Stats (0.00s)
+=== RUN   TestConnectionPool_ConnectionKey
+=== RUN   TestConnectionPool_ConnectionKey/SSH_default_port
+=== RUN   TestConnectionPool_ConnectionKey/SSH_custom_port
+=== RUN   TestConnectionPool_ConnectionKey/WinRM_HTTP_default_port
+=== RUN   TestConnectionPool_ConnectionKey/WinRM_HTTPS_default_port
+--- PASS: TestConnectionPool_ConnectionKey (0.00s)
+    --- PASS: TestConnectionPool_ConnectionKey/SSH_default_port (0.00s)
+    --- PASS: TestConnectionPool_ConnectionKey/SSH_custom_port (0.00s)
+    --- PASS: TestConnectionPool_ConnectionKey/WinRM_HTTP_default_port (0.00s)
+    --- PASS: TestConnectionPool_ConnectionKey/WinRM_HTTPS_default_port (0.00s)
+=== RUN   TestConnectionPool_Close
+--- PASS: TestConnectionPool_Close (0.00s)
+=== RUN   TestPooledConnectionManager_NewPooledConnectionManager
+--- PASS: TestPooledConnectionManager_NewPooledConnectionManager (0.00s)
+=== RUN   TestPooledConnectionManager_NewPooledConnectionManagerWithDefaults
+--- PASS: TestPooledConnectionManager_NewPooledConnectionManagerWithDefaults (0.00s)
+=== RUN   TestPooledConnectionManager_ExecuteOnHost
+Connection attempt 1 failed for testhost: connection to testhost: failed to connect to testhost:22: ssh: handshake failed: ssh: unable to authenticate, attempted methods [none], no supported methods remain, retrying...
+Connection attempt 2 failed for testhost: connection to testhost: failed to connect to testhost:22: ssh: handshake failed: ssh: unable to authenticate, attempted methods [none], no supported methods remain, retrying...
+Connection attempt 3 failed for testhost: connection to testhost: failed to connect to testhost:22: ssh: handshake failed: ssh: unable to authenticate, attempted methods [none], no supported methods remain, retrying...
+--- PASS: TestPooledConnectionManager_ExecuteOnHost (3.07s)
+=== RUN   TestPooledConnectionManager_Stats
+--- PASS: TestPooledConnectionManager_Stats (0.00s)
+=== RUN   TestGetDefaultPooledConnectionManager
+--- PASS: TestGetDefaultPooledConnectionManager (0.00s)
+=== RUN   TestDefaultConnectionPoolConfig
+--- PASS: TestDefaultConnectionPoolConfig (0.00s)
+=== RUN   TestPooledConnection
+--- PASS: TestPooledConnection (0.00s)
+=== RUN   TestHostStats
+--- PASS: TestHostStats (0.00s)
+=== RUN   TestPoolStats
+--- PASS: TestPoolStats (0.00s)
+=== RUN   TestNewConnectionManager
+--- PASS: TestNewConnectionManager (0.00s)
+=== RUN   TestConnectionManagerRegisterPlugin
+--- PASS: TestConnectionManagerRegisterPlugin (0.00s)
+=== RUN   TestConnectionManagerCreateConnection
+--- PASS: TestConnectionManagerCreateConnection (0.00s)
+=== RUN   TestLocalConnectionConnect
+--- PASS: TestLocalConnectionConnect (0.00s)
+=== RUN   TestLocalConnectionExecute
+=== RUN   TestLocalConnectionExecute/simple_echo_command
+=== RUN   TestLocalConnectionExecute/command_with_exit_code_0
+=== RUN   TestLocalConnectionExecute/command_with_non-zero_exit_code
+=== RUN   TestLocalConnectionExecute/invalid_command
+--- PASS: TestLocalConnectionExecute (0.00s)
+    --- PASS: TestLocalConnectionExecute/simple_echo_command (0.00s)
+    --- PASS: TestLocalConnectionExecute/command_with_exit_code_0 (0.00s)
+    --- PASS: TestLocalConnectionExecute/command_with_non-zero_exit_code (0.00s)
+    --- PASS: TestLocalConnectionExecute/invalid_command (0.00s)
+=== RUN   TestLocalConnectionExecuteWithTimeout
+--- PASS: TestLocalConnectionExecuteWithTimeout (1.00s)
+=== RUN   TestLocalConnectionExecuteWithWorkingDir
+--- PASS: TestLocalConnectionExecuteWithWorkingDir (0.00s)
+=== RUN   TestLocalConnectionCopyAndFetch
+--- PASS: TestLocalConnectionCopyAndFetch (0.00s)
+=== RUN   TestLocalConnectionClose
+--- PASS: TestLocalConnectionClose (0.00s)
+=== RUN   TestLocalConnectionGetSystemInfo
+--- PASS: TestLocalConnectionGetSystemInfo (0.00s)
+=== RUN   TestConnectionManagerGetConnection
+--- PASS: TestConnectionManagerGetConnection (0.00s)
+=== RUN   TestLocalConnection_CopyWithProgress
+--- PASS: TestLocalConnection_CopyWithProgress (0.00s)
+=== RUN   TestLocalConnection_CopyWithProgress_LargeFile
+--- PASS: TestLocalConnection_CopyWithProgress_LargeFile (0.00s)
+=== RUN   TestLocalConnection_CopyWithProgress_ContextCancellation
+--- PASS: TestLocalConnection_CopyWithProgress_ContextCancellation (0.00s)
+=== RUN   TestLocalConnection_CopyWithProgress_InvalidDestination
+--- PASS: TestLocalConnection_CopyWithProgress_InvalidDestination (0.00s)
+=== RUN   TestProgressReader
+--- PASS: TestProgressReader (0.66s)
+=== RUN   TestFormatBytes
+--- PASS: TestFormatBytes (0.00s)
+=== RUN   TestSSHConnection_Connect
+=== RUN   TestSSHConnection_Connect/invalid_host
+=== RUN   TestSSHConnection_Connect/no_auth_method
+=== RUN   TestSSHConnection_Connect/password_auth
+--- PASS: TestSSHConnection_Connect (0.05s)
+    --- PASS: TestSSHConnection_Connect/invalid_host (0.00s)
+    --- PASS: TestSSHConnection_Connect/no_auth_method (0.03s)
+    --- PASS: TestSSHConnection_Connect/password_auth (0.02s)
+=== RUN   TestSSHConnection_BuildCommand
+=== RUN   TestSSHConnection_BuildCommand/simple_command
+=== RUN   TestSSHConnection_BuildCommand/with_working_directory
+=== RUN   TestSSHConnection_BuildCommand/with_sudo_user
+=== RUN   TestSSHConnection_BuildCommand/with_su_user
+=== RUN   TestSSHConnection_BuildCommand/complex_command
+--- PASS: TestSSHConnection_BuildCommand (0.00s)
+    --- PASS: TestSSHConnection_BuildCommand/simple_command (0.00s)
+    --- PASS: TestSSHConnection_BuildCommand/with_working_directory (0.00s)
+    --- PASS: TestSSHConnection_BuildCommand/with_sudo_user (0.00s)
+    --- PASS: TestSSHConnection_BuildCommand/with_su_user (0.00s)
+    --- PASS: TestSSHConnection_BuildCommand/complex_command (0.00s)
+=== RUN   TestSSHConnection_ParsePrivateKey
+--- PASS: TestSSHConnection_ParsePrivateKey (0.00s)
+=== RUN   TestSSHConnection_LoadDefaultKeys
+--- PASS: TestSSHConnection_LoadDefaultKeys (0.01s)
+=== RUN   TestSSHConnection_IsConnected
+--- PASS: TestSSHConnection_IsConnected (0.00s)
+=== RUN   TestSSHConnection_Close
+--- PASS: TestSSHConnection_Close (0.00s)
+=== RUN   TestSSHConnection_ExecuteWithoutConnection
+--- PASS: TestSSHConnection_ExecuteWithoutConnection (0.00s)
+=== RUN   TestSSHConnection_ExecuteStreamWithoutConnection
+--- PASS: TestSSHConnection_ExecuteStreamWithoutConnection (0.00s)
+=== RUN   TestSSHConnection_CopyWithoutConnection
+--- PASS: TestSSHConnection_CopyWithoutConnection (0.00s)
+=== RUN   TestSSHConnection_FetchWithoutConnection
+--- PASS: TestSSHConnection_FetchWithoutConnection (0.00s)
+=== RUN   TestSSHConnection_FileExistsWithoutConnection
+--- PASS: TestSSHConnection_FileExistsWithoutConnection (0.00s)
+=== RUN   TestSSHConnection_CreateDirectoryWithoutConnection
+--- PASS: TestSSHConnection_CreateDirectoryWithoutConnection (0.00s)
+=== RUN   TestSSHConnection_RemoveFileWithoutConnection
+--- PASS: TestSSHConnection_RemoveFileWithoutConnection (0.00s)
+=== RUN   TestSSHConnection_GetHostnameWithoutConnection
+--- PASS: TestSSHConnection_GetHostnameWithoutConnection (0.00s)
+=== RUN   TestSSHConnection_GetSystemInfoWithoutConnection
+--- PASS: TestSSHConnection_GetSystemInfoWithoutConnection (0.00s)
+=== RUN   TestSSHConnection_ExecuteScriptWithoutConnection
+--- PASS: TestSSHConnection_ExecuteScriptWithoutConnection (0.00s)
+=== RUN   TestSSHConnection_PingWithoutConnection
+--- PASS: TestSSHConnection_PingWithoutConnection (0.00s)
+=== RUN   TestSSHConnection_PortForwardWithoutConnection
+--- PASS: TestSSHConnection_PortForwardWithoutConnection (0.00s)
+=== RUN   TestLocalConnectionStreaming
+=== RUN   TestLocalConnectionStreaming/BasicStreaming
+=== RUN   TestLocalConnectionStreaming/StreamingWithCallbacks
+=== RUN   TestLocalConnectionStreaming/StreamingErrorHandling
+=== RUN   TestLocalConnectionStreaming/StreamingWithTimeout
+=== RUN   TestLocalConnectionStreaming/NonStreamingMode
+=== RUN   TestLocalConnectionStreaming/ContextCancellation
+--- PASS: TestLocalConnectionStreaming (0.26s)
+    --- PASS: TestLocalConnectionStreaming/BasicStreaming (0.10s)
+    --- PASS: TestLocalConnectionStreaming/StreamingWithCallbacks (0.00s)
+    --- PASS: TestLocalConnectionStreaming/StreamingErrorHandling (0.00s)
+    --- PASS: TestLocalConnectionStreaming/StreamingWithTimeout (0.10s)
+    --- PASS: TestLocalConnectionStreaming/NonStreamingMode (0.00s)
+    --- PASS: TestLocalConnectionStreaming/ContextCancellation (0.05s)
+=== RUN   TestStreamEventTypes
+=== RUN   TestStreamEventTypes/Stdout
+=== RUN   TestStreamEventTypes/Stderr
+=== RUN   TestStreamEventTypes/Progress
+=== RUN   TestStreamEventTypes/Done
+=== RUN   TestStreamEventTypes/Error
+--- PASS: TestStreamEventTypes (0.00s)
+    --- PASS: TestStreamEventTypes/Stdout (0.00s)
+    --- PASS: TestStreamEventTypes/Stderr (0.00s)
+    --- PASS: TestStreamEventTypes/Progress (0.00s)
+    --- PASS: TestStreamEventTypes/Done (0.00s)
+    --- PASS: TestStreamEventTypes/Error (0.00s)
+=== RUN   TestProgressInfo
+--- PASS: TestProgressInfo (0.00s)
+=== RUN   TestStreamEvent
+--- PASS: TestStreamEvent (0.00s)
+=== RUN   TestStreamingConnectionInterface
+--- PASS: TestStreamingConnectionInterface (0.00s)
+=== RUN   TestWinRMConnection_Connect
+=== RUN   TestWinRMConnection_Connect/invalid_host
+=== RUN   TestWinRMConnection_Connect/no_auth_method
+=== RUN   TestWinRMConnection_Connect/password_auth_with_SSL
+=== RUN   TestWinRMConnection_Connect/password_auth_without_SSL
+--- PASS: TestWinRMConnection_Connect (0.00s)
+    --- PASS: TestWinRMConnection_Connect/invalid_host (0.00s)
+    --- PASS: TestWinRMConnection_Connect/no_auth_method (0.00s)
+    --- PASS: TestWinRMConnection_Connect/password_auth_with_SSL (0.00s)
+    --- PASS: TestWinRMConnection_Connect/password_auth_without_SSL (0.00s)
+=== RUN   TestWinRMConnection_BuildCommand
+=== RUN   TestWinRMConnection_BuildCommand/simple_command
+=== RUN   TestWinRMConnection_BuildCommand/with_working_directory_-_CMD
+=== RUN   TestWinRMConnection_BuildCommand/with_working_directory_-_PowerShell
+=== RUN   TestWinRMConnection_BuildCommand/PowerShell_command_by_shell_option
+=== RUN   TestWinRMConnection_BuildCommand/PowerShell_command_by_content_detection
+=== RUN   TestWinRMConnection_BuildCommand/with_different_user
+--- PASS: TestWinRMConnection_BuildCommand (0.00s)
+    --- PASS: TestWinRMConnection_BuildCommand/simple_command (0.00s)
+    --- PASS: TestWinRMConnection_BuildCommand/with_working_directory_-_CMD (0.00s)
+    --- PASS: TestWinRMConnection_BuildCommand/with_working_directory_-_PowerShell (0.00s)
+    --- PASS: TestWinRMConnection_BuildCommand/PowerShell_command_by_shell_option (0.00s)
+    --- PASS: TestWinRMConnection_BuildCommand/PowerShell_command_by_content_detection (0.00s)
+    --- PASS: TestWinRMConnection_BuildCommand/with_different_user (0.00s)
+=== RUN   TestWinRMConnection_IsConnected
+--- PASS: TestWinRMConnection_IsConnected (0.00s)
+=== RUN   TestWinRMConnection_Close
+--- PASS: TestWinRMConnection_Close (0.00s)
+=== RUN   TestWinRMConnection_ExecuteWithoutConnection
+--- PASS: TestWinRMConnection_ExecuteWithoutConnection (0.00s)
+=== RUN   TestWinRMConnection_ExecuteStreamWithoutConnection
+--- PASS: TestWinRMConnection_ExecuteStreamWithoutConnection (0.00s)
+=== RUN   TestWinRMConnection_CopyWithoutConnection
+--- PASS: TestWinRMConnection_CopyWithoutConnection (0.00s)
+=== RUN   TestWinRMConnection_FetchWithoutConnection
+--- PASS: TestWinRMConnection_FetchWithoutConnection (0.00s)
+=== RUN   TestWinRMConnection_FileExistsWithoutConnection
+--- PASS: TestWinRMConnection_FileExistsWithoutConnection (0.00s)
+=== RUN   TestWinRMConnection_CreateDirectoryWithoutConnection
+--- PASS: TestWinRMConnection_CreateDirectoryWithoutConnection (0.00s)
+=== RUN   TestWinRMConnection_RemoveFileWithoutConnection
+--- PASS: TestWinRMConnection_RemoveFileWithoutConnection (0.00s)
+=== RUN   TestWinRMConnection_GetHostnameWithoutConnection
+--- PASS: TestWinRMConnection_GetHostnameWithoutConnection (0.00s)
+=== RUN   TestWinRMConnection_GetSystemInfoWithoutConnection
+--- PASS: TestWinRMConnection_GetSystemInfoWithoutConnection (0.00s)
+=== RUN   TestWinRMConnection_ExecuteScriptWithoutConnection
+--- PASS: TestWinRMConnection_ExecuteScriptWithoutConnection (0.00s)
+=== RUN   TestWinRMConnection_PingWithoutConnection
+--- PASS: TestWinRMConnection_PingWithoutConnection (0.00s)
+=== RUN   TestWinRMConnection_DefaultPorts
+=== RUN   TestWinRMConnection_DefaultPorts/HTTP_port
+=== RUN   TestWinRMConnection_DefaultPorts/HTTPS_port
+--- PASS: TestWinRMConnection_DefaultPorts (0.00s)
+    --- PASS: TestWinRMConnection_DefaultPorts/HTTP_port (0.00s)
+    --- PASS: TestWinRMConnection_DefaultPorts/HTTPS_port (0.00s)
+PASS
+ok  	github.com/liliang-cn/gosible/pkg/connection	5.215s
+=== RUN   TestNewStaticInventory
+--- PASS: TestNewStaticInventory (0.00s)
+=== RUN   TestNewFromYAML
+--- PASS: TestNewFromYAML (0.00s)
+=== RUN   TestAddHost
+--- PASS: TestAddHost (0.00s)
+=== RUN   TestGetHosts
+=== RUN   TestGetHosts/all_hosts
+=== RUN   TestGetHosts/empty_pattern_(all_hosts)
+=== RUN   TestGetHosts/web_hosts_by_wildcard
+=== RUN   TestGetHosts/hosts_in_webservers_group
+=== RUN   TestGetHosts/hosts_in_databases_group
+=== RUN   TestGetHosts/nonexistent_pattern
+--- PASS: TestGetHosts (0.00s)
+    --- PASS: TestGetHosts/all_hosts (0.00s)
+    --- PASS: TestGetHosts/empty_pattern_(all_hosts) (0.00s)
+    --- PASS: TestGetHosts/web_hosts_by_wildcard (0.00s)
+    --- PASS: TestGetHosts/hosts_in_webservers_group (0.00s)
+    --- PASS: TestGetHosts/hosts_in_databases_group (0.00s)
+    --- PASS: TestGetHosts/nonexistent_pattern (0.00s)
+=== RUN   TestGetHost
+--- PASS: TestGetHost (0.00s)
+=== RUN   TestGetHostVars
+--- PASS: TestGetHostVars (0.00s)
+=== RUN   TestExpandPattern
+=== RUN   TestExpandPattern/range_pattern
+=== RUN   TestExpandPattern/zero-padded_range_pattern
+=== RUN   TestExpandPattern/list_pattern
+=== RUN   TestExpandPattern/single_host_pattern
+--- PASS: TestExpandPattern (0.00s)
+    --- PASS: TestExpandPattern/range_pattern (0.00s)
+    --- PASS: TestExpandPattern/zero-padded_range_pattern (0.00s)
+    --- PASS: TestExpandPattern/list_pattern (0.00s)
+    --- PASS: TestExpandPattern/single_host_pattern (0.00s)
+=== RUN   TestToYAMLAndSaveToFile
+--- PASS: TestToYAMLAndSaveToFile (0.00s)
+=== RUN   TestRemoveHost
+--- PASS: TestRemoveHost (0.00s)
+=== RUN   TestRemoveGroup
+--- PASS: TestRemoveGroup (0.00s)
+PASS
+ok  	github.com/liliang-cn/gosible/pkg/inventory	(cached)
+=== RUN   TestContentTasks_AddFile
+--- PASS: TestContentTasks_AddFile (0.00s)
+=== RUN   TestContentTasks_AddFileBase64
+--- PASS: TestContentTasks_AddFileBase64 (0.00s)
+=== RUN   TestContentTasks_AddDirectory
+--- PASS: TestContentTasks_AddDirectory (0.00s)
+=== RUN   TestContentTasks_AddFileToDirectory
+--- PASS: TestContentTasks_AddFileToDirectory (0.00s)
+=== RUN   TestContentTasks_DeployFile
+--- PASS: TestContentTasks_DeployFile (0.00s)
+=== RUN   TestContentTasks_DeployFileBase64
+--- PASS: TestContentTasks_DeployFileBase64 (0.00s)
+=== RUN   TestContentTasks_DeployDirectory
+--- PASS: TestContentTasks_DeployDirectory (0.00s)
+=== RUN   TestContentTasks_DeployTemplate
+--- PASS: TestContentTasks_DeployTemplate (0.00s)
+=== RUN   TestContentTasks_ListFiles
+--- PASS: TestContentTasks_ListFiles (0.00s)
+=== RUN   TestContentTasks_BulkDeploy
+--- PASS: TestContentTasks_BulkDeploy (0.00s)
+=== RUN   TestContentTasks_ValidateContent
+--- PASS: TestContentTasks_ValidateContent (0.00s)
+=== RUN   TestContentTasks_DirectoryWithSubdirectories
+--- PASS: TestContentTasks_DirectoryWithSubdirectories (0.00s)
+=== RUN   TestDistributionTasks_AddSource
+--- PASS: TestDistributionTasks_AddSource (0.00s)
+=== RUN   TestDistributionTasks_AddSourceDirectory
+--- PASS: TestDistributionTasks_AddSourceDirectory (0.00s)
+=== RUN   TestDistributionTasks_IsBinary
+--- PASS: TestDistributionTasks_IsBinary (0.00s)
+=== RUN   TestDistributionTasks_IsArchive
+--- PASS: TestDistributionTasks_IsArchive (0.00s)
+=== RUN   TestDistributionTasks_DistributeFile
+--- PASS: TestDistributionTasks_DistributeFile (0.00s)
+=== RUN   TestDistributionTasks_DistributeLargeFile
+--- PASS: TestDistributionTasks_DistributeLargeFile (0.00s)
+=== RUN   TestDistributionTasks_DistributeBinary
+--- PASS: TestDistributionTasks_DistributeBinary (0.00s)
+=== RUN   TestDistributionTasks_DistributeDirectory
+--- PASS: TestDistributionTasks_DistributeDirectory (0.00s)
+=== RUN   TestDistributionTasks_DistributeArchive
+--- PASS: TestDistributionTasks_DistributeArchive (0.00s)
+=== RUN   TestDistributionTasks_ParallelDistribute
+--- PASS: TestDistributionTasks_ParallelDistribute (0.00s)
+=== RUN   TestDistributionTasks_DistributeWithFallback
+--- PASS: TestDistributionTasks_DistributeWithFallback (0.00s)
+=== RUN   TestDistributionTasks_CalculateChecksum
+--- PASS: TestDistributionTasks_CalculateChecksum (0.00s)
+=== RUN   TestDistributionTasks_CleanupDistributed
+--- PASS: TestDistributionTasks_CleanupDistributed (0.00s)
+=== RUN   TestDistributionTasks_ExtractS3Info
+--- PASS: TestDistributionTasks_ExtractS3Info (0.00s)
+=== RUN   TestEmbeddedContent_LoadAll
+--- PASS: TestEmbeddedContent_LoadAll (0.00s)
+=== RUN   TestEmbeddedContent_DeployFile
+--- PASS: TestEmbeddedContent_DeployFile (0.00s)
+=== RUN   TestEmbeddedContent_DeployDirectory
+--- PASS: TestEmbeddedContent_DeployDirectory (0.00s)
+=== RUN   TestEmbeddedContent_DeployTemplate
+--- PASS: TestEmbeddedContent_DeployTemplate (0.00s)
+=== RUN   TestEmbeddedContent_FileExists
+--- PASS: TestEmbeddedContent_FileExists (0.00s)
+=== RUN   TestEmbeddedContent_ListFiles
+--- PASS: TestEmbeddedContent_ListFiles (0.00s)
+=== RUN   TestEmbeddedContent_ListDirectories
+--- PASS: TestEmbeddedContent_ListDirectories (0.00s)
+=== RUN   TestEmbeddedContent_SyncDirectory
+--- PASS: TestEmbeddedContent_SyncDirectory (0.00s)
+=== RUN   TestEmbeddedContent_ReadFile
+--- PASS: TestEmbeddedContent_ReadFile (0.00s)
+=== RUN   TestEmbeddedContent_DeployWithModes
+--- PASS: TestEmbeddedContent_DeployWithModes (0.00s)
+=== RUN   TestEmbeddedContent_PathHandling
+--- PASS: TestEmbeddedContent_PathHandling (0.00s)
+=== RUN   TestEmbeddedContent_TemplateVariables
+--- PASS: TestEmbeddedContent_TemplateVariables (0.00s)
+PASS
+ok  	github.com/liliang-cn/gosible/pkg/library	(cached)
+=== RUN   TestNewStreamLogger
+--- PASS: TestNewStreamLogger (0.00s)
+=== RUN   TestStreamLogger_SetLevel
+--- PASS: TestStreamLogger_SetLevel (0.00s)
+=== RUN   TestStreamLogger_AddConsoleOutput
+{"timestamp":"2025-09-12T14:36:36.348324374Z","level":1,"message":"Test message","source":"test","session_id":"session","fields":{"key":"value"}}
+2025-09-12 14:36:36 [[34mINFO[0m] [test] Test message
+--- PASS: TestStreamLogger_AddConsoleOutput (0.00s)
+=== RUN   TestStreamLogger_AddMemoryOutput
+--- PASS: TestStreamLogger_AddMemoryOutput (0.00s)
+=== RUN   TestStreamLogger_LogStreamEvent
+--- PASS: TestStreamLogger_LogStreamEvent (0.00s)
+=== RUN   TestStreamLogger_LogProgress
+--- PASS: TestStreamLogger_LogProgress (0.00s)
+=== RUN   TestStreamLogger_LogStep
+--- PASS: TestStreamLogger_LogStep (0.00s)
+=== RUN   TestStreamLogger_SetFilters
+--- PASS: TestStreamLogger_SetFilters (0.00s)
+=== RUN   TestStreamLogger_SetEnabled
+--- PASS: TestStreamLogger_SetEnabled (0.02s)
+=== RUN   TestMemoryLogOutput_GetEntries
+--- PASS: TestMemoryLogOutput_GetEntries (0.00s)
+=== RUN   TestStreamingLoggerAdapter
+--- PASS: TestStreamingLoggerAdapter (0.15s)
+=== RUN   TestLogLevel_String
+--- PASS: TestLogLevel_String (0.00s)
+PASS
+ok  	github.com/liliang-cn/gosible/pkg/logging	(cached)
+=== RUN   TestArchiveModule
+=== RUN   TestArchiveModule/ModuleProperties
+=== RUN   TestArchiveModule/ValidationTests
+=== RUN   TestArchiveModule/ValidationTests/ValidTarGzArchive
+=== RUN   TestArchiveModule/ValidationTests/ValidZipArchive
+=== RUN   TestArchiveModule/ValidationTests/MissingPath
+=== RUN   TestArchiveModule/ValidationTests/MissingDest
+=== RUN   TestArchiveModule/ValidationTests/InvalidFormat
+=== RUN   TestArchiveModule/ValidationTests/ValidExcludePattern
+--- PASS: TestArchiveModule (0.00s)
+    --- PASS: TestArchiveModule/ModuleProperties (0.00s)
+    --- PASS: TestArchiveModule/ValidationTests (0.00s)
+        --- PASS: TestArchiveModule/ValidationTests/ValidTarGzArchive (0.00s)
+        --- PASS: TestArchiveModule/ValidationTests/ValidZipArchive (0.00s)
+        --- PASS: TestArchiveModule/ValidationTests/MissingPath (0.00s)
+        --- PASS: TestArchiveModule/ValidationTests/MissingDest (0.00s)
+        --- PASS: TestArchiveModule/ValidationTests/InvalidFormat (0.00s)
+        --- PASS: TestArchiveModule/ValidationTests/ValidExcludePattern (0.00s)
+=== RUN   TestBaseModule_CheckMode
+=== RUN   TestBaseModule_CheckMode/check_mode_enabled
+=== RUN   TestBaseModule_CheckMode/check_mode_disabled
+=== RUN   TestBaseModule_CheckMode/check_mode_not_set
+=== RUN   TestBaseModule_CheckMode/check_mode_wrong_type
+--- PASS: TestBaseModule_CheckMode (0.00s)
+    --- PASS: TestBaseModule_CheckMode/check_mode_enabled (0.00s)
+    --- PASS: TestBaseModule_CheckMode/check_mode_disabled (0.00s)
+    --- PASS: TestBaseModule_CheckMode/check_mode_not_set (0.00s)
+    --- PASS: TestBaseModule_CheckMode/check_mode_wrong_type (0.00s)
+=== RUN   TestBaseModule_DiffMode
+=== RUN   TestBaseModule_DiffMode/diff_mode_enabled
+=== RUN   TestBaseModule_DiffMode/diff_mode_disabled
+=== RUN   TestBaseModule_DiffMode/diff_mode_not_set
+--- PASS: TestBaseModule_DiffMode (0.00s)
+    --- PASS: TestBaseModule_DiffMode/diff_mode_enabled (0.00s)
+    --- PASS: TestBaseModule_DiffMode/diff_mode_disabled (0.00s)
+    --- PASS: TestBaseModule_DiffMode/diff_mode_not_set (0.00s)
+=== RUN   TestBaseModule_CreateCheckModeResult
+--- PASS: TestBaseModule_CreateCheckModeResult (0.00s)
+=== RUN   TestBaseModule_GenerateDiff
+=== RUN   TestBaseModule_GenerateDiff/different_content
+=== RUN   TestBaseModule_GenerateDiff/same_content
+=== RUN   TestBaseModule_GenerateDiff/empty_to_content
+--- PASS: TestBaseModule_GenerateDiff (0.00s)
+    --- PASS: TestBaseModule_GenerateDiff/different_content (0.00s)
+    --- PASS: TestBaseModule_GenerateDiff/same_content (0.00s)
+    --- PASS: TestBaseModule_GenerateDiff/empty_to_content (0.00s)
+=== RUN   TestBaseModule_Capabilities
+--- PASS: TestBaseModule_Capabilities (0.00s)
+=== RUN   TestBaseModule_RunWithModes
+--- PASS: TestBaseModule_RunWithModes (0.00s)
+=== RUN   TestBlockInFileModule
+=== RUN   TestBlockInFileModule/ModuleProperties
+=== RUN   TestBlockInFileModule/ValidationTests
+=== RUN   TestBlockInFileModule/ValidationTests/ValidBlockOperation
+=== RUN   TestBlockInFileModule/ValidationTests/MissingPath
+=== RUN   TestBlockInFileModule/ValidationTests/MissingBlockWhenPresent
+=== RUN   TestBlockInFileModule/ValidationTests/ValidAbsentState
+=== RUN   TestBlockInFileModule/ValidationTests/InvalidState
+=== RUN   TestBlockInFileModule/ValidationTests/InvalidMarker
+=== RUN   TestBlockInFileModule/ValidationTests/ValidCustomMarker
+=== RUN   TestBlockInFileModule/ValidationTests/MutuallyExclusiveInserts
+=== RUN   TestBlockInFileModule/BlockOperationTests
+=== RUN   TestBlockInFileModule/InsertNewBlock
+=== RUN   TestBlockInFileModule/UpdateExistingBlock
+=== RUN   TestBlockInFileModule/RemoveExistingBlock
+=== RUN   TestBlockInFileModule/BlockAlreadyPresent
+=== RUN   TestBlockInFileModule/BlockAlreadyAbsent
+=== RUN   TestBlockInFileModule/CreateNewFile
+=== RUN   TestBlockInFileModule/MarkerTests
+=== RUN   TestBlockInFileModule/CustomMarkers
+=== RUN   TestBlockInFileModule/InsertPositionTests
+=== RUN   TestBlockInFileModule/InsertAfterPattern
+=== RUN   TestBlockInFileModule/InsertBeforePattern
+=== RUN   TestBlockInFileModule/CheckModeTests
+=== RUN   TestBlockInFileModule/InsertBlockCheckMode
+=== RUN   TestBlockInFileModule/DiffModeTests
+=== RUN   TestBlockInFileModule/InsertBlockDiffMode
+=== RUN   TestBlockInFileModule/ErrorHandlingTests
+=== RUN   TestBlockInFileModule/FileNotExistsNoCreate
+=== RUN   TestBlockInFileModule/WritePermissionDenied
+=== RUN   TestBlockInFileModule/BackupCreationFailed
+=== RUN   TestBlockInFileModule/ValidationFailed
+--- PASS: TestBlockInFileModule (0.00s)
+    --- PASS: TestBlockInFileModule/ModuleProperties (0.00s)
+    --- PASS: TestBlockInFileModule/ValidationTests (0.00s)
+        --- PASS: TestBlockInFileModule/ValidationTests/ValidBlockOperation (0.00s)
+        --- PASS: TestBlockInFileModule/ValidationTests/MissingPath (0.00s)
+        --- PASS: TestBlockInFileModule/ValidationTests/MissingBlockWhenPresent (0.00s)
+        --- PASS: TestBlockInFileModule/ValidationTests/ValidAbsentState (0.00s)
+        --- PASS: TestBlockInFileModule/ValidationTests/InvalidState (0.00s)
+        --- PASS: TestBlockInFileModule/ValidationTests/InvalidMarker (0.00s)
+        --- PASS: TestBlockInFileModule/ValidationTests/ValidCustomMarker (0.00s)
+        --- PASS: TestBlockInFileModule/ValidationTests/MutuallyExclusiveInserts (0.00s)
+    --- PASS: TestBlockInFileModule/InsertNewBlock (0.00s)
+    --- PASS: TestBlockInFileModule/UpdateExistingBlock (0.00s)
+    --- PASS: TestBlockInFileModule/RemoveExistingBlock (0.00s)
+    --- PASS: TestBlockInFileModule/BlockAlreadyPresent (0.00s)
+    --- PASS: TestBlockInFileModule/BlockAlreadyAbsent (0.00s)
+    --- PASS: TestBlockInFileModule/CreateNewFile (0.00s)
+    --- PASS: TestBlockInFileModule/BlockOperationTests (0.00s)
+    --- PASS: TestBlockInFileModule/CustomMarkers (0.00s)
+    --- PASS: TestBlockInFileModule/MarkerTests (0.00s)
+    --- PASS: TestBlockInFileModule/InsertAfterPattern (0.00s)
+    --- PASS: TestBlockInFileModule/InsertBeforePattern (0.00s)
+    --- PASS: TestBlockInFileModule/InsertPositionTests (0.00s)
+    --- PASS: TestBlockInFileModule/InsertBlockCheckMode (0.00s)
+    --- PASS: TestBlockInFileModule/CheckModeTests (0.00s)
+    --- PASS: TestBlockInFileModule/InsertBlockDiffMode (0.00s)
+    --- PASS: TestBlockInFileModule/DiffModeTests (0.00s)
+    --- PASS: TestBlockInFileModule/FileNotExistsNoCreate (0.00s)
+    --- PASS: TestBlockInFileModule/WritePermissionDenied (0.00s)
+    --- PASS: TestBlockInFileModule/BackupCreationFailed (0.00s)
+    --- PASS: TestBlockInFileModule/ValidationFailed (0.00s)
+    --- PASS: TestBlockInFileModule/ErrorHandlingTests (0.00s)
+=== RUN   TestCronModule
+=== RUN   TestCronModule/ModuleProperties
+=== RUN   TestCronModule/ValidationTests
+=== RUN   TestCronModule/ValidationTests/ValidJobParameter
+=== RUN   TestCronModule/ValidationTests/ValidNameParameter
+=== RUN   TestCronModule/ValidationTests/MissingJobAndName
+=== RUN   TestCronModule/ValidationTests/InvalidState
+=== RUN   TestCronModule/ValidationTests/ValidCronTimes
+=== RUN   TestCronModule/ValidationTests/InvalidMinute
+=== RUN   TestCronModule/ValidationTests/InvalidHour
+=== RUN   TestCronModule/ValidationTests/InvalidUser
+=== RUN   TestCronModule/CronJobTests
+=== RUN   TestCronModule/AddNewCronJob
+=== RUN   TestCronModule/UpdateExistingCronJob
+=== RUN   TestCronModule/RemoveCronJob
+=== RUN   TestCronModule/JobAlreadyExists
+=== RUN   TestCronModule/CronJobWithUser
+=== RUN   TestCronModule/CronTimeValidation
+=== RUN   TestCronModule/ValidStepValues
+=== RUN   TestCronModule/ValidRangeValues
+=== RUN   TestCronModule/ValidCommaValues
+=== RUN   TestCronModule/CheckModeTests
+=== RUN   TestCronModule/AddJobCheckMode
+=== RUN   TestCronModule/DiffModeTests
+=== RUN   TestCronModule/AddJobDiffMode
+=== RUN   TestCronModule/ErrorHandlingTests
+=== RUN   TestCronModule/CrontabReadError
+=== RUN   TestCronModule/CrontabWriteError
+--- PASS: TestCronModule (0.00s)
+    --- PASS: TestCronModule/ModuleProperties (0.00s)
+    --- PASS: TestCronModule/ValidationTests (0.00s)
+        --- PASS: TestCronModule/ValidationTests/ValidJobParameter (0.00s)
+        --- PASS: TestCronModule/ValidationTests/ValidNameParameter (0.00s)
+        --- PASS: TestCronModule/ValidationTests/MissingJobAndName (0.00s)
+        --- PASS: TestCronModule/ValidationTests/InvalidState (0.00s)
+        --- PASS: TestCronModule/ValidationTests/ValidCronTimes (0.00s)
+        --- PASS: TestCronModule/ValidationTests/InvalidMinute (0.00s)
+        --- PASS: TestCronModule/ValidationTests/InvalidHour (0.00s)
+        --- PASS: TestCronModule/ValidationTests/InvalidUser (0.00s)
+    --- PASS: TestCronModule/AddNewCronJob (0.00s)
+    --- PASS: TestCronModule/UpdateExistingCronJob (0.00s)
+    --- PASS: TestCronModule/RemoveCronJob (0.00s)
+    --- PASS: TestCronModule/JobAlreadyExists (0.00s)
+    --- PASS: TestCronModule/CronJobWithUser (0.00s)
+    --- PASS: TestCronModule/CronJobTests (0.00s)
+    --- PASS: TestCronModule/ValidStepValues (0.00s)
+    --- PASS: TestCronModule/ValidRangeValues (0.00s)
+    --- PASS: TestCronModule/ValidCommaValues (0.00s)
+    --- PASS: TestCronModule/CronTimeValidation (0.00s)
+    --- PASS: TestCronModule/AddJobCheckMode (0.00s)
+    --- PASS: TestCronModule/CheckModeTests (0.00s)
+    --- PASS: TestCronModule/AddJobDiffMode (0.00s)
+    --- PASS: TestCronModule/DiffModeTests (0.00s)
+    --- PASS: TestCronModule/CrontabReadError (0.00s)
+    --- PASS: TestCronModule/CrontabWriteError (0.00s)
+    --- PASS: TestCronModule/ErrorHandlingTests (0.00s)
+=== RUN   TestDeploymentModule
+=== RUN   TestDeploymentModule/BasicDeployment
+🔄 Step 1/8: Validate Environment
+   📝 Check system requirements and permissions
+   📤 Mock output line 1
+   📤 Mock output line 2
+   ✅ Validate Environment completed in 20.457221ms
+🔄 Step 2/8: Backup Current Version
+   📝 Create backup of existing deployment
+   📤 Mock output line 1
+   📤 Mock output line 2
+   ✅ Backup Current Version completed in 20.418298ms
+🔄 Step 3/8: Download Application
+   📝 Download test-app version v1.0.0
+   📤 Mock output line 1
+   📤 Mock output line 2
+   ✅ Download Application completed in 20.357706ms
+🔄 Step 4/8: Extract Package
+   📝 Extract application package to deployment directory
+   📤 Mock output line 1
+   📤 Mock output line 2
+   ✅ Extract Package completed in 20.344126ms
+🔄 Step 5/8: Configure Application
+   📝 Apply configuration and environment settings
+   📤 Mock output line 1
+   📤 Mock output line 2
+   ✅ Configure Application completed in 20.335055ms
+🔄 Step 6/8: Set Permissions
+   📝 Configure file permissions and ownership
+   📤 Mock output line 1
+   📤 Mock output line 2
+   ✅ Set Permissions completed in 20.346687ms
+🔄 Step 7/8: Start Service
+   📝 Start the application service
+   📤 Mock output line 1
+   📤 Mock output line 2
+   ✅ Start Service completed in 20.337155ms
+🔄 Step 8/8: Health Check
+   📝 Verify application is running correctly
+   📤 Mock output line 1
+   📤 Mock output line 2
+   ✅ Health Check completed in 20.514782ms
+
+🎉 Deployment completed successfully!
+   📊 8/8 steps completed
+   ⏱️  Total time: 163.163832ms
+=== RUN   TestDeploymentModule/DeploymentWithHealthCheck
+🔄 Step 1/8: Validate Environment
+   📝 Check system requirements and permissions
+   📤 Mock output line 1
+   📤 Mock output line 2
+   ✅ Validate Environment completed in 20.324525ms
+🔄 Step 2/8: Backup Current Version
+   📝 Create backup of existing deployment
+   📤 Mock output line 1
+   📤 Mock output line 2
+   ✅ Backup Current Version completed in 20.355636ms
+🔄 Step 3/8: Download Application
+   📝 Download webapp version v2.0.0
+   📤 Mock output line 1
+   📤 Mock output line 2
+   ✅ Download Application completed in 20.384567ms
+🔄 Step 4/8: Extract Package
+   📝 Extract application package to deployment directory
+   📤 Mock output line 1
+   📤 Mock output line 2
+   ✅ Extract Package completed in 20.4288ms
+🔄 Step 5/8: Configure Application
+   📝 Apply configuration and environment settings
+   📤 Mock output line 1
+   📤 Mock output line 2
+   ✅ Configure Application completed in 20.394218ms
+🔄 Step 6/8: Set Permissions
+   📝 Configure file permissions and ownership
+   📤 Mock output line 1
+   📤 Mock output line 2
+   ✅ Set Permissions completed in 20.385847ms
+🔄 Step 7/8: Start Service
+   📝 Start the application service
+   📤 Mock output line 1
+   📤 Mock output line 2
+   ✅ Start Service completed in 20.482351ms
+🔄 Step 8/8: Health Check
+   📝 Verify application is running correctly
+   📤 Mock output line 1
+   📤 Mock output line 2
+   ✅ Health Check completed in 20.494992ms
+
+🎉 Deployment completed successfully!
+   📊 8/8 steps completed
+   ⏱️  Total time: 163.297987ms
+=== RUN   TestDeploymentModule/StandardExecution
+=== RUN   TestDeploymentModule/ValidationTests
+=== RUN   TestDeploymentModule/ValidationTests/MissingAppName
+=== RUN   TestDeploymentModule/ValidationTests/ValidArgs
+=== RUN   TestDeploymentModule/ValidationTests/InvalidDeployPath
+=== RUN   TestDeploymentModule/ValidationTests/ValidDeployPath
+=== RUN   TestDeploymentModule/Documentation
+--- PASS: TestDeploymentModule (0.33s)
+    --- PASS: TestDeploymentModule/BasicDeployment (0.16s)
+    --- PASS: TestDeploymentModule/DeploymentWithHealthCheck (0.16s)
+    --- PASS: TestDeploymentModule/StandardExecution (0.00s)
+    --- PASS: TestDeploymentModule/ValidationTests (0.00s)
+        --- PASS: TestDeploymentModule/ValidationTests/MissingAppName (0.00s)
+        --- PASS: TestDeploymentModule/ValidationTests/ValidArgs (0.00s)
+        --- PASS: TestDeploymentModule/ValidationTests/InvalidDeployPath (0.00s)
+        --- PASS: TestDeploymentModule/ValidationTests/ValidDeployPath (0.00s)
+    --- PASS: TestDeploymentModule/Documentation (0.00s)
+=== RUN   TestDeploymentModuleName
+--- PASS: TestDeploymentModuleName (0.00s)
+=== RUN   TestStepInfo
+--- PASS: TestStepInfo (0.00s)
+=== RUN   TestStepStatus
+=== RUN   TestStepStatus/pending
+=== RUN   TestStepStatus/running
+=== RUN   TestStepStatus/completed
+=== RUN   TestStepStatus/failed
+=== RUN   TestStepStatus/skipped
+=== RUN   TestStepStatus/cancelled
+--- PASS: TestStepStatus (0.00s)
+    --- PASS: TestStepStatus/pending (0.00s)
+    --- PASS: TestStepStatus/running (0.00s)
+    --- PASS: TestStepStatus/completed (0.00s)
+    --- PASS: TestStepStatus/failed (0.00s)
+    --- PASS: TestStepStatus/skipped (0.00s)
+    --- PASS: TestStepStatus/cancelled (0.00s)
+=== RUN   TestProgressInfoWithSteps
+--- PASS: TestProgressInfoWithSteps (0.00s)
+=== RUN   TestStreamEventWithSteps
+=== RUN   TestStreamEventWithSteps/step_start
+=== RUN   TestStreamEventWithSteps/step_update
+=== RUN   TestStreamEventWithSteps/step_end
+--- PASS: TestStreamEventWithSteps (0.00s)
+    --- PASS: TestStreamEventWithSteps/step_start (0.00s)
+    --- PASS: TestStreamEventWithSteps/step_update (0.00s)
+    --- PASS: TestStreamEventWithSteps/step_end (0.00s)
+=== RUN   TestNewEnhancedCopyModule
+--- PASS: TestNewEnhancedCopyModule (0.00s)
+=== RUN   TestEnhancedCopyModule_RunWithProgress
+📁 Copy Progress: 0.0% - Copying data...
+📁 Copy Progress: 25.0% - Copying data...
+📁 Copy Progress: 50.0% - Copying data...
+📁 Copy Progress: 75.0% - Copying data...
+📁 Copy Progress: 100.0% - Copying data...
+--- PASS: TestEnhancedCopyModule_RunWithProgress (0.00s)
+=== RUN   TestEnhancedCopyModule_RunStandardCopy
+--- PASS: TestEnhancedCopyModule_RunStandardCopy (0.00s)
+=== RUN   TestEnhancedCopyModule_RunWithFile
+--- PASS: TestEnhancedCopyModule_RunWithFile (0.00s)
+=== RUN   TestEnhancedCopyModule_Validate
+=== RUN   TestEnhancedCopyModule_Validate/valid_content_copy
+=== RUN   TestEnhancedCopyModule_Validate/valid_file_copy
+=== RUN   TestEnhancedCopyModule_Validate/missing_src_and_content
+=== RUN   TestEnhancedCopyModule_Validate/both_src_and_content_specified
+=== RUN   TestEnhancedCopyModule_Validate/missing_dest
+=== RUN   TestEnhancedCopyModule_Validate/invalid_mode
+=== RUN   TestEnhancedCopyModule_Validate/valid_mode_with_leading_zero
+--- PASS: TestEnhancedCopyModule_Validate (0.00s)
+    --- PASS: TestEnhancedCopyModule_Validate/valid_content_copy (0.00s)
+    --- PASS: TestEnhancedCopyModule_Validate/valid_file_copy (0.00s)
+    --- PASS: TestEnhancedCopyModule_Validate/missing_src_and_content (0.00s)
+    --- PASS: TestEnhancedCopyModule_Validate/both_src_and_content_specified (0.00s)
+    --- PASS: TestEnhancedCopyModule_Validate/missing_dest (0.00s)
+    --- PASS: TestEnhancedCopyModule_Validate/invalid_mode (0.00s)
+    --- PASS: TestEnhancedCopyModule_Validate/valid_mode_with_leading_zero (0.00s)
+=== RUN   TestEnhancedCopyModule_Documentation
+--- PASS: TestEnhancedCopyModule_Documentation (0.00s)
+=== RUN   TestParseFileMode
+--- PASS: TestParseFileMode (0.00s)
+=== RUN   TestEnhancedCopyModule_RunWithBackup
+📁 Copy Progress: 0.0% - Copying data...
+📁 Copy Progress: 25.0% - Copying data...
+📁 Copy Progress: 50.0% - Copying data...
+📁 Copy Progress: 75.0% - Copying data...
+📁 Copy Progress: 100.0% - Copying data...
+--- PASS: TestEnhancedCopyModule_RunWithBackup (0.00s)
+=== RUN   TestEnhancedCopyModule_RunWithError
+📁 Copy Progress: 0.0% - Copying data...
+📁 Copy Progress: 25.0% - Copying data...
+📁 Copy Progress: 50.0% - Copying data...
+📁 Copy Progress: 75.0% - Copying data...
+📁 Copy Progress: 100.0% - Copying data...
+--- PASS: TestEnhancedCopyModule_RunWithError (0.00s)
+=== RUN   TestEnhancedCopyModule_ProgressIntegration
+📁 Copy Progress: 0.0% - Copying data...
+📁 Copy Progress: 25.0% - Copying data...
+📁 Copy Progress: 50.0% - Copying data...
+📁 Copy Progress: 75.0% - Copying data...
+📁 Copy Progress: 100.0% - Copying data...
+--- PASS: TestEnhancedCopyModule_ProgressIntegration (0.00s)
+=== RUN   TestFileModule_Validate
+=== RUN   TestFileModule_Validate/missing_path
+=== RUN   TestFileModule_Validate/valid_file_state
+=== RUN   TestFileModule_Validate/valid_directory_state
+=== RUN   TestFileModule_Validate/link_state_without_src
+=== RUN   TestFileModule_Validate/link_state_with_src
+=== RUN   TestFileModule_Validate/invalid_state
+=== RUN   TestFileModule_Validate/invalid_mode
+=== RUN   TestFileModule_Validate/valid_mode
+--- PASS: TestFileModule_Validate (0.00s)
+    --- PASS: TestFileModule_Validate/missing_path (0.00s)
+    --- PASS: TestFileModule_Validate/valid_file_state (0.00s)
+    --- PASS: TestFileModule_Validate/valid_directory_state (0.00s)
+    --- PASS: TestFileModule_Validate/link_state_without_src (0.00s)
+    --- PASS: TestFileModule_Validate/link_state_with_src (0.00s)
+    --- PASS: TestFileModule_Validate/invalid_state (0.00s)
+    --- PASS: TestFileModule_Validate/invalid_mode (0.00s)
+    --- PASS: TestFileModule_Validate/valid_mode (0.00s)
+=== RUN   TestFileModule_Run_CreateDirectory
+--- PASS: TestFileModule_Run_CreateDirectory (0.00s)
+=== RUN   TestFileModule_Run_CreateFile
+--- PASS: TestFileModule_Run_CreateFile (0.00s)
+=== RUN   TestFileModule_Run_CreateSymlink
+--- PASS: TestFileModule_Run_CreateSymlink (0.00s)
+=== RUN   TestFileModule_Run_RemoveFile
+--- PASS: TestFileModule_Run_RemoveFile (0.00s)
+=== RUN   TestFileModule_Run_FileAlreadyExists
+--- PASS: TestFileModule_Run_FileAlreadyExists (0.00s)
+=== RUN   TestGemModule
+=== RUN   TestGemModule/ModuleProperties
+=== RUN   TestGemModule/ValidationTests
+=== RUN   TestGemModule/ValidationTests/ValidInstall
+=== RUN   TestGemModule/ValidationTests/ValidWithVersion
+=== RUN   TestGemModule/ValidationTests/ValidRemove
+=== RUN   TestGemModule/ValidationTests/ValidWithUserInstall
+=== RUN   TestGemModule/ValidationTests/MissingName
+=== RUN   TestGemModule/ValidationTests/InvalidState
+=== RUN   TestGemModule/GemInstallationTests
+=== RUN   TestGemModule/GemInstallationTests/InstallGem
+=== RUN   TestGemModule/GemInstallationTests/GemAlreadyInstalled
+=== RUN   TestGemModule/GemInstallationTests/InstallWithVersion
+=== RUN   TestGemModule/GemRemovalTests
+=== RUN   TestGemModule/GemRemovalTests/RemoveGem
+=== RUN   TestGemModule/GemRemovalTests/GemNotInstalled
+--- PASS: TestGemModule (0.00s)
+    --- PASS: TestGemModule/ModuleProperties (0.00s)
+    --- PASS: TestGemModule/ValidationTests (0.00s)
+        --- PASS: TestGemModule/ValidationTests/ValidInstall (0.00s)
+        --- PASS: TestGemModule/ValidationTests/ValidWithVersion (0.00s)
+        --- PASS: TestGemModule/ValidationTests/ValidRemove (0.00s)
+        --- PASS: TestGemModule/ValidationTests/ValidWithUserInstall (0.00s)
+        --- PASS: TestGemModule/ValidationTests/MissingName (0.00s)
+        --- PASS: TestGemModule/ValidationTests/InvalidState (0.00s)
+    --- PASS: TestGemModule/GemInstallationTests (0.00s)
+        --- PASS: TestGemModule/GemInstallationTests/InstallGem (0.00s)
+        --- PASS: TestGemModule/GemInstallationTests/GemAlreadyInstalled (0.00s)
+        --- PASS: TestGemModule/GemInstallationTests/InstallWithVersion (0.00s)
+    --- PASS: TestGemModule/GemRemovalTests (0.00s)
+        --- PASS: TestGemModule/GemRemovalTests/RemoveGem (0.00s)
+        --- PASS: TestGemModule/GemRemovalTests/GemNotInstalled (0.00s)
+=== RUN   TestGroupModule_Validate
+=== RUN   TestGroupModule_Validate/missing_name
+=== RUN   TestGroupModule_Validate/valid_present_state
+=== RUN   TestGroupModule_Validate/valid_absent_state
+=== RUN   TestGroupModule_Validate/invalid_state
+=== RUN   TestGroupModule_Validate/with_gid
+--- PASS: TestGroupModule_Validate (0.00s)
+    --- PASS: TestGroupModule_Validate/missing_name (0.00s)
+    --- PASS: TestGroupModule_Validate/valid_present_state (0.00s)
+    --- PASS: TestGroupModule_Validate/valid_absent_state (0.00s)
+    --- PASS: TestGroupModule_Validate/invalid_state (0.00s)
+    --- PASS: TestGroupModule_Validate/with_gid (0.00s)
+=== RUN   TestGroupModule_Run_CreateGroup
+--- PASS: TestGroupModule_Run_CreateGroup (0.00s)
+=== RUN   TestGroupModule_Run_RemoveGroup
+--- PASS: TestGroupModule_Run_RemoveGroup (0.00s)
+=== RUN   TestGroupModule_Run_UpdateGID
+--- PASS: TestGroupModule_Run_UpdateGID (0.00s)
+=== RUN   TestGroupModule_GroupExists
+=== RUN   TestGroupModule_GroupExists/group_exists
+=== RUN   TestGroupModule_GroupExists/group_does_not_exist
+=== RUN   TestGroupModule_GroupExists/malformed_output
+--- PASS: TestGroupModule_GroupExists (0.00s)
+    --- PASS: TestGroupModule_GroupExists/group_exists (0.00s)
+    --- PASS: TestGroupModule_GroupExists/group_does_not_exist (0.00s)
+    --- PASS: TestGroupModule_GroupExists/malformed_output (0.00s)
+=== RUN   TestIniFileModule_Validate
+=== RUN   TestIniFileModule_Validate/missing_path
+=== RUN   TestIniFileModule_Validate/missing_section_for_present_state
+=== RUN   TestIniFileModule_Validate/missing_option_for_present_state
+=== RUN   TestIniFileModule_Validate/missing_value_for_present_state
+=== RUN   TestIniFileModule_Validate/valid_present_state
+=== RUN   TestIniFileModule_Validate/valid_absent_state_with_option
+=== RUN   TestIniFileModule_Validate/valid_absent_state_with_section_only
+=== RUN   TestIniFileModule_Validate/invalid_state
+=== RUN   TestIniFileModule_Validate/absent_state_without_section_or_option
+--- PASS: TestIniFileModule_Validate (0.00s)
+    --- PASS: TestIniFileModule_Validate/missing_path (0.00s)
+    --- PASS: TestIniFileModule_Validate/missing_section_for_present_state (0.00s)
+    --- PASS: TestIniFileModule_Validate/missing_option_for_present_state (0.00s)
+    --- PASS: TestIniFileModule_Validate/missing_value_for_present_state (0.00s)
+    --- PASS: TestIniFileModule_Validate/valid_present_state (0.00s)
+    --- PASS: TestIniFileModule_Validate/valid_absent_state_with_option (0.00s)
+    --- PASS: TestIniFileModule_Validate/valid_absent_state_with_section_only (0.00s)
+    --- PASS: TestIniFileModule_Validate/invalid_state (0.00s)
+    --- PASS: TestIniFileModule_Validate/absent_state_without_section_or_option (0.00s)
+=== RUN   TestIniFileModule_Run
+=== RUN   TestIniFileModule_Run/create_new_file_with_option
+=== RUN   TestIniFileModule_Run/update_existing_option
+=== RUN   TestIniFileModule_Run/remove_option
+=== RUN   TestIniFileModule_Run/remove_section
+=== RUN   TestIniFileModule_Run/check_mode_-_would_create_file
+=== RUN   TestIniFileModule_Run/no_change_when_value_already_correct
+=== RUN   TestIniFileModule_Run/create_directory_if_needed
+=== RUN   TestIniFileModule_Run/with_backup
+=== RUN   TestIniFileModule_Run/no_extra_spaces_formatting
+=== RUN   TestIniFileModule_Run/exclusive_mode_removes_other_options
+--- PASS: TestIniFileModule_Run (0.00s)
+    --- PASS: TestIniFileModule_Run/create_new_file_with_option (0.00s)
+    --- PASS: TestIniFileModule_Run/update_existing_option (0.00s)
+    --- PASS: TestIniFileModule_Run/remove_option (0.00s)
+    --- PASS: TestIniFileModule_Run/remove_section (0.00s)
+    --- PASS: TestIniFileModule_Run/check_mode_-_would_create_file (0.00s)
+    --- PASS: TestIniFileModule_Run/no_change_when_value_already_correct (0.00s)
+    --- PASS: TestIniFileModule_Run/create_directory_if_needed (0.00s)
+    --- PASS: TestIniFileModule_Run/with_backup (0.00s)
+    --- PASS: TestIniFileModule_Run/no_extra_spaces_formatting (0.00s)
+    --- PASS: TestIniFileModule_Run/exclusive_mode_removes_other_options (0.00s)
+=== RUN   TestIniParser
+=== RUN   TestIniParser/setValue_adds_new_option_to_existing_section
+=== RUN   TestIniParser/setValue_creates_new_section_if_not_exists
+=== RUN   TestIniParser/setValue_updates_existing_option
+=== RUN   TestIniParser/removeOption_removes_specific_option
+=== RUN   TestIniParser/removeSection_removes_entire_section
+=== RUN   TestIniParser/noExtraSpaces_formatting
+=== RUN   TestIniParser/allowNoValue_option
+=== RUN   TestIniParser/exclusive_mode_removes_other_options
+--- PASS: TestIniParser (0.00s)
+    --- PASS: TestIniParser/setValue_adds_new_option_to_existing_section (0.00s)
+    --- PASS: TestIniParser/setValue_creates_new_section_if_not_exists (0.00s)
+    --- PASS: TestIniParser/setValue_updates_existing_option (0.00s)
+    --- PASS: TestIniParser/removeOption_removes_specific_option (0.00s)
+    --- PASS: TestIniParser/removeSection_removes_entire_section (0.00s)
+    --- PASS: TestIniParser/noExtraSpaces_formatting (0.00s)
+    --- PASS: TestIniParser/allowNoValue_option (0.00s)
+    --- PASS: TestIniParser/exclusive_mode_removes_other_options (0.00s)
+=== RUN   TestIptablesModule
+=== RUN   TestIptablesModule/ModuleProperties
+=== RUN   TestIptablesModule/ValidationTests
+=== RUN   TestIptablesModule/ValidationTests/ValidAllowSSH
+=== RUN   TestIptablesModule/ValidationTests/ValidDropRule
+=== RUN   TestIptablesModule/ValidationTests/ValidForwardRule
+=== RUN   TestIptablesModule/ValidationTests/MissingChain
+=== RUN   TestIptablesModule/ValidationTests/ValidCustomChain
+=== RUN   TestIptablesModule/ValidationTests/ValidCustomJump
+=== RUN   TestIptablesModule/ValidationTests/InvalidState
+--- PASS: TestIptablesModule (0.00s)
+    --- PASS: TestIptablesModule/ModuleProperties (0.00s)
+    --- PASS: TestIptablesModule/ValidationTests (0.00s)
+        --- PASS: TestIptablesModule/ValidationTests/ValidAllowSSH (0.00s)
+        --- PASS: TestIptablesModule/ValidationTests/ValidDropRule (0.00s)
+        --- PASS: TestIptablesModule/ValidationTests/ValidForwardRule (0.00s)
+        --- PASS: TestIptablesModule/ValidationTests/MissingChain (0.00s)
+        --- PASS: TestIptablesModule/ValidationTests/ValidCustomChain (0.00s)
+        --- PASS: TestIptablesModule/ValidationTests/ValidCustomJump (0.00s)
+        --- PASS: TestIptablesModule/ValidationTests/InvalidState (0.00s)
+=== RUN   TestLineInFileModule
+=== RUN   TestLineInFileModule/ModuleProperties
+=== RUN   TestLineInFileModule/ValidationTests
+=== RUN   TestLineInFileModule/ValidationTests/ValidPresentLine
+=== RUN   TestLineInFileModule/ValidationTests/MissingPath
+=== RUN   TestLineInFileModule/ValidationTests/PresentWithoutLineOrRegexp
+=== RUN   TestLineInFileModule/ValidationTests/AbsentWithoutLineOrRegexp
+=== RUN   TestLineInFileModule/ValidationTests/InvalidState
+=== RUN   TestLineInFileModule/ValidationTests/InvalidRegexp
+=== RUN   TestLineInFileModule/ValidationTests/MutuallyExclusiveInserts
+=== RUN   TestLineInFileModule/PresentLineTests
+=== RUN   TestLineInFileModule/AddNewLine
+=== RUN   TestLineInFileModule/LineAlreadyExists
+=== RUN   TestLineInFileModule/CreateNewFile
+=== RUN   TestLineInFileModule/AbsentLineTests
+=== RUN   TestLineInFileModule/RemoveExistingLine
+=== RUN   TestLineInFileModule/LineNotPresent
+=== RUN   TestLineInFileModule/RegexTests
+=== RUN   TestLineInFileModule/ReplaceLineWithRegex
+=== RUN   TestLineInFileModule/RemoveLineWithRegex
+=== RUN   TestLineInFileModule/InsertPositionTests
+=== RUN   TestLineInFileModule/InsertAfterPattern
+=== RUN   TestLineInFileModule/InsertBeforePattern
+=== RUN   TestLineInFileModule/CheckModeTests
+=== RUN   TestLineInFileModule/AddLineCheckMode
+=== RUN   TestLineInFileModule/DiffModeTests
+=== RUN   TestLineInFileModule/AddLineDiffMode
+=== RUN   TestLineInFileModule/BackupTests
+=== RUN   TestLineInFileModule/CreateBackup
+=== RUN   TestLineInFileModule/ErrorHandlingTests
+=== RUN   TestLineInFileModule/FileNotExists
+=== RUN   TestLineInFileModule/WritePermissionDenied
+--- PASS: TestLineInFileModule (0.00s)
+    --- PASS: TestLineInFileModule/ModuleProperties (0.00s)
+    --- PASS: TestLineInFileModule/ValidationTests (0.00s)
+        --- PASS: TestLineInFileModule/ValidationTests/ValidPresentLine (0.00s)
+        --- PASS: TestLineInFileModule/ValidationTests/MissingPath (0.00s)
+        --- PASS: TestLineInFileModule/ValidationTests/PresentWithoutLineOrRegexp (0.00s)
+        --- PASS: TestLineInFileModule/ValidationTests/AbsentWithoutLineOrRegexp (0.00s)
+        --- PASS: TestLineInFileModule/ValidationTests/InvalidState (0.00s)
+        --- PASS: TestLineInFileModule/ValidationTests/InvalidRegexp (0.00s)
+        --- PASS: TestLineInFileModule/ValidationTests/MutuallyExclusiveInserts (0.00s)
+    --- PASS: TestLineInFileModule/AddNewLine (0.00s)
+    --- PASS: TestLineInFileModule/LineAlreadyExists (0.00s)
+    --- PASS: TestLineInFileModule/CreateNewFile (0.00s)
+    --- PASS: TestLineInFileModule/PresentLineTests (0.00s)
+    --- PASS: TestLineInFileModule/RemoveExistingLine (0.00s)
+    --- PASS: TestLineInFileModule/LineNotPresent (0.00s)
+    --- PASS: TestLineInFileModule/AbsentLineTests (0.00s)
+    --- PASS: TestLineInFileModule/ReplaceLineWithRegex (0.00s)
+    --- PASS: TestLineInFileModule/RemoveLineWithRegex (0.00s)
+    --- PASS: TestLineInFileModule/RegexTests (0.00s)
+    --- PASS: TestLineInFileModule/InsertAfterPattern (0.00s)
+    --- PASS: TestLineInFileModule/InsertBeforePattern (0.00s)
+    --- PASS: TestLineInFileModule/InsertPositionTests (0.00s)
+    --- PASS: TestLineInFileModule/AddLineCheckMode (0.00s)
+    --- PASS: TestLineInFileModule/CheckModeTests (0.00s)
+    --- PASS: TestLineInFileModule/AddLineDiffMode (0.00s)
+    --- PASS: TestLineInFileModule/DiffModeTests (0.00s)
+    --- PASS: TestLineInFileModule/CreateBackup (0.00s)
+    --- PASS: TestLineInFileModule/BackupTests (0.00s)
+    --- PASS: TestLineInFileModule/FileNotExists (0.00s)
+    --- PASS: TestLineInFileModule/WritePermissionDenied (0.00s)
+    --- PASS: TestLineInFileModule/ErrorHandlingTests (0.00s)
+=== RUN   TestNewModuleRegistry
+--- PASS: TestNewModuleRegistry (0.00s)
+=== RUN   TestModuleRegistryRegisterAndGet
+--- PASS: TestModuleRegistryRegisterAndGet (0.00s)
+=== RUN   TestModuleRegistryGetNonexistent
+--- PASS: TestModuleRegistryGetNonexistent (0.00s)
+=== RUN   TestCommandModuleValidation
+=== RUN   TestCommandModuleValidation/valid_args
+=== RUN   TestCommandModuleValidation/missing_cmd
+=== RUN   TestCommandModuleValidation/invalid_timeout_type
+=== RUN   TestCommandModuleValidation/negative_timeout
+--- PASS: TestCommandModuleValidation (0.00s)
+    --- PASS: TestCommandModuleValidation/valid_args (0.00s)
+    --- PASS: TestCommandModuleValidation/missing_cmd (0.00s)
+    --- PASS: TestCommandModuleValidation/invalid_timeout_type (0.00s)
+    --- PASS: TestCommandModuleValidation/negative_timeout (0.00s)
+=== RUN   TestCommandModuleRun
+=== RUN   TestCommandModuleRun/simple_echo_command
+=== RUN   TestCommandModuleRun/command_with_working_directory
+=== RUN   TestCommandModuleRun/check_mode
+--- PASS: TestCommandModuleRun (0.00s)
+    --- PASS: TestCommandModuleRun/simple_echo_command (0.00s)
+    --- PASS: TestCommandModuleRun/command_with_working_directory (0.00s)
+    --- PASS: TestCommandModuleRun/check_mode (0.00s)
+=== RUN   TestShellModuleValidation
+--- PASS: TestShellModuleValidation (0.00s)
+=== RUN   TestCopyModuleValidation
+=== RUN   TestCopyModuleValidation/valid_with_src
+=== RUN   TestCopyModuleValidation/valid_with_content
+=== RUN   TestCopyModuleValidation/missing_dest
+=== RUN   TestCopyModuleValidation/both_src_and_content
+=== RUN   TestCopyModuleValidation/neither_src_nor_content
+--- PASS: TestCopyModuleValidation (0.00s)
+    --- PASS: TestCopyModuleValidation/valid_with_src (0.00s)
+    --- PASS: TestCopyModuleValidation/valid_with_content (0.00s)
+    --- PASS: TestCopyModuleValidation/missing_dest (0.00s)
+    --- PASS: TestCopyModuleValidation/both_src_and_content (0.00s)
+    --- PASS: TestCopyModuleValidation/neither_src_nor_content (0.00s)
+=== RUN   TestSetupModuleRun
+--- PASS: TestSetupModuleRun (0.04s)
+=== RUN   TestDebugModuleValidation
+=== RUN   TestDebugModuleValidation/valid_with_msg
+=== RUN   TestDebugModuleValidation/valid_with_var
+=== RUN   TestDebugModuleValidation/both_msg_and_var
+=== RUN   TestDebugModuleValidation/neither_msg_nor_var
+--- PASS: TestDebugModuleValidation (0.00s)
+    --- PASS: TestDebugModuleValidation/valid_with_msg (0.00s)
+    --- PASS: TestDebugModuleValidation/valid_with_var (0.00s)
+    --- PASS: TestDebugModuleValidation/both_msg_and_var (0.00s)
+    --- PASS: TestDebugModuleValidation/neither_msg_nor_var (0.00s)
+=== RUN   TestDebugModuleRun
+--- PASS: TestDebugModuleRun (0.00s)
+=== RUN   TestBaseModuleHelpers
+--- PASS: TestBaseModuleHelpers (0.00s)
+=== RUN   TestModuleRegistryUnregister
+--- PASS: TestModuleRegistryUnregister (0.00s)
+=== RUN   TestMountModule
+=== RUN   TestMountModule/ModuleProperties
+=== RUN   TestMountModule/ValidationTests
+=== RUN   TestMountModule/ValidationTests/ValidMount
+=== RUN   TestMountModule/ValidationTests/ValidUnmount
+=== RUN   TestMountModule/ValidationTests/ValidRemount
+=== RUN   TestMountModule/ValidationTests/ValidAbsent
+=== RUN   TestMountModule/ValidationTests/MissingPath
+=== RUN   TestMountModule/ValidationTests/MissingSrcForMount
+=== RUN   TestMountModule/ValidationTests/InvalidState
+--- PASS: TestMountModule (0.00s)
+    --- PASS: TestMountModule/ModuleProperties (0.00s)
+    --- PASS: TestMountModule/ValidationTests (0.00s)
+        --- PASS: TestMountModule/ValidationTests/ValidMount (0.00s)
+        --- PASS: TestMountModule/ValidationTests/ValidUnmount (0.00s)
+        --- PASS: TestMountModule/ValidationTests/ValidRemount (0.00s)
+        --- PASS: TestMountModule/ValidationTests/ValidAbsent (0.00s)
+        --- PASS: TestMountModule/ValidationTests/MissingPath (0.00s)
+        --- PASS: TestMountModule/ValidationTests/MissingSrcForMount (0.00s)
+        --- PASS: TestMountModule/ValidationTests/InvalidState (0.00s)
+=== RUN   TestNpmModule
+=== RUN   TestNpmModule/ModuleProperties
+=== RUN   TestNpmModule/ValidationTests
+=== RUN   TestNpmModule/ValidationTests/ValidInstall
+=== RUN   TestNpmModule/ValidationTests/ValidWithVersion
+=== RUN   TestNpmModule/ValidationTests/ValidGlobalInstall
+=== RUN   TestNpmModule/ValidationTests/ValidRemove
+=== RUN   TestNpmModule/ValidationTests/ValidWithoutName
+=== RUN   TestNpmModule/ValidationTests/InvalidState
+--- PASS: TestNpmModule (0.00s)
+    --- PASS: TestNpmModule/ModuleProperties (0.00s)
+    --- PASS: TestNpmModule/ValidationTests (0.00s)
+        --- PASS: TestNpmModule/ValidationTests/ValidInstall (0.00s)
+        --- PASS: TestNpmModule/ValidationTests/ValidWithVersion (0.00s)
+        --- PASS: TestNpmModule/ValidationTests/ValidGlobalInstall (0.00s)
+        --- PASS: TestNpmModule/ValidationTests/ValidRemove (0.00s)
+        --- PASS: TestNpmModule/ValidationTests/ValidWithoutName (0.00s)
+        --- PASS: TestNpmModule/ValidationTests/InvalidState (0.00s)
+=== RUN   TestPackageModule_Validate
+=== RUN   TestPackageModule_Validate/missing_name
+=== RUN   TestPackageModule_Validate/valid_present_state
+=== RUN   TestPackageModule_Validate/valid_absent_state
+=== RUN   TestPackageModule_Validate/valid_latest_state
+=== RUN   TestPackageModule_Validate/invalid_state
+=== RUN   TestPackageModule_Validate/multiple_packages
+--- PASS: TestPackageModule_Validate (0.00s)
+    --- PASS: TestPackageModule_Validate/missing_name (0.00s)
+    --- PASS: TestPackageModule_Validate/valid_present_state (0.00s)
+    --- PASS: TestPackageModule_Validate/valid_absent_state (0.00s)
+    --- PASS: TestPackageModule_Validate/valid_latest_state (0.00s)
+    --- PASS: TestPackageModule_Validate/invalid_state (0.00s)
+    --- PASS: TestPackageModule_Validate/multiple_packages (0.00s)
+=== RUN   TestPackageModule_Run_InstallPackage
+--- PASS: TestPackageModule_Run_InstallPackage (0.00s)
+=== RUN   TestPackageModule_Run_RemovePackage
+--- PASS: TestPackageModule_Run_RemovePackage (0.00s)
+=== RUN   TestPackageModule_Run_UpdateCache
+--- PASS: TestPackageModule_Run_UpdateCache (0.00s)
+=== RUN   TestPackageModule_ParsePackageList
+=== RUN   TestPackageModule_ParsePackageList/single_package
+=== RUN   TestPackageModule_ParsePackageList/comma_separated
+=== RUN   TestPackageModule_ParsePackageList/space_separated
+=== RUN   TestPackageModule_ParsePackageList/mixed_separators
+=== RUN   TestPackageModule_ParsePackageList/with_extra_spaces
+--- PASS: TestPackageModule_ParsePackageList (0.00s)
+    --- PASS: TestPackageModule_ParsePackageList/single_package (0.00s)
+    --- PASS: TestPackageModule_ParsePackageList/comma_separated (0.00s)
+    --- PASS: TestPackageModule_ParsePackageList/space_separated (0.00s)
+    --- PASS: TestPackageModule_ParsePackageList/mixed_separators (0.00s)
+    --- PASS: TestPackageModule_ParsePackageList/with_extra_spaces (0.00s)
+=== RUN   TestPingModule_Validate
+=== RUN   TestPingModule_Validate/no_arguments
+=== RUN   TestPingModule_Validate/with_extra_arguments
+--- PASS: TestPingModule_Validate (0.00s)
+    --- PASS: TestPingModule_Validate/no_arguments (0.00s)
+    --- PASS: TestPingModule_Validate/with_extra_arguments (0.00s)
+=== RUN   TestPingModule_Run_Success
+--- PASS: TestPingModule_Run_Success (0.00s)
+=== RUN   TestPingModule_Run_ConnectionFailed
+--- PASS: TestPingModule_Run_ConnectionFailed (0.00s)
+=== RUN   TestPingModule_Run_NotConnected
+--- PASS: TestPingModule_Run_NotConnected (0.00s)
+=== RUN   TestPingModule_Run_NilConnection
+--- PASS: TestPingModule_Run_NilConnection (0.00s)
+=== RUN   TestPingModule_Documentation
+--- PASS: TestPingModule_Documentation (0.00s)
+=== RUN   TestPipModule
+=== RUN   TestPipModule/ModuleProperties
+=== RUN   TestPipModule/ValidationTests
+=== RUN   TestPipModule/ValidationTests/ValidInstall
+=== RUN   TestPipModule/ValidationTests/ValidWithVersion
+=== RUN   TestPipModule/ValidationTests/ValidRequirementsFile
+=== RUN   TestPipModule/ValidationTests/ValidVirtualenv
+=== RUN   TestPipModule/ValidationTests/MissingNameAndRequirements
+=== RUN   TestPipModule/ValidationTests/InvalidState
+--- PASS: TestPipModule (0.00s)
+    --- PASS: TestPipModule/ModuleProperties (0.00s)
+    --- PASS: TestPipModule/ValidationTests (0.00s)
+        --- PASS: TestPipModule/ValidationTests/ValidInstall (0.00s)
+        --- PASS: TestPipModule/ValidationTests/ValidWithVersion (0.00s)
+        --- PASS: TestPipModule/ValidationTests/ValidRequirementsFile (0.00s)
+        --- PASS: TestPipModule/ValidationTests/ValidVirtualenv (0.00s)
+        --- PASS: TestPipModule/ValidationTests/MissingNameAndRequirements (0.00s)
+        --- PASS: TestPipModule/ValidationTests/InvalidState (0.00s)
+=== RUN   TestReplaceModule
+=== RUN   TestReplaceModule/ModuleProperties
+=== RUN   TestReplaceModule/ValidationTests
+=== RUN   TestReplaceModule/ValidationTests/ValidReplaceOperation
+=== RUN   TestReplaceModule/ValidationTests/MissingPath
+=== RUN   TestReplaceModule/ValidationTests/MissingRegexp
+=== RUN   TestReplaceModule/ValidationTests/InvalidRegexp
+=== RUN   TestReplaceModule/ValidationTests/ValidRegexpWithGroups
+=== RUN   TestReplaceModule/ValidationTests/EmptyReplace
+=== RUN   TestReplaceModule/ValidationTests/WithBackup
+=== RUN   TestReplaceModule/ValidationTests/WithValidation
+=== RUN   TestReplaceModule/ValidationTests/InvalidEncoding
+=== RUN   TestReplaceModule/ReplaceOperationTests
+=== RUN   TestReplaceModule/SimpleStringReplace
+=== RUN   TestReplaceModule/RegexReplaceWithGroups
+=== RUN   TestReplaceModule/MultipleOccurrences
+=== RUN   TestReplaceModule/RemoveText
+=== RUN   TestReplaceModule/NoChangesNeeded
+=== RUN   TestReplaceModule/BackupTests
+=== RUN   TestReplaceModule/CreateBackup
+=== RUN   TestReplaceModule/CheckModeTests
+=== RUN   TestReplaceModule/ReplaceCheckMode
+=== RUN   TestReplaceModule/DiffModeTests
+=== RUN   TestReplaceModule/ReplaceDiffMode
+=== RUN   TestReplaceModule/ErrorHandlingTests
+=== RUN   TestReplaceModule/FileNotExists
+=== RUN   TestReplaceModule/WritePermissionDenied
+=== RUN   TestReplaceModule/BackupCreationFailed
+=== RUN   TestReplaceModule/ValidationFailed
+--- PASS: TestReplaceModule (0.00s)
+    --- PASS: TestReplaceModule/ModuleProperties (0.00s)
+    --- PASS: TestReplaceModule/ValidationTests (0.00s)
+        --- PASS: TestReplaceModule/ValidationTests/ValidReplaceOperation (0.00s)
+        --- PASS: TestReplaceModule/ValidationTests/MissingPath (0.00s)
+        --- PASS: TestReplaceModule/ValidationTests/MissingRegexp (0.00s)
+        --- PASS: TestReplaceModule/ValidationTests/InvalidRegexp (0.00s)
+        --- PASS: TestReplaceModule/ValidationTests/ValidRegexpWithGroups (0.00s)
+        --- PASS: TestReplaceModule/ValidationTests/EmptyReplace (0.00s)
+        --- PASS: TestReplaceModule/ValidationTests/WithBackup (0.00s)
+        --- PASS: TestReplaceModule/ValidationTests/WithValidation (0.00s)
+        --- PASS: TestReplaceModule/ValidationTests/InvalidEncoding (0.00s)
+    --- PASS: TestReplaceModule/SimpleStringReplace (0.00s)
+    --- PASS: TestReplaceModule/RegexReplaceWithGroups (0.00s)
+    --- PASS: TestReplaceModule/MultipleOccurrences (0.00s)
+    --- PASS: TestReplaceModule/RemoveText (0.00s)
+    --- PASS: TestReplaceModule/NoChangesNeeded (0.00s)
+    --- PASS: TestReplaceModule/ReplaceOperationTests (0.00s)
+    --- PASS: TestReplaceModule/CreateBackup (0.00s)
+    --- PASS: TestReplaceModule/BackupTests (0.00s)
+    --- PASS: TestReplaceModule/ReplaceCheckMode (0.00s)
+    --- PASS: TestReplaceModule/CheckModeTests (0.00s)
+    --- PASS: TestReplaceModule/ReplaceDiffMode (0.00s)
+    --- PASS: TestReplaceModule/DiffModeTests (0.00s)
+    --- PASS: TestReplaceModule/FileNotExists (0.00s)
+    --- PASS: TestReplaceModule/WritePermissionDenied (0.00s)
+    --- PASS: TestReplaceModule/BackupCreationFailed (0.00s)
+    --- PASS: TestReplaceModule/ValidationFailed (0.00s)
+    --- PASS: TestReplaceModule/ErrorHandlingTests (0.00s)
+=== RUN   TestRepositoryModule
+=== RUN   TestRepositoryModule/ModuleProperties
+=== RUN   TestRepositoryModule/ValidationTests
+=== RUN   TestRepositoryModule/ValidationTests/minimal_valid_args_with_name
+=== RUN   TestRepositoryModule/ValidationTests/full_args_with_baseurl
+=== RUN   TestRepositoryModule/ValidationTests/apt_repository
+=== RUN   TestRepositoryModule/ValidationTests/missing_required_name_and_repo
+=== RUN   TestRepositoryModule/ValidationTests/invalid_state
+=== RUN   TestRepositoryModule/ValidationTests/invalid_baseurl
+--- PASS: TestRepositoryModule (0.00s)
+    --- PASS: TestRepositoryModule/ModuleProperties (0.00s)
+    --- PASS: TestRepositoryModule/ValidationTests (0.00s)
+        --- PASS: TestRepositoryModule/ValidationTests/minimal_valid_args_with_name (0.00s)
+        --- PASS: TestRepositoryModule/ValidationTests/full_args_with_baseurl (0.00s)
+        --- PASS: TestRepositoryModule/ValidationTests/apt_repository (0.00s)
+        --- PASS: TestRepositoryModule/ValidationTests/missing_required_name_and_repo (0.00s)
+        --- PASS: TestRepositoryModule/ValidationTests/invalid_state (0.00s)
+        --- PASS: TestRepositoryModule/ValidationTests/invalid_baseurl (0.00s)
+=== RUN   TestServiceModule_Validate
+=== RUN   TestServiceModule_Validate/missing_name
+=== RUN   TestServiceModule_Validate/valid_start_state
+=== RUN   TestServiceModule_Validate/valid_stop_state
+=== RUN   TestServiceModule_Validate/invalid_state
+=== RUN   TestServiceModule_Validate/with_enabled
+--- PASS: TestServiceModule_Validate (0.00s)
+    --- PASS: TestServiceModule_Validate/missing_name (0.00s)
+    --- PASS: TestServiceModule_Validate/valid_start_state (0.00s)
+    --- PASS: TestServiceModule_Validate/valid_stop_state (0.00s)
+    --- PASS: TestServiceModule_Validate/invalid_state (0.00s)
+    --- PASS: TestServiceModule_Validate/with_enabled (0.00s)
+=== RUN   TestServiceModule_Run_StartService
+--- PASS: TestServiceModule_Run_StartService (0.00s)
+=== RUN   TestServiceModule_Run_StopService
+--- PASS: TestServiceModule_Run_StopService (0.00s)
+=== RUN   TestServiceModule_Run_EnableService
+--- PASS: TestServiceModule_Run_EnableService (0.00s)
+=== RUN   TestStreamingShellModule
+=== RUN   TestStreamingShellModule/BasicStreaming
+=== RUN   TestStreamingShellModule/StreamingDisabled
+=== RUN   TestStreamingShellModule/NonStreamingConnection
+=== RUN   TestStreamingShellModule/ValidationTests
+=== RUN   TestStreamingShellModule/ValidationTests/MissingCommand
+=== RUN   TestStreamingShellModule/ValidationTests/ValidCommand
+=== RUN   TestStreamingShellModule/ValidationTests/ValidTimeout
+=== RUN   TestStreamingShellModule/ValidationTests/InvalidTimeout
+=== RUN   TestStreamingShellModule/ValidationTests/InvalidTimeoutType
+=== RUN   TestStreamingShellModule/StreamingWithTimeout
+=== RUN   TestStreamingShellModule/Documentation
+--- PASS: TestStreamingShellModule (0.42s)
+    --- PASS: TestStreamingShellModule/BasicStreaming (0.02s)
+    --- PASS: TestStreamingShellModule/StreamingDisabled (0.00s)
+    --- PASS: TestStreamingShellModule/NonStreamingConnection (0.00s)
+    --- PASS: TestStreamingShellModule/ValidationTests (0.00s)
+        --- PASS: TestStreamingShellModule/ValidationTests/MissingCommand (0.00s)
+        --- PASS: TestStreamingShellModule/ValidationTests/ValidCommand (0.00s)
+        --- PASS: TestStreamingShellModule/ValidationTests/ValidTimeout (0.00s)
+        --- PASS: TestStreamingShellModule/ValidationTests/InvalidTimeout (0.00s)
+        --- PASS: TestStreamingShellModule/ValidationTests/InvalidTimeoutType (0.00s)
+    --- PASS: TestStreamingShellModule/StreamingWithTimeout (0.40s)
+    --- PASS: TestStreamingShellModule/Documentation (0.00s)
+=== RUN   TestStreamingShellModuleName
+--- PASS: TestStreamingShellModuleName (0.00s)
+=== RUN   TestSysctlModule
+=== RUN   TestSysctlModule/ModuleProperties
+=== RUN   TestSysctlModule/ValidationTests
+=== RUN   TestSysctlModule/ValidationTests/ValidSetValue
+=== RUN   TestSysctlModule/ValidationTests/ValidPersistent
+=== RUN   TestSysctlModule/ValidationTests/ValidRemove
+=== RUN   TestSysctlModule/ValidationTests/MissingName
+=== RUN   TestSysctlModule/ValidationTests/MissingValueForPresent
+=== RUN   TestSysctlModule/ValidationTests/InvalidState
+--- PASS: TestSysctlModule (0.00s)
+    --- PASS: TestSysctlModule/ModuleProperties (0.00s)
+    --- PASS: TestSysctlModule/ValidationTests (0.00s)
+        --- PASS: TestSysctlModule/ValidationTests/ValidSetValue (0.00s)
+        --- PASS: TestSysctlModule/ValidationTests/ValidPersistent (0.00s)
+        --- PASS: TestSysctlModule/ValidationTests/ValidRemove (0.00s)
+        --- PASS: TestSysctlModule/ValidationTests/MissingName (0.00s)
+        --- PASS: TestSysctlModule/ValidationTests/MissingValueForPresent (0.00s)
+        --- PASS: TestSysctlModule/ValidationTests/InvalidState (0.00s)
+=== RUN   TestSystemdModule
+=== RUN   TestSystemdModule/ModuleProperties
+=== RUN   TestSystemdModule/ValidationTests
+=== RUN   TestSystemdModule/ValidationTests/ValidName
+=== RUN   TestSystemdModule/ValidationTests/MissingName
+=== RUN   TestSystemdModule/ValidationTests/EmptyName
+=== RUN   TestSystemdModule/ValidationTests/InvalidState
+=== RUN   TestSystemdModule/ValidationTests/ValidEnabledState
+=== RUN   TestSystemdModule/ServiceStateTests
+=== RUN   TestSystemdModule/StartInactiveService
+=== RUN   TestSystemdModule/StartAlreadyActiveService
+=== RUN   TestSystemdModule/StopActiveService
+=== RUN   TestSystemdModule/RestartService
+=== RUN   TestSystemdModule/ReloadService
+=== RUN   TestSystemdModule/EnabledStateTests
+=== RUN   TestSystemdModule/EnableDisabledService
+=== RUN   TestSystemdModule/DisableEnabledService
+=== RUN   TestSystemdModule/StartAndEnableService
+=== RUN   TestSystemdModule/CheckModeTests
+=== RUN   TestSystemdModule/StartServiceCheckMode
+=== RUN   TestSystemdModule/EnableServiceCheckMode
+=== RUN   TestSystemdModule/DiffModeTests
+=== RUN   TestSystemdModule/StartServiceDiffMode
+=== RUN   TestSystemdModule/EnableServiceDiffMode
+=== RUN   TestSystemdModule/ErrorHandlingTests
+=== RUN   TestSystemdModule/ServiceNotFound
+=== RUN   TestSystemdModule/PermissionDenied
+--- PASS: TestSystemdModule (0.00s)
+    --- PASS: TestSystemdModule/ModuleProperties (0.00s)
+    --- PASS: TestSystemdModule/ValidationTests (0.00s)
+        --- PASS: TestSystemdModule/ValidationTests/ValidName (0.00s)
+        --- PASS: TestSystemdModule/ValidationTests/MissingName (0.00s)
+        --- PASS: TestSystemdModule/ValidationTests/EmptyName (0.00s)
+        --- PASS: TestSystemdModule/ValidationTests/InvalidState (0.00s)
+        --- PASS: TestSystemdModule/ValidationTests/ValidEnabledState (0.00s)
+    --- PASS: TestSystemdModule/StartInactiveService (0.00s)
+    --- PASS: TestSystemdModule/StartAlreadyActiveService (0.00s)
+    --- PASS: TestSystemdModule/StopActiveService (0.00s)
+    --- PASS: TestSystemdModule/RestartService (0.00s)
+    --- PASS: TestSystemdModule/ReloadService (0.00s)
+    --- PASS: TestSystemdModule/ServiceStateTests (0.00s)
+    --- PASS: TestSystemdModule/EnableDisabledService (0.00s)
+    --- PASS: TestSystemdModule/DisableEnabledService (0.00s)
+    --- PASS: TestSystemdModule/StartAndEnableService (0.00s)
+    --- PASS: TestSystemdModule/EnabledStateTests (0.00s)
+    --- PASS: TestSystemdModule/StartServiceCheckMode (0.00s)
+    --- PASS: TestSystemdModule/EnableServiceCheckMode (0.00s)
+    --- PASS: TestSystemdModule/CheckModeTests (0.00s)
+    --- PASS: TestSystemdModule/StartServiceDiffMode (0.00s)
+    --- PASS: TestSystemdModule/EnableServiceDiffMode (0.00s)
+    --- PASS: TestSystemdModule/DiffModeTests (0.00s)
+    --- PASS: TestSystemdModule/ServiceNotFound (0.00s)
+    --- PASS: TestSystemdModule/PermissionDenied (0.00s)
+    --- PASS: TestSystemdModule/ErrorHandlingTests (0.00s)
+=== RUN   TestTemplateModule_Validate
+=== RUN   TestTemplateModule_Validate/missing_src
+=== RUN   TestTemplateModule_Validate/missing_dest
+=== RUN   TestTemplateModule_Validate/valid_args
+=== RUN   TestTemplateModule_Validate/with_backup
+--- PASS: TestTemplateModule_Validate (0.00s)
+    --- PASS: TestTemplateModule_Validate/missing_src (0.00s)
+    --- PASS: TestTemplateModule_Validate/missing_dest (0.00s)
+    --- PASS: TestTemplateModule_Validate/valid_args (0.00s)
+    --- PASS: TestTemplateModule_Validate/with_backup (0.00s)
+=== RUN   TestTemplateModule_RenderTemplate
+=== RUN   TestTemplateModule_RenderTemplate/simple_variable
+=== RUN   TestTemplateModule_RenderTemplate/multiple_variables
+=== RUN   TestTemplateModule_RenderTemplate/conditional
+=== RUN   TestTemplateModule_RenderTemplate/range_loop
+--- PASS: TestTemplateModule_RenderTemplate (0.00s)
+    --- PASS: TestTemplateModule_RenderTemplate/simple_variable (0.00s)
+    --- PASS: TestTemplateModule_RenderTemplate/multiple_variables (0.00s)
+    --- PASS: TestTemplateModule_RenderTemplate/conditional (0.00s)
+    --- PASS: TestTemplateModule_RenderTemplate/range_loop (0.00s)
+=== RUN   TestTemplateModule_Run_NewFile
+--- PASS: TestTemplateModule_Run_NewFile (0.00s)
+=== RUN   TestTemplateModule_Run_ExistingFileSameContent
+--- PASS: TestTemplateModule_Run_ExistingFileSameContent (0.00s)
+=== RUN   TestTemplateModule_CalculateChecksum
+=== RUN   TestTemplateModule_CalculateChecksum/empty_string
+=== RUN   TestTemplateModule_CalculateChecksum/simple_string
+=== RUN   TestTemplateModule_CalculateChecksum/same_content_same_checksum
+--- PASS: TestTemplateModule_CalculateChecksum (0.00s)
+    --- PASS: TestTemplateModule_CalculateChecksum/empty_string (0.00s)
+    --- PASS: TestTemplateModule_CalculateChecksum/simple_string (0.00s)
+    --- PASS: TestTemplateModule_CalculateChecksum/same_content_same_checksum (0.00s)
+=== RUN   TestUnarchiveModule
+=== RUN   TestUnarchiveModule/ModuleProperties
+=== RUN   TestUnarchiveModule/ValidationTests
+=== RUN   TestUnarchiveModule/ValidationTests/ValidExtractTarGz
+=== RUN   TestUnarchiveModule/ValidationTests/ValidExtractZip
+=== RUN   TestUnarchiveModule/ValidationTests/ValidRemoteSource
+=== RUN   TestUnarchiveModule/ValidationTests/ValidWithOwner
+=== RUN   TestUnarchiveModule/ValidationTests/MissingSrc
+=== RUN   TestUnarchiveModule/ValidationTests/MissingDest
+--- PASS: TestUnarchiveModule (0.00s)
+    --- PASS: TestUnarchiveModule/ModuleProperties (0.00s)
+    --- PASS: TestUnarchiveModule/ValidationTests (0.00s)
+        --- PASS: TestUnarchiveModule/ValidationTests/ValidExtractTarGz (0.00s)
+        --- PASS: TestUnarchiveModule/ValidationTests/ValidExtractZip (0.00s)
+        --- PASS: TestUnarchiveModule/ValidationTests/ValidRemoteSource (0.00s)
+        --- PASS: TestUnarchiveModule/ValidationTests/ValidWithOwner (0.00s)
+        --- PASS: TestUnarchiveModule/ValidationTests/MissingSrc (0.00s)
+        --- PASS: TestUnarchiveModule/ValidationTests/MissingDest (0.00s)
+=== RUN   TestUserModule_Validate
+=== RUN   TestUserModule_Validate/missing_name
+=== RUN   TestUserModule_Validate/valid_present_state
+=== RUN   TestUserModule_Validate/valid_absent_state
+=== RUN   TestUserModule_Validate/invalid_state
+=== RUN   TestUserModule_Validate/with_uid
+--- PASS: TestUserModule_Validate (0.00s)
+    --- PASS: TestUserModule_Validate/missing_name (0.00s)
+    --- PASS: TestUserModule_Validate/valid_present_state (0.00s)
+    --- PASS: TestUserModule_Validate/valid_absent_state (0.00s)
+    --- PASS: TestUserModule_Validate/invalid_state (0.00s)
+    --- PASS: TestUserModule_Validate/with_uid (0.00s)
+=== RUN   TestUserModule_Run_CreateUser
+--- PASS: TestUserModule_Run_CreateUser (0.00s)
+=== RUN   TestUserModule_Run_RemoveUser
+--- PASS: TestUserModule_Run_RemoveUser (0.00s)
+=== RUN   TestUserModule_Run_UpdateUser
+--- PASS: TestUserModule_Run_UpdateUser (0.00s)
+=== RUN   TestUserModule_ToInt
+=== RUN   TestUserModule_ToInt/int
+=== RUN   TestUserModule_ToInt/int64
+=== RUN   TestUserModule_ToInt/float64
+=== RUN   TestUserModule_ToInt/string
+=== RUN   TestUserModule_ToInt/invalid_string
+=== RUN   TestUserModule_ToInt/unsupported_type
+--- PASS: TestUserModule_ToInt (0.00s)
+    --- PASS: TestUserModule_ToInt/int (0.00s)
+    --- PASS: TestUserModule_ToInt/int64 (0.00s)
+    --- PASS: TestUserModule_ToInt/float64 (0.00s)
+    --- PASS: TestUserModule_ToInt/string (0.00s)
+    --- PASS: TestUserModule_ToInt/invalid_string (0.00s)
+    --- PASS: TestUserModule_ToInt/unsupported_type (0.00s)
+=== RUN   TestXMLModule_Validate
+=== RUN   TestXMLModule_Validate/missing_path
+=== RUN   TestXMLModule_Validate/missing_xpath
+=== RUN   TestXMLModule_Validate/missing_value_for_present_state
+=== RUN   TestXMLModule_Validate/valid_present_state_with_value
+=== RUN   TestXMLModule_Validate/valid_present_state_with_attribute
+=== RUN   TestXMLModule_Validate/valid_present_state_with_add_children
+=== RUN   TestXMLModule_Validate/valid_present_state_with_set_children
+=== RUN   TestXMLModule_Validate/valid_absent_state
+=== RUN   TestXMLModule_Validate/invalid_state
+=== RUN   TestXMLModule_Validate/count_with_absent_state
+=== RUN   TestXMLModule_Validate/valid_namespaces
+=== RUN   TestXMLModule_Validate/invalid_namespace_type
+--- PASS: TestXMLModule_Validate (0.00s)
+    --- PASS: TestXMLModule_Validate/missing_path (0.00s)
+    --- PASS: TestXMLModule_Validate/missing_xpath (0.00s)
+    --- PASS: TestXMLModule_Validate/missing_value_for_present_state (0.00s)
+    --- PASS: TestXMLModule_Validate/valid_present_state_with_value (0.00s)
+    --- PASS: TestXMLModule_Validate/valid_present_state_with_attribute (0.00s)
+    --- PASS: TestXMLModule_Validate/valid_present_state_with_add_children (0.00s)
+    --- PASS: TestXMLModule_Validate/valid_present_state_with_set_children (0.00s)
+    --- PASS: TestXMLModule_Validate/valid_absent_state (0.00s)
+    --- PASS: TestXMLModule_Validate/invalid_state (0.00s)
+    --- PASS: TestXMLModule_Validate/count_with_absent_state (0.00s)
+    --- PASS: TestXMLModule_Validate/valid_namespaces (0.00s)
+    --- PASS: TestXMLModule_Validate/invalid_namespace_type (0.00s)
+=== RUN   TestXMLModule_Run
+=== RUN   TestXMLModule_Run/create_new_file_with_element
+=== RUN   TestXMLModule_Run/update_existing_element_value
+=== RUN   TestXMLModule_Run/remove_element
+=== RUN   TestXMLModule_Run/check_mode_-_would_create_file
+=== RUN   TestXMLModule_Run/count_matches
+=== RUN   TestXMLModule_Run/print_matches
+=== RUN   TestXMLModule_Run/create_directory_if_needed
+=== RUN   TestXMLModule_Run/with_backup
+=== RUN   TestXMLModule_Run/set_attribute
+=== RUN   TestXMLModule_Run/file_not_exists_for_absent_state
+--- PASS: TestXMLModule_Run (0.00s)
+    --- PASS: TestXMLModule_Run/create_new_file_with_element (0.00s)
+    --- PASS: TestXMLModule_Run/update_existing_element_value (0.00s)
+    --- PASS: TestXMLModule_Run/remove_element (0.00s)
+    --- PASS: TestXMLModule_Run/check_mode_-_would_create_file (0.00s)
+    --- PASS: TestXMLModule_Run/count_matches (0.00s)
+    --- PASS: TestXMLModule_Run/print_matches (0.00s)
+    --- PASS: TestXMLModule_Run/create_directory_if_needed (0.00s)
+    --- PASS: TestXMLModule_Run/with_backup (0.00s)
+    --- PASS: TestXMLModule_Run/set_attribute (0.00s)
+    --- PASS: TestXMLModule_Run/file_not_exists_for_absent_state (0.00s)
+=== RUN   TestXMLProcessor
+=== RUN   TestXMLProcessor/parse_valid_XML
+=== RUN   TestXMLProcessor/parse_invalid_XML
+=== RUN   TestXMLProcessor/createNewXMLContent
+=== RUN   TestXMLProcessor/generateDiff
+=== RUN   TestXMLProcessor/xpath_with_namespace
+=== RUN   TestXMLProcessor/xpath_with_predicate
+=== RUN   TestXMLProcessor/xpath_with_index
+--- PASS: TestXMLProcessor (0.00s)
+    --- PASS: TestXMLProcessor/parse_valid_XML (0.00s)
+    --- PASS: TestXMLProcessor/parse_invalid_XML (0.00s)
+    --- PASS: TestXMLProcessor/createNewXMLContent (0.00s)
+    --- PASS: TestXMLProcessor/generateDiff (0.00s)
+    --- PASS: TestXMLProcessor/xpath_with_namespace (0.00s)
+    --- PASS: TestXMLProcessor/xpath_with_predicate (0.00s)
+    --- PASS: TestXMLProcessor/xpath_with_index (0.00s)
+PASS
+ok  	github.com/liliang-cn/gosible/pkg/modules	0.812s
+=== RUN   TestParserFocused
+=== RUN   TestParserFocused/NewParser
+=== RUN   TestParserFocused/ParseFile_Success
+=== RUN   TestParserFocused/ParseFile_NonExistent
+=== RUN   TestParserFocused/Parse_MultiplePlaybooks
+=== RUN   TestParserFocused/Parse_SinglePlay
+=== RUN   TestParserFocused/Parse_InvalidYAML
+=== RUN   TestParserFocused/Parse_EmptyContent
+=== RUN   TestParserFocused/ValidatePlaybookStructure_Valid
+=== RUN   TestParserFocused/ValidatePlaybookStructure_Invalid
+=== RUN   TestParserFocused/ExtractTaskModule
+=== RUN   TestParserFocused/ExtractTaskModule_NoModule
+=== RUN   TestParserFocused/ParseInventoryPattern
+=== RUN   TestParserFocused/ParseInventoryPattern/string_single
+=== RUN   TestParserFocused/ParseInventoryPattern/string_list
+=== RUN   TestParserFocused/ParseInventoryPattern/string_all
+=== RUN   TestParserFocused/LoadIncludeFile
+=== RUN   TestParserFocused/LoadIncludeFile_NonExistent
+--- PASS: TestParserFocused (0.00s)
+    --- PASS: TestParserFocused/NewParser (0.00s)
+    --- PASS: TestParserFocused/ParseFile_Success (0.00s)
+    --- PASS: TestParserFocused/ParseFile_NonExistent (0.00s)
+    --- PASS: TestParserFocused/Parse_MultiplePlaybooks (0.00s)
+    --- PASS: TestParserFocused/Parse_SinglePlay (0.00s)
+    --- PASS: TestParserFocused/Parse_InvalidYAML (0.00s)
+    --- PASS: TestParserFocused/Parse_EmptyContent (0.00s)
+    --- PASS: TestParserFocused/ValidatePlaybookStructure_Valid (0.00s)
+    --- PASS: TestParserFocused/ValidatePlaybookStructure_Invalid (0.00s)
+    --- PASS: TestParserFocused/ExtractTaskModule (0.00s)
+    --- PASS: TestParserFocused/ExtractTaskModule_NoModule (0.00s)
+    --- PASS: TestParserFocused/ParseInventoryPattern (0.00s)
+        --- PASS: TestParserFocused/ParseInventoryPattern/string_single (0.00s)
+        --- PASS: TestParserFocused/ParseInventoryPattern/string_list (0.00s)
+        --- PASS: TestParserFocused/ParseInventoryPattern/string_all (0.00s)
+    --- PASS: TestParserFocused/LoadIncludeFile (0.00s)
+    --- PASS: TestParserFocused/LoadIncludeFile_NonExistent (0.00s)
+=== RUN   TestIncludeManagerFocused
+=== RUN   TestIncludeManagerFocused/NewIncludeManager
+=== RUN   TestIncludeManagerFocused/resolveFilePath
+=== RUN   TestIncludeManagerFocused/ImportTasks
+=== RUN   TestIncludeManagerFocused/ImportTasks_NonExistent
+=== RUN   TestIncludeManagerFocused/ImportPlaybook
+=== RUN   TestIncludeManagerFocused/applyIncludeVars
+=== RUN   TestIncludeManagerFocused/applyTags
+=== RUN   TestIncludeManagerFocused/applyWhenCondition
+--- PASS: TestIncludeManagerFocused (0.00s)
+    --- PASS: TestIncludeManagerFocused/NewIncludeManager (0.00s)
+    --- PASS: TestIncludeManagerFocused/resolveFilePath (0.00s)
+    --- PASS: TestIncludeManagerFocused/ImportTasks (0.00s)
+    --- PASS: TestIncludeManagerFocused/ImportTasks_NonExistent (0.00s)
+    --- PASS: TestIncludeManagerFocused/ImportPlaybook (0.00s)
+    --- PASS: TestIncludeManagerFocused/applyIncludeVars (0.00s)
+    --- PASS: TestIncludeManagerFocused/applyTags (0.00s)
+    --- PASS: TestIncludeManagerFocused/applyWhenCondition (0.00s)
+=== RUN   TestParseIncludeTaskFocused
+=== RUN   TestParseIncludeTaskFocused/ParseIncludeTask_ImportTasks
+=== RUN   TestParseIncludeTaskFocused/ParseIncludeTask_IncludeTasks
+=== RUN   TestParseIncludeTaskFocused/ParseIncludeTask_Invalid
+=== RUN   TestParseIncludeTaskFocused/IsIncludeTask
+=== RUN   TestParseIncludeTaskFocused/IsIncludeTask/import_tasks
+=== RUN   TestParseIncludeTaskFocused/IsIncludeTask/include_tasks
+=== RUN   TestParseIncludeTaskFocused/IsIncludeTask/import_playbook
+=== RUN   TestParseIncludeTaskFocused/IsIncludeTask/include_role
+=== RUN   TestParseIncludeTaskFocused/IsIncludeTask/regular_task
+=== RUN   TestParseIncludeTaskFocused/IsIncludeTask/empty
+--- PASS: TestParseIncludeTaskFocused (0.00s)
+    --- PASS: TestParseIncludeTaskFocused/ParseIncludeTask_ImportTasks (0.00s)
+    --- PASS: TestParseIncludeTaskFocused/ParseIncludeTask_IncludeTasks (0.00s)
+    --- PASS: TestParseIncludeTaskFocused/ParseIncludeTask_Invalid (0.00s)
+    --- PASS: TestParseIncludeTaskFocused/IsIncludeTask (0.00s)
+        --- PASS: TestParseIncludeTaskFocused/IsIncludeTask/import_tasks (0.00s)
+        --- PASS: TestParseIncludeTaskFocused/IsIncludeTask/include_tasks (0.00s)
+        --- PASS: TestParseIncludeTaskFocused/IsIncludeTask/import_playbook (0.00s)
+        --- PASS: TestParseIncludeTaskFocused/IsIncludeTask/include_role (0.00s)
+        --- PASS: TestParseIncludeTaskFocused/IsIncludeTask/regular_task (0.00s)
+        --- PASS: TestParseIncludeTaskFocused/IsIncludeTask/empty (0.00s)
+=== RUN   TestBasicFunctionality
+=== RUN   TestBasicFunctionality/Parser_Creation
+=== RUN   TestBasicFunctionality/IncludeManager_Creation
+=== RUN   TestBasicFunctionality/IncludeTypes
+=== RUN   TestBasicFunctionality/IncludeTask_Creation
+=== RUN   TestBasicFunctionality/LoopControl_Creation
+=== RUN   TestBasicFunctionality/Parser_InvalidYAML
+=== RUN   TestBasicFunctionality/Parser_EmptyPlaybook
+=== RUN   TestBasicFunctionality/Parser_ValidPlaybook
+=== RUN   TestBasicFunctionality/IncludeManager_Cache
+--- PASS: TestBasicFunctionality (0.00s)
+    --- PASS: TestBasicFunctionality/Parser_Creation (0.00s)
+    --- PASS: TestBasicFunctionality/IncludeManager_Creation (0.00s)
+    --- PASS: TestBasicFunctionality/IncludeTypes (0.00s)
+    --- PASS: TestBasicFunctionality/IncludeTask_Creation (0.00s)
+    --- PASS: TestBasicFunctionality/LoopControl_Creation (0.00s)
+    --- PASS: TestBasicFunctionality/Parser_InvalidYAML (0.00s)
+    --- PASS: TestBasicFunctionality/Parser_EmptyPlaybook (0.00s)
+    --- PASS: TestBasicFunctionality/Parser_ValidPlaybook (0.00s)
+    --- PASS: TestBasicFunctionality/IncludeManager_Cache (0.00s)
+PASS
+ok  	github.com/liliang-cn/gosible/pkg/playbook	(cached)
+=== RUN   TestRoleComprehensive
+=== RUN   TestRoleComprehensive/Role_Creation
+=== RUN   TestRoleComprehensive/RoleMeta_Complete
+=== RUN   TestRoleComprehensive/RoleDependency_AllFields
+=== RUN   TestRoleComprehensive/Platform_MultipleVersions
+--- PASS: TestRoleComprehensive (0.00s)
+    --- PASS: TestRoleComprehensive/Role_Creation (0.00s)
+    --- PASS: TestRoleComprehensive/RoleMeta_Complete (0.00s)
+    --- PASS: TestRoleComprehensive/RoleDependency_AllFields (0.00s)
+    --- PASS: TestRoleComprehensive/Platform_MultipleVersions (0.00s)
+=== RUN   TestRoleManagerComprehensive
+=== RUN   TestRoleManagerComprehensive/NewRoleManager
+=== RUN   TestRoleManagerComprehensive/NewRoleManager_EmptyPaths
+=== RUN   TestRoleManagerComprehensive/NewRoleManager_NilPaths
+=== RUN   TestRoleManagerComprehensive/LoadRole_NonExistent
+=== RUN   TestRoleManagerComprehensive/LoadRole_MinimalRole
+=== RUN   TestRoleManagerComprehensive/LoadRole_CompleteRole
+=== RUN   TestRoleManagerComprehensive/LoadRole_Cache
+=== RUN   TestRoleManagerComprehensive/GetRolePath_ExistingRole
+=== RUN   TestRoleManagerComprehensive/GetRolePath_NonExistent
+=== RUN   TestRoleManagerComprehensive/ListRoles
+=== RUN   TestRoleManagerComprehensive/GetRoleFile
+--- PASS: TestRoleManagerComprehensive (0.01s)
+    --- PASS: TestRoleManagerComprehensive/NewRoleManager (0.00s)
+    --- PASS: TestRoleManagerComprehensive/NewRoleManager_EmptyPaths (0.00s)
+    --- PASS: TestRoleManagerComprehensive/NewRoleManager_NilPaths (0.00s)
+    --- PASS: TestRoleManagerComprehensive/LoadRole_NonExistent (0.00s)
+    --- PASS: TestRoleManagerComprehensive/LoadRole_MinimalRole (0.00s)
+    --- PASS: TestRoleManagerComprehensive/LoadRole_CompleteRole (0.00s)
+    --- PASS: TestRoleManagerComprehensive/LoadRole_Cache (0.00s)
+    --- PASS: TestRoleManagerComprehensive/GetRolePath_ExistingRole (0.00s)
+    --- PASS: TestRoleManagerComprehensive/GetRolePath_NonExistent (0.00s)
+    --- PASS: TestRoleManagerComprehensive/ListRoles (0.00s)
+    --- PASS: TestRoleManagerComprehensive/GetRoleFile (0.00s)
+=== RUN   TestBasicRolesFunctionality
+=== RUN   TestBasicRolesFunctionality/Role_Creation
+=== RUN   TestBasicRolesFunctionality/RoleMeta_Creation
+=== RUN   TestBasicRolesFunctionality/RoleDependency_Creation
+=== RUN   TestBasicRolesFunctionality/Platform_Creation
+=== RUN   TestBasicRolesFunctionality/RoleManager_Creation
+=== RUN   TestBasicRolesFunctionality/RoleManager_DefaultPaths
+=== RUN   TestBasicRolesFunctionality/RoleManager_PathLookup
+=== RUN   TestBasicRolesFunctionality/RoleManager_LoadRole_Cache
+--- PASS: TestBasicRolesFunctionality (0.00s)
+    --- PASS: TestBasicRolesFunctionality/Role_Creation (0.00s)
+    --- PASS: TestBasicRolesFunctionality/RoleMeta_Creation (0.00s)
+    --- PASS: TestBasicRolesFunctionality/RoleDependency_Creation (0.00s)
+    --- PASS: TestBasicRolesFunctionality/Platform_Creation (0.00s)
+    --- PASS: TestBasicRolesFunctionality/RoleManager_Creation (0.00s)
+    --- PASS: TestBasicRolesFunctionality/RoleManager_DefaultPaths (0.00s)
+    --- PASS: TestBasicRolesFunctionality/RoleManager_PathLookup (0.00s)
+    --- PASS: TestBasicRolesFunctionality/RoleManager_LoadRole_Cache (0.00s)
+PASS
+ok  	github.com/liliang-cn/gosible/pkg/roles	(cached)
+=== RUN   TestTaskRunnerTags
+--- PASS: TestTaskRunnerTags (0.00s)
+=== RUN   TestTaskRunnerWhenCondition
+--- PASS: TestTaskRunnerWhenCondition (0.00s)
+=== RUN   TestTaskRunnerLoop
+--- PASS: TestTaskRunnerLoop (0.00s)
+=== RUN   TestTaskRunnerWithItems
+--- PASS: TestTaskRunnerWithItems (0.00s)
+=== RUN   TestTaskRunnerLoopControl
+--- PASS: TestTaskRunnerLoopControl (0.00s)
+=== RUN   TestTaskRunnerNotify
+--- PASS: TestTaskRunnerNotify (0.00s)
+=== RUN   TestTaskRunnerIgnoreErrors
+--- PASS: TestTaskRunnerIgnoreErrors (0.00s)
+=== RUN   TestTaskRunnerRetries
+--- PASS: TestTaskRunnerRetries (3.00s)
+=== RUN   TestEvaluateWhen
+=== RUN   TestEvaluateWhen/nil_condition_returns_true
+=== RUN   TestEvaluateWhen/boolean_true
+=== RUN   TestEvaluateWhen/boolean_false
+=== RUN   TestEvaluateWhen/string_true
+=== RUN   TestEvaluateWhen/string_false
+=== RUN   TestEvaluateWhen/variable_exists
+=== RUN   TestEvaluateWhen/variable_undefined
+=== RUN   TestEvaluateWhen/equality_check
+=== RUN   TestEvaluateWhen/inequality_check
+=== RUN   TestEvaluateWhen/numeric_comparison
+=== RUN   TestEvaluateWhen/in_operator
+=== RUN   TestEvaluateWhen/not_in_operator
+=== RUN   TestEvaluateWhen/and_operator
+=== RUN   TestEvaluateWhen/or_operator
+=== RUN   TestEvaluateWhen/not_operator
+=== RUN   TestEvaluateWhen/nested_object_access
+=== RUN   TestEvaluateWhen/array_index_access
+=== RUN   TestEvaluateWhen/multiple_conditions_in_list
+--- PASS: TestEvaluateWhen (0.00s)
+    --- PASS: TestEvaluateWhen/nil_condition_returns_true (0.00s)
+    --- PASS: TestEvaluateWhen/boolean_true (0.00s)
+    --- PASS: TestEvaluateWhen/boolean_false (0.00s)
+    --- PASS: TestEvaluateWhen/string_true (0.00s)
+    --- PASS: TestEvaluateWhen/string_false (0.00s)
+    --- PASS: TestEvaluateWhen/variable_exists (0.00s)
+    --- PASS: TestEvaluateWhen/variable_undefined (0.00s)
+    --- PASS: TestEvaluateWhen/equality_check (0.00s)
+    --- PASS: TestEvaluateWhen/inequality_check (0.00s)
+    --- PASS: TestEvaluateWhen/numeric_comparison (0.00s)
+    --- PASS: TestEvaluateWhen/in_operator (0.00s)
+    --- PASS: TestEvaluateWhen/not_in_operator (0.00s)
+    --- PASS: TestEvaluateWhen/and_operator (0.00s)
+    --- PASS: TestEvaluateWhen/or_operator (0.00s)
+    --- PASS: TestEvaluateWhen/not_operator (0.00s)
+    --- PASS: TestEvaluateWhen/nested_object_access (0.00s)
+    --- PASS: TestEvaluateWhen/array_index_access (0.00s)
+    --- PASS: TestEvaluateWhen/multiple_conditions_in_list (0.00s)
+=== RUN   TestEvaluateFailedWhen
+=== RUN   TestEvaluateFailedWhen/nil_condition_with_success
+=== RUN   TestEvaluateFailedWhen/nil_condition_with_failure
+=== RUN   TestEvaluateFailedWhen/check_exit_code
+=== RUN   TestEvaluateFailedWhen/check_stderr
+=== RUN   TestEvaluateFailedWhen/check_stdout
+--- PASS: TestEvaluateFailedWhen (0.00s)
+    --- PASS: TestEvaluateFailedWhen/nil_condition_with_success (0.00s)
+    --- PASS: TestEvaluateFailedWhen/nil_condition_with_failure (0.00s)
+    --- PASS: TestEvaluateFailedWhen/check_exit_code (0.00s)
+    --- PASS: TestEvaluateFailedWhen/check_stderr (0.00s)
+    --- PASS: TestEvaluateFailedWhen/check_stdout (0.00s)
+=== RUN   TestEvaluateChangedWhen
+=== RUN   TestEvaluateChangedWhen/nil_condition_uses_module_changed
+=== RUN   TestEvaluateChangedWhen/false_means_never_changed
+=== RUN   TestEvaluateChangedWhen/check_exit_code
+=== RUN   TestEvaluateChangedWhen/check_stdout_content
+--- PASS: TestEvaluateChangedWhen (0.00s)
+    --- PASS: TestEvaluateChangedWhen/nil_condition_uses_module_changed (0.00s)
+    --- PASS: TestEvaluateChangedWhen/false_means_never_changed (0.00s)
+    --- PASS: TestEvaluateChangedWhen/check_exit_code (0.00s)
+    --- PASS: TestEvaluateChangedWhen/check_stdout_content (0.00s)
+=== RUN   TestEvaluateLoopItems
+=== RUN   TestEvaluateLoopItems/nil_loop_returns_nil
+=== RUN   TestEvaluateLoopItems/direct_array
+=== RUN   TestEvaluateLoopItems/variable_reference
+=== RUN   TestEvaluateLoopItems/range_expression
+=== RUN   TestEvaluateLoopItems/single_value
+--- PASS: TestEvaluateLoopItems (0.00s)
+    --- PASS: TestEvaluateLoopItems/nil_loop_returns_nil (0.00s)
+    --- PASS: TestEvaluateLoopItems/direct_array (0.00s)
+    --- PASS: TestEvaluateLoopItems/variable_reference (0.00s)
+    --- PASS: TestEvaluateLoopItems/range_expression (0.00s)
+    --- PASS: TestEvaluateLoopItems/single_value (0.00s)
+=== RUN   TestHandlerManager
+--- PASS: TestHandlerManager (0.00s)
+=== RUN   TestHandlerManagerProcessHandlers
+--- PASS: TestHandlerManagerProcessHandlers (0.00s)
+=== RUN   TestNewTaskRunner
+--- PASS: TestNewTaskRunner (0.00s)
+=== RUN   TestNewTaskRunnerWithDependencies
+--- PASS: TestNewTaskRunnerWithDependencies (0.00s)
+=== RUN   TestTaskRunnerSetMaxConcurrency
+--- PASS: TestTaskRunnerSetMaxConcurrency (0.00s)
+=== RUN   TestTaskRunnerRegisterGetModule
+--- PASS: TestTaskRunnerRegisterGetModule (0.00s)
+=== RUN   TestTaskRunnerRun
+--- PASS: TestTaskRunnerRun (0.00s)
+=== RUN   TestTaskRunnerRunWithMultipleHosts
+--- PASS: TestTaskRunnerRunWithMultipleHosts (0.00s)
+=== RUN   TestTaskRunnerRunWithEmptyHosts
+--- PASS: TestTaskRunnerRunWithEmptyHosts (0.00s)
+=== RUN   TestTaskRunnerRunWithInvalidModule
+--- PASS: TestTaskRunnerRunWithInvalidModule (0.00s)
+=== RUN   TestTaskRunnerExpandTaskArguments
+--- PASS: TestTaskRunnerExpandTaskArguments (0.00s)
+=== RUN   TestTaskRunnerGetHostVariables
+--- PASS: TestTaskRunnerGetHostVariables (0.00s)
+=== RUN   TestTaskRunnerValidateTask
+--- PASS: TestTaskRunnerValidateTask (0.00s)
+=== RUN   TestTaskRunnerExecuteTask
+--- PASS: TestTaskRunnerExecuteTask (0.00s)
+=== RUN   TestTaskRunnerGetStats
+--- PASS: TestTaskRunnerGetStats (0.00s)
+=== RUN   TestTaskRunnerListModules
+--- PASS: TestTaskRunnerListModules (0.00s)
+=== RUN   TestTaskRunnerGetModuleDocumentation
+--- PASS: TestTaskRunnerGetModuleDocumentation (0.00s)
+=== RUN   TestTaskRunnerClose
+--- PASS: TestTaskRunnerClose (0.00s)
+PASS
+ok  	github.com/liliang-cn/gosible/pkg/runner	3.011s
+=== RUN   TestNewEngine
+--- PASS: TestNewEngine (0.00s)
+=== RUN   TestEngineRenderBasic
+=== RUN   TestEngineRenderBasic/simple_variable_substitution
+=== RUN   TestEngineRenderBasic/multiple_variables
+=== RUN   TestEngineRenderBasic/nested_variables
+=== RUN   TestEngineRenderBasic/with_built-in_functions
+=== RUN   TestEngineRenderBasic/invalid_template
+--- PASS: TestEngineRenderBasic (0.00s)
+    --- PASS: TestEngineRenderBasic/simple_variable_substitution (0.00s)
+    --- PASS: TestEngineRenderBasic/multiple_variables (0.00s)
+    --- PASS: TestEngineRenderBasic/nested_variables (0.00s)
+    --- PASS: TestEngineRenderBasic/with_built-in_functions (0.00s)
+    --- PASS: TestEngineRenderBasic/invalid_template (0.00s)
+=== RUN   TestEngineBuiltinFunctions
+=== RUN   TestEngineBuiltinFunctions/upper_function
+=== RUN   TestEngineBuiltinFunctions/lower_function
+=== RUN   TestEngineBuiltinFunctions/default_function
+=== RUN   TestEngineBuiltinFunctions/quote_function
+=== RUN   TestEngineBuiltinFunctions/replace_function
+=== RUN   TestEngineBuiltinFunctions/length_function
+=== RUN   TestEngineBuiltinFunctions/join_function
+=== RUN   TestEngineBuiltinFunctions/empty_function
+=== RUN   TestEngineBuiltinFunctions/ternary_function
+--- PASS: TestEngineBuiltinFunctions (0.00s)
+    --- PASS: TestEngineBuiltinFunctions/upper_function (0.00s)
+    --- PASS: TestEngineBuiltinFunctions/lower_function (0.00s)
+    --- PASS: TestEngineBuiltinFunctions/default_function (0.00s)
+    --- PASS: TestEngineBuiltinFunctions/quote_function (0.00s)
+    --- PASS: TestEngineBuiltinFunctions/replace_function (0.00s)
+    --- PASS: TestEngineBuiltinFunctions/length_function (0.00s)
+    --- PASS: TestEngineBuiltinFunctions/join_function (0.00s)
+    --- PASS: TestEngineBuiltinFunctions/empty_function (0.00s)
+    --- PASS: TestEngineBuiltinFunctions/ternary_function (0.00s)
+=== RUN   TestEngineRenderFile
+--- PASS: TestEngineRenderFile (0.00s)
+=== RUN   TestEngineAddFunction
+--- PASS: TestEngineAddFunction (0.00s)
+=== RUN   TestEngineValidateTemplate
+=== RUN   TestEngineValidateTemplate/valid_template
+=== RUN   TestEngineValidateTemplate/template_with_functions
+=== RUN   TestEngineValidateTemplate/invalid_template_-_unclosed
+=== RUN   TestEngineValidateTemplate/invalid_template_-_unknown_function
+--- PASS: TestEngineValidateTemplate (0.00s)
+    --- PASS: TestEngineValidateTemplate/valid_template (0.00s)
+    --- PASS: TestEngineValidateTemplate/template_with_functions (0.00s)
+    --- PASS: TestEngineValidateTemplate/invalid_template_-_unclosed (0.00s)
+    --- PASS: TestEngineValidateTemplate/invalid_template_-_unknown_function (0.00s)
+=== RUN   TestEngineRenderWithDefaults
+--- PASS: TestEngineRenderWithDefaults (0.00s)
+=== RUN   TestEngineClone
+--- PASS: TestEngineClone (0.00s)
+=== RUN   TestEngineFunctionHelpers
+--- PASS: TestEngineFunctionHelpers (0.00s)
+=== RUN   TestEngineComplexTemplate
+--- PASS: TestEngineComplexTemplate (0.00s)
+PASS
+ok  	github.com/liliang-cn/gosible/pkg/template	(cached)
+=== RUN   TestExampleModule
+=== RUN   TestExampleModule/BasicEcho
+=== RUN   TestExampleModule/RepeatMessage
+=== RUN   TestExampleModule/MissingMessage
+--- PASS: TestExampleModule (0.00s)
+    --- PASS: TestExampleModule/BasicEcho (0.00s)
+    --- PASS: TestExampleModule/RepeatMessage (0.00s)
+    --- PASS: TestExampleModule/MissingMessage (0.00s)
+=== RUN   TestExampleModuleBatchCases
+=== RUN   TestExampleModuleBatchCases/SimpleEcho
+=== RUN   TestExampleModuleBatchCases/CommandFailure
+=== RUN   TestExampleModuleBatchCases/ValidationFailure
+--- PASS: TestExampleModuleBatchCases (0.00s)
+    --- PASS: TestExampleModuleBatchCases/SimpleEcho (0.00s)
+    --- PASS: TestExampleModuleBatchCases/CommandFailure (0.00s)
+    --- PASS: TestExampleModuleBatchCases/ValidationFailure (0.00s)
+=== RUN   TestMockConnectionFeatures
+=== RUN   TestMockConnectionFeatures/BasicExpectations
+=== RUN   TestMockConnectionFeatures/OrderedExecution
+=== RUN   TestMockConnectionFeatures/EnvironmentVariables
+--- PASS: TestMockConnectionFeatures (0.00s)
+    --- PASS: TestMockConnectionFeatures/BasicExpectations (0.00s)
+    --- PASS: TestMockConnectionFeatures/OrderedExecution (0.00s)
+    --- PASS: TestMockConnectionFeatures/EnvironmentVariables (0.00s)
+=== RUN   TestMockFileSystemFeatures
+=== RUN   TestMockFileSystemFeatures/BasicOperations
+=== RUN   TestMockFileSystemFeatures/ErrorSimulation
+=== RUN   TestMockFileSystemFeatures/OperationTracking
+--- PASS: TestMockFileSystemFeatures (0.00s)
+    --- PASS: TestMockFileSystemFeatures/BasicOperations (0.00s)
+    --- PASS: TestMockFileSystemFeatures/ErrorSimulation (0.00s)
+    --- PASS: TestMockFileSystemFeatures/OperationTracking (0.00s)
+PASS
+ok  	github.com/liliang-cn/gosible/pkg/testing	(cached)
+=== RUN   TestModuleType_String
+=== RUN   TestModuleType_String/file_module
+=== RUN   TestModuleType_String/service_module
+=== RUN   TestModuleType_String/package_module
+=== RUN   TestModuleType_String/user_module
+=== RUN   TestModuleType_String/group_module
+=== RUN   TestModuleType_String/copy_module
+=== RUN   TestModuleType_String/template_module
+=== RUN   TestModuleType_String/command_module
+=== RUN   TestModuleType_String/shell_module
+=== RUN   TestModuleType_String/ping_module
+=== RUN   TestModuleType_String/setup_module
+=== RUN   TestModuleType_String/debug_module
+--- PASS: TestModuleType_String (0.00s)
+    --- PASS: TestModuleType_String/file_module (0.00s)
+    --- PASS: TestModuleType_String/service_module (0.00s)
+    --- PASS: TestModuleType_String/package_module (0.00s)
+    --- PASS: TestModuleType_String/user_module (0.00s)
+    --- PASS: TestModuleType_String/group_module (0.00s)
+    --- PASS: TestModuleType_String/copy_module (0.00s)
+    --- PASS: TestModuleType_String/template_module (0.00s)
+    --- PASS: TestModuleType_String/command_module (0.00s)
+    --- PASS: TestModuleType_String/shell_module (0.00s)
+    --- PASS: TestModuleType_String/ping_module (0.00s)
+    --- PASS: TestModuleType_String/setup_module (0.00s)
+    --- PASS: TestModuleType_String/debug_module (0.00s)
+=== RUN   TestModuleType_IsValid
+=== RUN   TestModuleType_IsValid/file_module
+=== RUN   TestModuleType_IsValid/service_module
+=== RUN   TestModuleType_IsValid/package_module
+=== RUN   TestModuleType_IsValid/user_module
+=== RUN   TestModuleType_IsValid/group_module
+=== RUN   TestModuleType_IsValid/copy_module
+=== RUN   TestModuleType_IsValid/template_module
+=== RUN   TestModuleType_IsValid/command_module
+=== RUN   TestModuleType_IsValid/shell_module
+=== RUN   TestModuleType_IsValid/ping_module
+=== RUN   TestModuleType_IsValid/setup_module
+=== RUN   TestModuleType_IsValid/debug_module
+=== RUN   TestModuleType_IsValid/invalid_module
+=== RUN   TestModuleType_IsValid/empty_module
+=== RUN   TestModuleType_IsValid/nonexistent_module
+--- PASS: TestModuleType_IsValid (0.00s)
+    --- PASS: TestModuleType_IsValid/file_module (0.00s)
+    --- PASS: TestModuleType_IsValid/service_module (0.00s)
+    --- PASS: TestModuleType_IsValid/package_module (0.00s)
+    --- PASS: TestModuleType_IsValid/user_module (0.00s)
+    --- PASS: TestModuleType_IsValid/group_module (0.00s)
+    --- PASS: TestModuleType_IsValid/copy_module (0.00s)
+    --- PASS: TestModuleType_IsValid/template_module (0.00s)
+    --- PASS: TestModuleType_IsValid/command_module (0.00s)
+    --- PASS: TestModuleType_IsValid/shell_module (0.00s)
+    --- PASS: TestModuleType_IsValid/ping_module (0.00s)
+    --- PASS: TestModuleType_IsValid/setup_module (0.00s)
+    --- PASS: TestModuleType_IsValid/debug_module (0.00s)
+    --- PASS: TestModuleType_IsValid/invalid_module (0.00s)
+    --- PASS: TestModuleType_IsValid/empty_module (0.00s)
+    --- PASS: TestModuleType_IsValid/nonexistent_module (0.00s)
+=== RUN   TestAllModuleTypes
+--- PASS: TestAllModuleTypes (0.00s)
+=== RUN   TestTask_WithModuleType
+--- PASS: TestTask_WithModuleType (0.00s)
+=== RUN   TestStateConstants
+--- PASS: TestStateConstants (0.00s)
+=== RUN   TestTask_TypeSafety
+--- PASS: TestTask_TypeSafety (0.00s)
+PASS
+ok  	github.com/liliang-cn/gosible/pkg/types	(cached)
+=== RUN   TestNewVarManager
+--- PASS: TestNewVarManager (0.00s)
+=== RUN   TestVarManagerSetAndGetVar
+--- PASS: TestVarManagerSetAndGetVar (0.00s)
+=== RUN   TestVarManagerSetVars
+--- PASS: TestVarManagerSetVars (0.00s)
+=== RUN   TestVarManagerGetVars
+--- PASS: TestVarManagerGetVars (0.00s)
+=== RUN   TestVarManagerGatherFacts
+--- PASS: TestVarManagerGatherFacts (0.04s)
+=== RUN   TestVarManagerMergeVars
+--- PASS: TestVarManagerMergeVars (0.00s)
+=== RUN   TestVarManagerParseOSRelease
+--- PASS: TestVarManagerParseOSRelease (0.00s)
+=== RUN   TestVarManagerParseDefaultRoute
+--- PASS: TestVarManagerParseDefaultRoute (0.00s)
+=== RUN   TestVarManagerParseMounts
+--- PASS: TestVarManagerParseMounts (0.00s)
+=== RUN   TestVarManagerParseIdOutput
+--- PASS: TestVarManagerParseIdOutput (0.00s)
+=== RUN   TestVarManagerParseIPv4FromAddr
+--- PASS: TestVarManagerParseIPv4FromAddr (0.00s)
+=== RUN   TestVarManagerParseMACFromAddr
+--- PASS: TestVarManagerParseMACFromAddr (0.00s)
+=== RUN   TestVarManagerConcurrency
+--- PASS: TestVarManagerConcurrency (0.00s)
+PASS
+ok  	github.com/liliang-cn/gosible/pkg/vars	0.043s
+=== RUN   TestVaultEncryptDecrypt
+--- PASS: TestVaultEncryptDecrypt (0.01s)
+=== RUN   TestVaultWrongPassword
+--- PASS: TestVaultWrongPassword (0.01s)
+=== RUN   TestVaultInvalidFormat
+=== RUN   TestVaultInvalidFormat/Empty_string
+=== RUN   TestVaultInvalidFormat/Invalid_header
+=== RUN   TestVaultInvalidFormat/Incomplete_header
+=== RUN   TestVaultInvalidFormat/Invalid_hex
+=== RUN   TestVaultInvalidFormat/Short_payload
+--- PASS: TestVaultInvalidFormat (0.00s)
+    --- PASS: TestVaultInvalidFormat/Empty_string (0.00s)
+    --- PASS: TestVaultInvalidFormat/Invalid_header (0.00s)
+    --- PASS: TestVaultInvalidFormat/Incomplete_header (0.00s)
+    --- PASS: TestVaultInvalidFormat/Invalid_hex (0.00s)
+    --- PASS: TestVaultInvalidFormat/Short_payload (0.00s)
+=== RUN   TestIsVaultFile
+--- PASS: TestIsVaultFile (0.00s)
+=== RUN   TestVaultString
+--- PASS: TestVaultString (0.01s)
+=== RUN   TestPKCS7Padding
+--- PASS: TestPKCS7Padding (0.00s)
+=== RUN   TestVaultManager
+--- PASS: TestVaultManager (0.02s)
+=== RUN   TestVaultManagerFiles
+--- PASS: TestVaultManagerFiles (0.01s)
+=== RUN   TestVaultRekey
+--- PASS: TestVaultRekey (0.03s)
+=== RUN   TestProcessVariables
+--- PASS: TestProcessVariables (0.02s)
+=== RUN   TestVaultCompatibility
+    vault_test.go:358: Ansible compatibility test skipped: invalid vault password
+    vault_test.go:359: Ansible encrypted test data may not be valid
+--- SKIP: TestVaultCompatibility (0.01s)
+PASS
+ok  	github.com/liliang-cn/gosible/pkg/vault	(cached)
+=== RUN   TestNewStreamServer
+--- PASS: TestNewStreamServer (0.00s)
+=== RUN   TestStreamServer_StartStop
+2025/09/12 14:36:36 WebSocket stream server started
+2025/09/12 14:36:36 WebSocket stream server stopped
+--- PASS: TestStreamServer_StartStop (0.01s)
+=== RUN   TestStreamServer_StartIdempotent
+2025/09/12 14:36:36 WebSocket stream server started
+2025/09/12 14:36:36 WebSocket stream server stopped
+--- PASS: TestStreamServer_StartIdempotent (0.01s)
+=== RUN   TestStreamServer_BroadcastStreamEvent
+--- PASS: TestStreamServer_BroadcastStreamEvent (0.00s)
+=== RUN   TestStreamServer_BroadcastProgress
+--- PASS: TestStreamServer_BroadcastProgress (0.00s)
+=== RUN   TestStreamServer_GetConnectedClients
+--- PASS: TestStreamServer_GetConnectedClients (0.00s)
+=== RUN   TestStreamMessage_Serialization
+--- PASS: TestStreamMessage_Serialization (0.00s)
+=== RUN   TestGenerateSessionID
+--- PASS: TestGenerateSessionID (0.00s)
+=== RUN   TestGetSubscriptionKeys
+--- PASS: TestGetSubscriptionKeys (0.00s)
+=== RUN   TestStreamingWebSocketAdapter
+--- PASS: TestStreamingWebSocketAdapter (0.00s)
+=== RUN   TestStreamingWebSocketAdapter_CreateProgressCallback
+2025/09/12 14:36:36 WebSocket stream server started
+2025/09/12 14:36:36 WebSocket stream server stopped
+--- PASS: TestStreamingWebSocketAdapter_CreateProgressCallback (0.00s)
+=== RUN   TestStreamingWebSocketAdapter_HandleStreamEvents
+2025/09/12 14:36:36 WebSocket stream server started
+2025/09/12 14:36:36 WebSocket stream server stopped
+--- PASS: TestStreamingWebSocketAdapter_HandleStreamEvents (0.00s)
+=== RUN   TestStreamServer_WebSocketIntegration
+2025/09/12 14:36:36 WebSocket stream server started
+2025/09/12 14:36:36 Client connected: ws_1757687796372358244_1757687796 from 127.0.0.1:42344
+2025/09/12 14:36:36 Client disconnected: ws_1757687796372358244_1757687796
+2025/09/12 14:36:36 WebSocket stream server stopped
+--- PASS: TestStreamServer_WebSocketIntegration (0.00s)
+PASS
+ok  	github.com/liliang-cn/gosible/pkg/websocket	(cached)
+FAIL

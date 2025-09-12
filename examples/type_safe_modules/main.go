@@ -7,8 +7,8 @@ import (
 	"log"
 
 	"github.com/liliang-cn/gosible/pkg/types"
-	"github.com/liliang-cn/gosiblepkg/inventory"
-	"github.com/liliang-cn/gosiblepkg/runner"
+	"github.com/liliang-cn/gosible/pkg/inventory"
+	"github.com/liliang-cn/gosible/pkg/runner"
 )
 
 func main() {

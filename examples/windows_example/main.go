@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/liliang-cn/gosible/pkg/connection"
-	"github.com/liliang-cn/gosiblepkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 func main() {

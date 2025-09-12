@@ -10,7 +10,7 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"github.com/liliang-cn/gosiblepkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 // Config implements configuration management
@@ -320,22 +320,22 @@ func GetConfigPaths() []string {
 	var paths []string
 	
 	// Current directory
-	paths = append(paths, "./gosibleyaml")
-	paths = append(paths, "./gosibleyml")
-	paths = append(paths, "./.gosibleyaml")
-	paths = append(paths, "./.gosibleyml")
+	paths = append(paths, "./gosible.yaml")
+	paths = append(paths, "./gosible.yml")
+	paths = append(paths, "./.gosible.yaml")
+	paths = append(paths, "./.gosible.yml")
 	
 	// Home directory
 	if home, err := os.UserHomeDir(); err == nil {
-		paths = append(paths, filepath.Join(home, ".gosibleyaml"))
-		paths = append(paths, filepath.Join(home, ".gosibleyml"))
-		paths = append(paths, filepath.Join(home, ".config", "gosible, "config.yaml"))
-		paths = append(paths, filepath.Join(home, ".config", "gosible, "config.yml"))
+		paths = append(paths, filepath.Join(home, ".gosible.yaml"))
+		paths = append(paths, filepath.Join(home, ".gosible.yml"))
+		paths = append(paths, filepath.Join(home, ".config", "gosible", "config.yaml"))
+		paths = append(paths, filepath.Join(home, ".config", "gosible", "config.yml"))
 	}
 	
 	// System paths
-	paths = append(paths, "/etc/gosibleconfig.yaml")
-	paths = append(paths, "/etc/gosibleconfig.yml")
+	paths = append(paths, "/etc/gosible/config.yaml")
+	paths = append(paths, "/etc/gosible/config.yml")
 	
 	return paths
 }

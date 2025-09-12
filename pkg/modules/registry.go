@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/liliang-cn/gosiblepkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 // ModuleRegistry manages registered modules
