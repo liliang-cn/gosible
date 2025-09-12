@@ -6,7 +6,7 @@ import (
 	"log"
 
 	"github.com/liliang-cn/gosible/pkg/library"
-	"github.com/liliang-cn/gosiblepkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 // Embed configuration files and scripts

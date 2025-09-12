@@ -10,10 +10,10 @@ import (
 	"time"
 
 	"github.com/liliang-cn/gosible/pkg/types"
-	"github.com/liliang-cn/gosiblepkg/connection"
-	"github.com/liliang-cn/gosiblepkg/logging"
-	"github.com/liliang-cn/gosiblepkg/modules"
-	"github.com/liliang-cn/gosiblepkg/websocket"
+	"github.com/liliang-cn/gosible/pkg/connection"
+	"github.com/liliang-cn/gosible/pkg/logging"
+	"github.com/liliang-cn/gosible/pkg/modules"
+	"github.com/liliang-cn/gosible/pkg/websocket"
 )
 
 // EnhancedFeaturesDemo demonstrates all the enhanced gosiblefeatures:

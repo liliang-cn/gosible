@@ -6,8 +6,8 @@ import (
 	"log"
 
 	"github.com/liliang-cn/gosible/pkg/connection"
-	"github.com/liliang-cn/gosiblepkg/modules"
-	"github.com/liliang-cn/gosiblepkg/types"
+	"github.com/liliang-cn/gosible/pkg/modules"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 func main() {
@@ -51,7 +51,7 @@ func main() {
 	
 	result, err = lineModule.Run(ctx, conn, map[string]interface{}{
 		"path": "/tmp/test_config.txt",
-		"line": "# Configuration managed by gosible,
+		"line": "# Configuration managed by gosible",
 		"create": true,
 		"state": "present",
 	})

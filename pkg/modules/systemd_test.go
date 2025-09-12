@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	testhelper "github.com/liliang-cn/gosible/pkg/testing"
-	"github.com/liliang-cn/gosiblepkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 func TestSystemdModule(t *testing.T) {

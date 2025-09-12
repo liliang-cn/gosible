@@ -6,9 +6,9 @@ import (
 	"log"
 
 	"github.com/liliang-cn/gosible/pkg/inventory"
-	"github.com/liliang-cn/gosiblepkg/library"
-	"github.com/liliang-cn/gosiblepkg/runner"
-	"github.com/liliang-cn/gosiblepkg/types"
+	"github.com/liliang-cn/gosible/pkg/library"
+	"github.com/liliang-cn/gosible/pkg/runner"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 func main() {

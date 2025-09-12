@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/liliang-cn/gosible/pkg/types"
-	"github.com/liliang-cn/gosiblepkg/connection"
-	"github.com/liliang-cn/gosiblepkg/modules"
-	"github.com/liliang-cn/gosiblepkg/vars"
+	"github.com/liliang-cn/gosible/pkg/connection"
+	"github.com/liliang-cn/gosible/pkg/modules"
+	"github.com/liliang-cn/gosible/pkg/vars"
 )
 
 func TestNewTaskRunner(t *testing.T) {

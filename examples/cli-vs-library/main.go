@@ -6,7 +6,7 @@ import (
 	"os/exec"
 
 	"github.com/liliang-cn/gosible/examples/common"
-	"github.com/liliang-cn/gosiblepkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 // This example demonstrates the difference between CLI and Library usage
@@ -29,7 +29,7 @@ func useCLI() {
 	// This is NOT recommended from Go code!
 	// Shows what happens when you shell out to CLI
 	
-	cmd := exec.Command("gosible, 
+	cmd := exec.Command("gosible",
 		"-i", "inventory.yml",
 		"-m", "package",
 		"-a", "name=nginx state=present",

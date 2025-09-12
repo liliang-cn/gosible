@@ -90,7 +90,7 @@ func (ft *FileTasks) BackupFile(path string) []types.Task {
 			Name:   "Create backup directory",
 			Module: "file",
 			Args: map[string]interface{}{
-				"path":  "/var/backups/gosible,
+				"path":  "/var/backups/gosible",
 				"state": "directory",
 				"mode":  "0755",
 			},

@@ -7,13 +7,13 @@ import (
 	"log"
 	"os"
 
-	"github.com/liliang-cn/gosiblepkg/config"
-	"github.com/liliang-cn/gosiblepkg/inventory"
-	"github.com/liliang-cn/gosiblepkg/playbook"
-	"github.com/liliang-cn/gosiblepkg/runner"
-	"github.com/liliang-cn/gosiblepkg/template"
-	"github.com/liliang-cn/gosiblepkg/types"
-	"github.com/liliang-cn/gosiblepkg/vars"
+	"github.com/liliang-cn/gosible/pkg/config"
+	"github.com/liliang-cn/gosible/pkg/inventory"
+	"github.com/liliang-cn/gosible/pkg/playbook"
+	"github.com/liliang-cn/gosible/pkg/runner"
+	"github.com/liliang-cn/gosible/pkg/template"
+	"github.com/liliang-cn/gosible/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/vars"
 )
 
 func main() {
