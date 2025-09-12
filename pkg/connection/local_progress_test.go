@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 func TestLocalConnection_CopyWithProgress(t *testing.T) {

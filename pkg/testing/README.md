@@ -1,6 +1,6 @@
 # Module Test Helper Framework
 
-The Module Test Helper Framework provides comprehensive testing utilities for gosinble modules, making it easy to write isolated, reliable tests without affecting the real system.
+The Module Test Helper Framework provides comprehensive testing utilities for gosible modules, making it easy to write isolated, reliable tests without affecting the real system.
 
 ## Features
 
@@ -17,18 +17,18 @@ The Module Test Helper Framework provides comprehensive testing utilities for go
 func TestMyModule(t *testing.T) {
     module := NewMyModule()
     helper := testing.NewModuleTestHelper(t, module)
-    
+
     // Setup mock command expectations
     helper.GetConnection().ExpectCommand("echo hello", &testing.CommandResponse{
         Stdout: "hello",
         ExitCode: 0,
     })
-    
+
     // Execute module
     result := helper.Execute(map[string]interface{}{
         "message": "hello",
     }, false, false)
-    
+
     // Verify results
     helper.AssertSuccess(result)
     helper.AssertChanged(result)
@@ -42,7 +42,7 @@ func TestMyModule(t *testing.T) {
 func TestMyModuleScenarios(t *testing.T) {
     module := NewMyModule()
     helper := testing.NewModuleTestHelper(t, module)
-    
+
     testCases := []testing.ModuleTestCase{
         {
             Name: "SuccessfulOperation",
@@ -62,7 +62,7 @@ func TestMyModuleScenarios(t *testing.T) {
         },
         // Add more test cases...
     }
-    
+
     helper.RunTestCases(testCases)
 }
 ```
@@ -73,7 +73,7 @@ func TestMyModuleScenarios(t *testing.T) {
 func TestSystemdModule(t *testing.T) {
     module := NewSystemdModule()
     helper := testing.NewModuleTestHelper(t, module)
-    
+
     // Mock systemd service configuration
     helper.GetSystemdHelper().MockSystemdService("nginx", testing.SystemdServiceConfig{
         ActiveState:  "inactive",
@@ -81,20 +81,20 @@ func TestSystemdModule(t *testing.T) {
         LoadState:    "loaded",
         Description:  "Nginx HTTP Server",
     })
-    
+
     // Mock allowed operations
     helper.GetSystemdHelper().MockSystemdOperations("nginx", testing.SystemdOperations{
         AllowStart: true,
         AllowEnable: true,
     })
-    
+
     // Execute module
     result := helper.Execute(map[string]interface{}{
         "name": "nginx",
         "state": "started",
         "enabled": true,
     }, false, false)
-    
+
     helper.AssertSuccess(result)
     helper.AssertChanged(result)
 }
@@ -106,12 +106,12 @@ func TestSystemdModule(t *testing.T) {
 func TestCheckMode(t *testing.T) {
     module := NewMyModule()
     helper := testing.NewModuleTestHelper(t, module)
-    
+
     // Setup mocks...
-    
+
     // Execute in check mode
     result := helper.Execute(args, true, false) // checkMode = true
-    
+
     helper.AssertSuccess(result)
     helper.AssertCheckModeSimulated(result)
     // In check mode, commands should not be executed

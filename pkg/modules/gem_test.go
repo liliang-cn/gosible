@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	gotest "github.com/liliang-cn/gosinble/pkg/testing"
+	gotest "github.com/liliang-cn/gosible/pkg/testing"
 )
 
 func TestGemModule(t *testing.T) {

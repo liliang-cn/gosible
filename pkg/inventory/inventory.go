@@ -1,4 +1,4 @@
-// Package inventory provides host and group management functionality for gosinble.
+// Package inventory provides host and group management functionality for gosible.
 package inventory
 
 import (
@@ -12,7 +12,7 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosiblepkg/types"
 )
 
 // StaticInventory implements the Inventory interface with static host and group data
@@ -26,8 +26,8 @@ type StaticInventory struct {
 type InventoryData struct {
 	All struct {
 		Hosts    map[string]map[string]interface{} `yaml:"hosts,omitempty"`
-		Children map[string]types.Group          `yaml:"children,omitempty"`
-		Vars     map[string]interface{}           `yaml:"vars,omitempty"`
+		Children map[string]types.Group            `yaml:"children,omitempty"`
+		Vars     map[string]interface{}            `yaml:"vars,omitempty"`
 	} `yaml:"all"`
 }
 
@@ -85,33 +85,33 @@ func NewFromYAML(data []byte) (*StaticInventory, error) {
 			Name:      name,
 			Variables: hostVars,
 		}
-		
+
 		// Map Ansible variables to host fields
 		if host.Variables == nil {
 			host.Variables = make(map[string]interface{})
 		}
-		
+
 		// Map ansible_host or address to Address
 		if ansibleHost, ok := host.Variables["ansible_host"].(string); ok {
 			host.Address = ansibleHost
 		} else if address, ok := host.Variables["address"].(string); ok {
 			host.Address = address
 		}
-		
-		// Map ansible_user or user to User  
+
+		// Map ansible_user or user to User
 		if ansibleUser, ok := host.Variables["ansible_user"].(string); ok {
 			host.User = ansibleUser
 		} else if user, ok := host.Variables["user"].(string); ok {
 			host.User = user
 		}
-		
+
 		// Map ansible_password or password to Password
 		if ansiblePassword, ok := host.Variables["ansible_password"].(string); ok {
 			host.Password = ansiblePassword
 		} else if password, ok := host.Variables["password"].(string); ok {
 			host.Password = password
 		}
-		
+
 		// Map ansible_port or port to Port
 		if ansiblePort, ok := host.Variables["ansible_port"]; ok {
 			switch v := ansiblePort.(type) {
@@ -134,7 +134,7 @@ func NewFromYAML(data []byte) (*StaticInventory, error) {
 				fmt.Sscanf(v, "%d", &host.Port)
 			}
 		}
-		
+
 		if err := inv.AddHost(host); err != nil {
 			return nil, err
 		}
@@ -153,13 +153,13 @@ func NewFromYAML(data []byte) (*StaticInventory, error) {
 	for name := range inventoryData.All.Hosts {
 		allHostNames = append(allHostNames, name)
 	}
-	
+
 	allGroup := types.Group{
 		Name:      "all",
 		Hosts:     allHostNames,
 		Variables: inventoryData.All.Vars,
 	}
-	
+
 	if err := inv.AddGroup(allGroup); err != nil {
 		// Group might already exist, update it
 		inv.mu.Lock()
@@ -177,7 +177,7 @@ func NewFromYAML(data []byte) (*StaticInventory, error) {
 		}
 		inv.mu.Unlock()
 	}
-	
+
 	// Add "all" group to each host's group list
 	for name := range inventoryData.All.Hosts {
 		inv.mu.Lock()
@@ -234,7 +234,7 @@ func (inv *StaticInventory) GetHosts(pattern string) ([]types.Host, error) {
 						hostSet[hostname] = true
 					}
 				}
-				
+
 				// Also check child groups recursively
 				childHosts, err := inv.getHostsFromChildGroups(group, hostSet)
 				if err != nil {
@@ -520,7 +520,7 @@ func (inv *StaticInventory) ToYAML() ([]byte, error) {
 	// Export hosts
 	for name, host := range inv.hosts {
 		hostVars := make(map[string]interface{})
-		
+
 		// Add ansible variables
 		if host.Address != "" && host.Address != name {
 			hostVars["ansible_host"] = host.Address
@@ -534,12 +534,12 @@ func (inv *StaticInventory) ToYAML() ([]byte, error) {
 		if host.Port != 0 && host.Port != 22 {
 			hostVars["ansible_port"] = host.Port
 		}
-		
+
 		// Add other variables
 		for k, v := range host.Variables {
 			hostVars[k] = v
 		}
-		
+
 		data.All.Hosts[name] = hostVars
 	}
 

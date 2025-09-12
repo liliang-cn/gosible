@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 func TestNewConnectionManager(t *testing.T) {
@@ -93,7 +93,7 @@ func TestConnectionManagerCreateConnection(t *testing.T) {
 
 func TestLocalConnectionConnect(t *testing.T) {
 	conn := NewLocalConnection()
-	
+
 	if conn.IsConnected() {
 		t.Error("connection should not be connected initially")
 	}
@@ -155,7 +155,7 @@ func TestLocalConnectionExecute(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			options := types.ExecuteOptions{}
 			result, err := conn.Execute(ctx, tt.command, options)
-			
+
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Execute() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -274,7 +274,7 @@ func TestLocalConnectionCopyAndFetch(t *testing.T) {
 
 	// Test data
 	testData := "This is test data for copy/fetch operations"
-	testFile := "/tmp/gosinble-test-copy-fetch"
+	testFile := "/tmp/gosibletest-copy-fetch"
 
 	// Clean up function
 	defer func() {

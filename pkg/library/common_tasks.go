@@ -2,7 +2,7 @@
 package library
 
 import (
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 // CommonTasks provides convenient task builders for common operations

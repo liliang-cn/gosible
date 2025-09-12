@@ -1,4 +1,4 @@
-// Package testing provides comprehensive testing utilities and mock implementations for gosinble modules.
+// Package testing provides comprehensive testing utilities and mock implementations for gosible modules.
 //
 // This package includes:
 //

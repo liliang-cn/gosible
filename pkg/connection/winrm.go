@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/liliang-cn/gosible/pkg/types"
 	"github.com/masterzen/winrm"
-	"github.com/liliang-cn/gosinble/pkg/types"
 )
 
 // WinRMConnection implements the Connection interface for Windows Remote Management
@@ -105,7 +105,7 @@ func (c *WinRMConnection) Execute(ctx context.Context, command string, options t
 	} else {
 		exitCode = -1
 	}
-	
+
 	endTime := time.Now()
 	result.EndTime = endTime
 	result.Duration = endTime.Sub(startTime)
@@ -621,8 +621,8 @@ func (c *WinRMConnection) ExecuteScript(ctx context.Context, script string, opti
 	}
 
 	// Batch script - create temp file and execute
-	tempPath := fmt.Sprintf("%%TEMP%%\\gosinble-script-%d.bat", time.Now().UnixNano())
-	
+	tempPath := fmt.Sprintf("%%TEMP%%\\gosiblescript-%d.bat", time.Now().UnixNano())
+
 	// Upload script
 	if err := c.Copy(ctx, strings.NewReader(script), tempPath, 0755); err != nil {
 		return nil, types.NewConnectionError(c.info.Host, "failed to upload script", err)

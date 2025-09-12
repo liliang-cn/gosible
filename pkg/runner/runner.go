@@ -9,23 +9,23 @@ import (
 
 	"golang.org/x/sync/errgroup"
 
-	"github.com/liliang-cn/gosinble/pkg/types"
-	"github.com/liliang-cn/gosinble/pkg/connection"
-	"github.com/liliang-cn/gosinble/pkg/modules"
-	"github.com/liliang-cn/gosinble/pkg/vars"
+	"github.com/liliang-cn/gosible/pkg/types"
+	"github.com/liliang-cn/gosiblepkg/connection"
+	"github.com/liliang-cn/gosiblepkg/modules"
+	"github.com/liliang-cn/gosiblepkg/vars"
 )
 
 // TaskRunner implements the Runner interface with parallel execution support
 type TaskRunner struct {
-	maxConcurrency   int
-	moduleRegistry   *modules.ModuleRegistry
-	connectionMgr    *connection.ConnectionManager
-	varManager       *vars.VarManager
-	handlerManager   *HandlerManager
-	mu               sync.RWMutex
-	connections      map[string]types.Connection
-	connectionTTL    time.Duration
-	tags             []string  // Tags to filter task execution
+	maxConcurrency int
+	moduleRegistry *modules.ModuleRegistry
+	connectionMgr  *connection.ConnectionManager
+	varManager     *vars.VarManager
+	handlerManager *HandlerManager
+	mu             sync.RWMutex
+	connections    map[string]types.Connection
+	connectionTTL  time.Duration
+	tags           []string // Tags to filter task execution
 }
 
 // NewTaskRunner creates a new task runner
@@ -82,7 +82,7 @@ func (r *TaskRunner) shouldRunTask(task types.Task) bool {
 	if len(r.tags) == 0 {
 		return true
 	}
-	
+
 	// If task has no tags, skip it when tags are specified
 	if len(task.Tags) == 0 {
 		// Unless 'always' or 'all' tag is specified
@@ -93,21 +93,21 @@ func (r *TaskRunner) shouldRunTask(task types.Task) bool {
 		}
 		return false
 	}
-	
+
 	// Check if any task tag matches runner tags
 	for _, taskTag := range task.Tags {
 		// Always run tasks with 'always' tag
 		if taskTag == "always" {
 			return true
 		}
-		
+
 		for _, runnerTag := range r.tags {
 			if taskTag == runnerTag {
 				return true
 			}
 		}
 	}
-	
+
 	return false
 }
 
@@ -204,11 +204,11 @@ func (r *TaskRunner) Run(ctx context.Context, task types.Task, hosts []types.Hos
 		// Execute task on all hosts with controlled concurrency
 		results, err = r.executeOnHosts(ctx, task, module, hosts, mergedVars)
 	}
-	
+
 	if err != nil {
 		return results, err
 	}
-	
+
 	// Handle notifications if task changed something
 	if task.Notify != nil && len(task.Notify) > 0 {
 		// Check if any result shows a change
@@ -219,33 +219,33 @@ func (r *TaskRunner) Run(ctx context.Context, task types.Task, hosts []types.Hos
 				break
 			}
 		}
-		
+
 		if hasChanges && r.handlerManager != nil {
 			r.handlerManager.Notify(task.Notify)
 		}
 	}
-	
+
 	return results, nil
 }
 
 // executeOnHosts executes a task on multiple hosts with parallel execution
 func (r *TaskRunner) executeOnHosts(ctx context.Context, task types.Task, module types.Module, hosts []types.Host, vars map[string]interface{}) ([]types.Result, error) {
 	results := make([]types.Result, len(hosts))
-	
+
 	// Use errgroup to control concurrency and handle errors
 	g, ctx := errgroup.WithContext(ctx)
-	
+
 	// Create a semaphore to limit concurrency
 	sem := make(chan struct{}, r.maxConcurrency)
-	
+
 	for i, host := range hosts {
 		i, host := i, host // Capture loop variables
-		
+
 		g.Go(func() error {
 			// Acquire semaphore
 			sem <- struct{}{}
 			defer func() { <-sem }()
-			
+
 			// Execute task on this host
 			result, err := r.executeOnHost(ctx, task, module, host, vars)
 			if err != nil {
@@ -264,17 +264,17 @@ func (r *TaskRunner) executeOnHosts(ctx context.Context, task types.Task, module
 					Data:       make(map[string]interface{}),
 				}
 			}
-			
+
 			results[i] = *result
 			return nil
 		})
 	}
-	
+
 	// Wait for all tasks to complete
 	if err := g.Wait(); err != nil {
 		return results, err
 	}
-	
+
 	return results, nil
 }
 
@@ -311,7 +311,7 @@ func (r *TaskRunner) executeOnHost(ctx context.Context, task types.Task, module 
 	for k, v := range expandedArgs {
 		moduleArgs[k] = v
 	}
-	
+
 	// Add meta variables for check mode, diff mode, etc.
 	// Check both underscore and ansible_ prefixed versions
 	if checkMode, exists := hostVars["_check_mode"]; exists {
@@ -319,13 +319,13 @@ func (r *TaskRunner) executeOnHost(ctx context.Context, task types.Task, module 
 	} else if checkMode, exists := hostVars["ansible_check_mode"]; exists {
 		moduleArgs["_check_mode"] = checkMode
 	}
-	
+
 	if diffMode, exists := hostVars["_diff"]; exists {
 		moduleArgs["_diff"] = diffMode
 	} else if diffMode, exists := hostVars["ansible_diff_mode"]; exists {
 		moduleArgs["_diff"] = diffMode
 	}
-	
+
 	// Add task variables to module args for access
 	moduleArgs["_task_vars"] = hostVars
 
@@ -334,13 +334,13 @@ func (r *TaskRunner) executeOnHost(ctx context.Context, task types.Task, module 
 	if task.Retries > 0 {
 		maxRetries = task.Retries + 1
 	}
-	
+
 	var result *types.Result
 	for attempt := 0; attempt < maxRetries; attempt++ {
 		if attempt > 0 && task.Delay > 0 {
 			time.Sleep(time.Duration(task.Delay) * time.Second)
 		}
-		
+
 		// Execute the module with check/diff mode support
 		// Check if module supports capabilities and use RunWithModes if appropriate
 		if capModule, ok := module.(interface {
@@ -355,7 +355,7 @@ func (r *TaskRunner) executeOnHost(ctx context.Context, task types.Task, module 
 			if diffMode, ok := moduleArgs["_diff"].(bool); ok && diffMode {
 				opts.DiffMode = true
 			}
-			
+
 			// Validate module supports requested modes
 			caps := capModule.Capabilities()
 			if opts.CheckMode && !caps.CheckMode {
@@ -402,13 +402,13 @@ func (r *TaskRunner) executeOnHost(ctx context.Context, task types.Task, module 
 		} else if err != nil {
 			return result, err
 		}
-		
+
 		// Set the task name and host in the result
 		if result != nil {
 			result.TaskName = task.Name
 			result.Host = host.Name
 		}
-		
+
 		// Evaluate changed_when condition
 		if task.ChangedWhen != nil {
 			evaluator := NewConditionEvaluator(hostVars)
@@ -418,7 +418,7 @@ func (r *TaskRunner) executeOnHost(ctx context.Context, task types.Task, module 
 			}
 			result.Changed = changed
 		}
-		
+
 		// Evaluate failed_when condition
 		if task.FailedWhen != nil {
 			evaluator := NewConditionEvaluator(hostVars)
@@ -431,7 +431,7 @@ func (r *TaskRunner) executeOnHost(ctx context.Context, task types.Task, module 
 				result.Error = fmt.Errorf("task failed due to failed_when condition")
 			}
 		}
-		
+
 		// Check until condition for retries
 		if task.Until != nil && attempt < maxRetries-1 {
 			evaluator := NewConditionEvaluator(hostVars)
@@ -452,12 +452,12 @@ func (r *TaskRunner) executeOnHost(ctx context.Context, task types.Task, module 
 			break
 		}
 	}
-	
+
 	// Register result if specified
 	if task.Register != "" && r.varManager != nil {
 		r.varManager.SetVar(task.Register, result)
 	}
-	
+
 	return result, nil
 }
 
@@ -470,21 +470,21 @@ func (r *TaskRunner) executeWithLoop(ctx context.Context, task types.Task, modul
 	} else if task.WithItems != nil {
 		loopItems = task.WithItems
 	}
-	
+
 	// Evaluate loop items
 	evaluator := NewConditionEvaluator(vars)
 	items, err := evaluator.EvaluateLoopItems(loopItems)
 	if err != nil {
 		return nil, fmt.Errorf("failed to evaluate loop items: %w", err)
 	}
-	
+
 	if len(items) == 0 {
 		return []types.Result{}, nil
 	}
-	
+
 	// Collect all results
 	var allResults []types.Result
-	
+
 	// Get loop control settings
 	var loopVar string = "item"
 	var indexVar string = ""
@@ -496,7 +496,7 @@ func (r *TaskRunner) executeWithLoop(ctx context.Context, task types.Task, modul
 			indexVar = iv
 		}
 	}
-	
+
 	// Execute task for each item
 	for index, item := range items {
 		// Create vars with loop item
@@ -508,28 +508,28 @@ func (r *TaskRunner) executeWithLoop(ctx context.Context, task types.Task, modul
 		if indexVar != "" {
 			loopVars[indexVar] = index
 		}
-		
+
 		// Execute task with loop vars
 		results, err := r.executeOnHosts(ctx, task, module, hosts, loopVars)
 		if err != nil {
 			return allResults, err
 		}
-		
+
 		// Add loop info to results
 		for i := range results {
 			results[i].Data["ansible_loop"] = map[string]interface{}{
-				"index":     index,
-				"index0":    index,
-				"index1":    index + 1,
-				"first":     index == 0,
-				"last":      index == len(items)-1,
-				"length":    len(items),
-				loopVar:     item,
+				"index":  index,
+				"index0": index,
+				"index1": index + 1,
+				"first":  index == 0,
+				"last":   index == len(items)-1,
+				"length": len(items),
+				loopVar:  item,
 			}
 			allResults = append(allResults, results[i])
 		}
 	}
-	
+
 	return allResults, nil
 }
 
@@ -544,13 +544,13 @@ func (r *TaskRunner) getConnection(ctx context.Context, host types.Host) (types.
 
 	// Create connection info
 	connInfo := types.ConnectionInfo{
-		Type:       "ssh", // Default connection type
-		Host:       host.Address,
-		Port:       host.Port,
-		User:       host.User,
-		Password:   host.Password,
-		Timeout:    30 * time.Second,
-		Variables:  host.Variables,
+		Type:      "ssh", // Default connection type
+		Host:      host.Address,
+		Port:      host.Port,
+		User:      host.User,
+		Password:  host.Password,
+		Timeout:   30 * time.Second,
+		Variables: host.Variables,
 	}
 
 	// Override with localhost for local connections
@@ -602,11 +602,11 @@ func (r *TaskRunner) getHostVariables(host types.Host, taskVars map[string]inter
 // expandTaskArguments expands variables in task arguments
 func (r *TaskRunner) expandTaskArguments(args map[string]interface{}, vars map[string]interface{}) map[string]interface{} {
 	expanded := make(map[string]interface{})
-	
+
 	for key, value := range args {
 		expanded[key] = r.expandValue(value, vars)
 	}
-	
+
 	return expanded
 }
 
@@ -642,7 +642,7 @@ func (r *TaskRunner) RunPlay(ctx context.Context, play types.Play, inventory typ
 // RunPlaybook executes a complete playbook
 func (r *TaskRunner) RunPlaybook(ctx context.Context, playbook types.Playbook, inventory types.Inventory, vars map[string]interface{}) ([]types.Result, error) {
 	var allResults []types.Result
-	
+
 	for _, play := range playbook.Plays {
 		results, err := r.RunPlay(ctx, play, inventory, vars)
 		if err != nil {
@@ -650,7 +650,7 @@ func (r *TaskRunner) RunPlaybook(ctx context.Context, playbook types.Playbook, i
 		}
 		allResults = append(allResults, results...)
 	}
-	
+
 	return allResults, nil
 }
 
@@ -661,9 +661,9 @@ func (r *TaskRunner) executePlay(ctx context.Context, play types.Play, inventory
 	if err != nil {
 		return nil, err
 	}
-	
+
 	var allResults []types.Result
-	
+
 	// Execute tasks
 	for _, task := range play.Tasks {
 		results, err := r.Run(ctx, task, hosts, vars)
@@ -672,7 +672,7 @@ func (r *TaskRunner) executePlay(ctx context.Context, play types.Play, inventory
 		}
 		allResults = append(allResults, results...)
 	}
-	
+
 	return allResults, nil
 }
 

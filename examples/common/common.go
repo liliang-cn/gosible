@@ -8,10 +8,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/liliang-cn/gosinble/pkg/connection"
-	"github.com/liliang-cn/gosinble/pkg/inventory"
-	"github.com/liliang-cn/gosinble/pkg/runner"
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/connection"
+	"github.com/liliang-cn/gosiblepkg/inventory"
+	"github.com/liliang-cn/gosiblepkg/runner"
+	"github.com/liliang-cn/gosiblepkg/types"
 )
 
 // PrintHeader prints a formatted header for examples
@@ -37,17 +37,17 @@ func PrintResult(result *types.Result) {
 	if !result.Success {
 		status = "❌ FAILED"
 	}
-	
+
 	fmt.Printf("   %s: %s", status, result.Message)
 	if result.Error != nil {
 		fmt.Printf(" (Error: %v)", result.Error)
 	}
 	fmt.Println()
-	
+
 	if result.Changed {
 		fmt.Println("   📝 Changes were made")
 	}
-	
+
 	if result.Duration > 0 {
 		fmt.Printf("   ⏱️  Duration: %v\n", result.Duration)
 	}
@@ -71,7 +71,7 @@ func PrintInfo(msg string) {
 // CreateSampleInventory creates a sample inventory for examples
 func CreateSampleInventory() *inventory.StaticInventory {
 	inv := inventory.NewStaticInventory()
-	
+
 	// Add sample hosts
 	hosts := []types.Host{
 		{
@@ -115,19 +115,19 @@ func CreateSampleInventory() *inventory.StaticInventory {
 			},
 		},
 	}
-	
+
 	for _, host := range hosts {
 		inv.AddHost(host)
 	}
-	
+
 	// Add groups
 	groups := []types.Group{
 		{
 			Name:  "webservers",
 			Hosts: []string{"web1", "web2"},
 			Variables: map[string]interface{}{
-				"http_port":   80,
-				"https_port":  443,
+				"http_port":  80,
+				"https_port": 443,
 			},
 		},
 		{
@@ -141,8 +141,8 @@ func CreateSampleInventory() *inventory.StaticInventory {
 			Name:  "production",
 			Hosts: []string{"web1", "web2", "db1"},
 			Variables: map[string]interface{}{
-				"env":     "prod",
-				"backup":  true,
+				"env":    "prod",
+				"backup": true,
 			},
 		},
 		{
@@ -154,21 +154,21 @@ func CreateSampleInventory() *inventory.StaticInventory {
 			},
 		},
 	}
-	
+
 	for _, group := range groups {
 		inv.AddGroup(group)
 	}
-	
+
 	return inv
 }
 
 // CreateLocalRunner creates a runner configured for local execution
 func CreateLocalRunner() *runner.TaskRunner {
 	r := runner.NewTaskRunner()
-	
+
 	// Register common modules
 	// (In a real implementation, modules would be registered here)
-	
+
 	return r
 }
 
@@ -176,29 +176,29 @@ func CreateLocalRunner() *runner.TaskRunner {
 func ExecuteTaskOnLocal(ctx context.Context, task types.Task) (*types.Result, error) {
 	// Create local connection
 	conn := connection.NewLocalConnection()
-	
+
 	// Connect
 	info := types.ConnectionInfo{Type: "local"}
 	if err := conn.Connect(ctx, info); err != nil {
 		return nil, fmt.Errorf("failed to connect locally: %w", err)
 	}
 	defer conn.Close()
-	
+
 	// For this example, we'll simulate task execution with a command
 	command := fmt.Sprintf("echo 'Executing task: %s'", task.Name)
 	if cmd, ok := task.Args["command"].(string); ok {
 		command = cmd
 	}
-	
+
 	result, err := conn.Execute(ctx, command, types.ExecuteOptions{})
 	if err != nil {
 		return nil, err
 	}
-	
+
 	// Enhance result with task information
 	result.TaskName = task.Name
 	result.ModuleName = string(task.Module)
-	
+
 	return result, nil
 }
 
@@ -223,34 +223,34 @@ func SafeExit(code int, message string) {
 // RetryWithBackoff executes a function with exponential backoff
 func RetryWithBackoff(ctx context.Context, maxRetries int, baseDelay time.Duration, fn func() error) error {
 	var err error
-	
+
 	for attempt := 0; attempt < maxRetries; attempt++ {
 		if attempt > 0 {
 			delay := baseDelay * time.Duration(1<<uint(attempt-1))
 			PrintInfo(fmt.Sprintf("Retrying in %v (attempt %d/%d)", delay, attempt+1, maxRetries))
-			
+
 			select {
 			case <-time.After(delay):
 			case <-ctx.Done():
 				return ctx.Err()
 			}
 		}
-		
+
 		err = fn()
 		if err == nil {
 			return nil
 		}
-		
+
 		PrintWarning(fmt.Sprintf("Attempt %d failed: %v", attempt+1, err))
 	}
-	
+
 	return fmt.Errorf("operation failed after %d attempts: %w", maxRetries, err)
 }
 
 // CreateProgressCallback creates a progress callback function
 func CreateProgressCallback() func(types.ProgressInfo) {
 	return func(progress types.ProgressInfo) {
-		fmt.Printf("📊 Progress: %s - %.1f%% - %s\n", 
+		fmt.Printf("📊 Progress: %s - %.1f%% - %s\n",
 			progress.Stage, progress.Percentage, progress.Message)
 	}
 }

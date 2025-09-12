@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 // LogLevel represents the severity of a log entry
@@ -43,48 +43,48 @@ func (l LogLevel) String() string {
 
 // LogEntry represents a single log entry
 type LogEntry struct {
-	Timestamp   time.Time              `json:"timestamp"`
-	Level       LogLevel               `json:"level"`
-	Message     string                 `json:"message"`
-	Source      string                 `json:"source,omitempty"`      // Module or connection source
-	SessionID   string                 `json:"session_id,omitempty"`  // Execution session
-	TaskName    string                 `json:"task_name,omitempty"`   // Task name
-	Host        string                 `json:"host,omitempty"`        // Target host
-	Duration    time.Duration          `json:"duration,omitempty"`    // Operation duration
-	Fields      map[string]interface{} `json:"fields,omitempty"`      // Additional structured data
-	
-	// Gosinble-specific fields
-	StreamEvent *types.StreamEvent `json:"stream_event,omitempty"`
-	StepInfo    *types.StepInfo    `json:"step_info,omitempty"`
+	Timestamp time.Time              `json:"timestamp"`
+	Level     LogLevel               `json:"level"`
+	Message   string                 `json:"message"`
+	Source    string                 `json:"source,omitempty"`     // Module or connection source
+	SessionID string                 `json:"session_id,omitempty"` // Execution session
+	TaskName  string                 `json:"task_name,omitempty"`  // Task name
+	Host      string                 `json:"host,omitempty"`       // Target host
+	Duration  time.Duration          `json:"duration,omitempty"`   // Operation duration
+	Fields    map[string]interface{} `json:"fields,omitempty"`     // Additional structured data
+
+	// gosible-specific fields
+	StreamEvent *types.StreamEvent  `json:"stream_event,omitempty"`
+	StepInfo    *types.StepInfo     `json:"step_info,omitempty"`
 	Progress    *types.ProgressInfo `json:"progress,omitempty"`
-	
+
 	// Error information
-	Error       string `json:"error,omitempty"`
-	StackTrace  string `json:"stack_trace,omitempty"`
+	Error      string `json:"error,omitempty"`
+	StackTrace string `json:"stack_trace,omitempty"`
 }
 
-// StreamLogger handles logging for gosinble streaming operations
+// StreamLogger handles logging for gosiblestreaming operations
 type StreamLogger struct {
-	mu          sync.RWMutex
-	outputs     []LogOutput
-	level       LogLevel
-	sessionID   string
-	source      string
-	enabled     bool
-	
+	mu        sync.RWMutex
+	outputs   []LogOutput
+	level     LogLevel
+	sessionID string
+	source    string
+	enabled   bool
+
 	// Filtering options
-	includeSteps     bool
-	includeProgress  bool
-	includeOutput    bool
-	includeErrors    bool
-	
+	includeSteps    bool
+	includeProgress bool
+	includeOutput   bool
+	includeErrors   bool
+
 	// Buffering options
-	bufferSize      int
-	flushInterval   time.Duration
-	buffer          []LogEntry
-	bufferMu        sync.Mutex
-	flushTicker     *time.Ticker
-	stopFlush       chan bool
+	bufferSize    int
+	flushInterval time.Duration
+	buffer        []LogEntry
+	bufferMu      sync.Mutex
+	flushTicker   *time.Ticker
+	stopFlush     chan bool
 }
 
 // LogOutput represents a log destination
@@ -132,10 +132,10 @@ func NewStreamLogger(source, sessionID string) *StreamLogger {
 		buffer:          make([]LogEntry, 0),
 		stopFlush:       make(chan bool),
 	}
-	
+
 	// Start buffer flushing
 	logger.startFlushTimer()
-	
+
 	return logger
 }
 
@@ -143,24 +143,24 @@ func NewStreamLogger(source, sessionID string) *StreamLogger {
 func (l *StreamLogger) AddFileOutput(filePath string) error {
 	l.mu.Lock()
 	defer l.mu.Unlock()
-	
+
 	// Create directory if it doesn't exist
 	dir := filepath.Dir(filePath)
 	if err := os.MkdirAll(dir, 0755); err != nil {
 		return fmt.Errorf("failed to create log directory: %v", err)
 	}
-	
+
 	file, err := os.OpenFile(filePath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 	if err != nil {
 		return fmt.Errorf("failed to open log file: %v", err)
 	}
-	
+
 	output := &FileLogOutput{
 		file:     file,
 		encoder:  json.NewEncoder(file),
 		filePath: filePath,
 	}
-	
+
 	l.outputs = append(l.outputs, output)
 	return nil
 }
@@ -169,13 +169,13 @@ func (l *StreamLogger) AddFileOutput(filePath string) error {
 func (l *StreamLogger) AddConsoleOutput(format string, colors bool) {
 	l.mu.Lock()
 	defer l.mu.Unlock()
-	
+
 	output := &ConsoleLogOutput{
 		writer: os.Stdout,
 		format: format,
 		colors: colors,
 	}
-	
+
 	l.outputs = append(l.outputs, output)
 }
 
@@ -183,12 +183,12 @@ func (l *StreamLogger) AddConsoleOutput(format string, colors bool) {
 func (l *StreamLogger) AddMemoryOutput(maxSize int) *MemoryLogOutput {
 	l.mu.Lock()
 	defer l.mu.Unlock()
-	
+
 	output := &MemoryLogOutput{
 		entries: make([]LogEntry, 0),
 		maxSize: maxSize,
 	}
-	
+
 	l.outputs = append(l.outputs, output)
 	return output
 }
@@ -222,7 +222,7 @@ func (l *StreamLogger) Log(level LogLevel, message string, fields map[string]int
 	if !l.shouldLog(level) {
 		return
 	}
-	
+
 	entry := LogEntry{
 		Timestamp: time.Now(),
 		Level:     level,
@@ -231,16 +231,16 @@ func (l *StreamLogger) Log(level LogLevel, message string, fields map[string]int
 		SessionID: l.sessionID,
 		Fields:    fields,
 	}
-	
+
 	l.writeEntry(entry)
 }
 
-// LogStreamEvent logs a gosinble stream event
+// LogStreamEvent logs a gosiblestream event
 func (l *StreamLogger) LogStreamEvent(event types.StreamEvent, taskName, host string) {
 	if !l.enabled {
 		return
 	}
-	
+
 	// Apply filters
 	switch event.Type {
 	case types.StreamStepStart, types.StreamStepUpdate, types.StreamStepEnd:
@@ -260,14 +260,14 @@ func (l *StreamLogger) LogStreamEvent(event types.StreamEvent, taskName, host st
 			return
 		}
 	}
-	
+
 	level := l.getLogLevelForEvent(event)
 	if !l.shouldLog(level) {
 		return
 	}
-	
+
 	message := l.formatEventMessage(event)
-	
+
 	entry := LogEntry{
 		Timestamp:   time.Now(),
 		Level:       level,
@@ -281,14 +281,14 @@ func (l *StreamLogger) LogStreamEvent(event types.StreamEvent, taskName, host st
 			"event_type": string(event.Type),
 		},
 	}
-	
+
 	// Add specific fields based on event type
 	if event.Progress != nil {
 		entry.Progress = event.Progress
 		entry.Fields["percentage"] = event.Progress.Percentage
 		entry.Fields["stage"] = event.Progress.Stage
 	}
-	
+
 	if event.Step != nil {
 		entry.StepInfo = event.Step
 		entry.Fields["step_id"] = event.Step.ID
@@ -297,11 +297,11 @@ func (l *StreamLogger) LogStreamEvent(event types.StreamEvent, taskName, host st
 			entry.Duration = event.Step.Duration
 		}
 	}
-	
+
 	if event.Error != nil {
 		entry.Error = event.Error.Error()
 	}
-	
+
 	l.writeEntry(entry)
 }
 
@@ -310,14 +310,14 @@ func (l *StreamLogger) LogProgress(progress types.ProgressInfo, taskName, host s
 	if !l.enabled || !l.includeProgress {
 		return
 	}
-	
+
 	level := LevelInfo
 	if !l.shouldLog(level) {
 		return
 	}
-	
+
 	message := fmt.Sprintf("Progress: %.1f%% - %s", progress.Percentage, progress.Message)
-	
+
 	entry := LogEntry{
 		Timestamp: time.Now(),
 		Level:     level,
@@ -328,13 +328,13 @@ func (l *StreamLogger) LogProgress(progress types.ProgressInfo, taskName, host s
 		Host:      host,
 		Progress:  &progress,
 		Fields: map[string]interface{}{
-			"percentage": progress.Percentage,
-			"stage":      progress.Stage,
+			"percentage":  progress.Percentage,
+			"stage":       progress.Stage,
 			"step_number": progress.StepNumber,
 			"total_steps": progress.TotalSteps,
 		},
 	}
-	
+
 	l.writeEntry(entry)
 }
 
@@ -343,14 +343,14 @@ func (l *StreamLogger) LogStep(step types.StepInfo, taskName, host string) {
 	if !l.enabled || !l.includeSteps {
 		return
 	}
-	
+
 	level := l.getLogLevelForStep(step)
 	if !l.shouldLog(level) {
 		return
 	}
-	
+
 	message := fmt.Sprintf("Step %s (%s): %s", step.ID, step.Status, step.Name)
-	
+
 	entry := LogEntry{
 		Timestamp: time.Now(),
 		Level:     level,
@@ -367,7 +367,7 @@ func (l *StreamLogger) LogStep(step types.StepInfo, taskName, host string) {
 			"step_name":   step.Name,
 		},
 	}
-	
+
 	l.writeEntry(entry)
 }
 
@@ -375,16 +375,16 @@ func (l *StreamLogger) LogStep(step types.StepInfo, taskName, host string) {
 func (l *StreamLogger) Close() error {
 	l.mu.Lock()
 	defer l.mu.Unlock()
-	
+
 	// Stop flush timer
 	if l.flushTicker != nil {
 		l.flushTicker.Stop()
 		close(l.stopFlush)
 	}
-	
+
 	// Flush remaining buffer (without additional locking since we already have the lock)
 	l.flushUnsafe()
-	
+
 	// Close all outputs
 	var lastErr error
 	for _, output := range l.outputs {
@@ -392,7 +392,7 @@ func (l *StreamLogger) Close() error {
 			lastErr = err
 		}
 	}
-	
+
 	return lastErr
 }
 
@@ -407,9 +407,9 @@ func (l *StreamLogger) shouldLog(level LogLevel) bool {
 func (l *StreamLogger) writeEntry(entry LogEntry) {
 	l.bufferMu.Lock()
 	defer l.bufferMu.Unlock()
-	
+
 	l.buffer = append(l.buffer, entry)
-	
+
 	// Flush if buffer is full
 	if len(l.buffer) >= l.bufferSize {
 		l.flush()
@@ -431,14 +431,14 @@ func (l *StreamLogger) flushUnsafe() {
 	if len(l.buffer) == 0 {
 		return
 	}
-	
+
 	// We assume the caller has already acquired the necessary lock
 	for _, output := range l.outputs {
 		for _, entry := range l.buffer {
 			output.Write(entry)
 		}
 	}
-	
+
 	l.buffer = l.buffer[:0]
 }
 
@@ -538,15 +538,15 @@ func (c *ConsoleLogOutput) Write(entry LogEntry) error {
 		encoder := json.NewEncoder(c.writer)
 		return encoder.Encode(entry)
 	}
-	
+
 	// Text format
 	timestamp := entry.Timestamp.Format("2006-01-02 15:04:05")
 	level := entry.Level.String()
-	
+
 	if c.colors {
 		level = c.colorizeLevel(level)
 	}
-	
+
 	line := fmt.Sprintf("%s [%s] [%s] %s", timestamp, level, entry.Source, entry.Message)
 	if entry.Host != "" {
 		line += fmt.Sprintf(" (host: %s)", entry.Host)
@@ -554,7 +554,7 @@ func (c *ConsoleLogOutput) Write(entry LogEntry) error {
 	if entry.Duration > 0 {
 		line += fmt.Sprintf(" (duration: %v)", entry.Duration)
 	}
-	
+
 	_, err := fmt.Fprintln(c.writer, line)
 	return err
 }
@@ -567,7 +567,7 @@ func (c *ConsoleLogOutput) colorizeLevel(level string) string {
 	if !c.colors {
 		return level
 	}
-	
+
 	const (
 		colorReset  = "\033[0m"
 		colorRed    = "\033[31m"
@@ -575,7 +575,7 @@ func (c *ConsoleLogOutput) colorizeLevel(level string) string {
 		colorBlue   = "\033[34m"
 		colorGray   = "\033[37m"
 	)
-	
+
 	switch level {
 	case "ERROR", "FATAL":
 		return colorRed + level + colorReset
@@ -594,14 +594,14 @@ func (c *ConsoleLogOutput) colorizeLevel(level string) string {
 func (m *MemoryLogOutput) Write(entry LogEntry) error {
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	
+
 	m.entries = append(m.entries, entry)
-	
+
 	// Keep only the last maxSize entries
 	if len(m.entries) > m.maxSize {
 		m.entries = m.entries[1:]
 	}
-	
+
 	return nil
 }
 
@@ -615,7 +615,7 @@ func (m *MemoryLogOutput) Close() error {
 func (m *MemoryLogOutput) GetEntries() []LogEntry {
 	m.mu.RLock()
 	defer m.mu.RUnlock()
-	
+
 	entries := make([]LogEntry, len(m.entries))
 	copy(entries, m.entries)
 	return entries
@@ -627,7 +627,7 @@ func (m *MemoryLogOutput) Clear() {
 	m.entries = m.entries[:0]
 }
 
-// StreamingLoggerAdapter adapts gosinble streaming to logging
+// StreamingLoggerAdapter adapts gosiblestreaming to logging
 type StreamingLoggerAdapter struct {
 	logger   *StreamLogger
 	taskName string

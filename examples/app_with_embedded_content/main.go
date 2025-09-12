@@ -7,24 +7,25 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	
-	"github.com/liliang-cn/gosinble/pkg/inventory"
-	"github.com/liliang-cn/gosinble/pkg/library"
-	"github.com/liliang-cn/gosinble/pkg/runner"
-	"github.com/liliang-cn/gosinble/pkg/types"
+
+	"github.com/liliang-cn/gosible/pkg/inventory"
+	"github.com/liliang-cn/gosiblepkg/library"
+	"github.com/liliang-cn/gosiblepkg/runner"
+	"github.com/liliang-cn/gosiblepkg/types"
 )
 
 // Embed all application content
+//
 //go:embed configs scripts templates
 var appContent embed.FS
 
 // Application deployment manager
 type AppDeployment struct {
-	name     string
-	version  string
-	ec       *library.EmbeddedContent
-	ct       *library.CommonTasks
-	runner   *runner.TaskRunner
+	name    string
+	version string
+	ec      *library.EmbeddedContent
+	ct      *library.CommonTasks
+	runner  *runner.TaskRunner
 }
 
 func NewAppDeployment(name, version string) *AppDeployment {
@@ -40,16 +41,16 @@ func NewAppDeployment(name, version string) *AppDeployment {
 // Deploy performs a complete application deployment
 func (ad *AppDeployment) Deploy(ctx context.Context, inv *inventory.StaticInventory, environment string) error {
 	fmt.Printf("Deploying %s version %s to %s environment\n", ad.name, ad.version, environment)
-	
+
 	// Get target hosts
 	hosts, err := inv.GetHosts("webservers")
 	if err != nil {
 		return fmt.Errorf("failed to get hosts: %w", err)
 	}
-	
+
 	// Build deployment tasks
 	tasks := ad.buildDeploymentTasks(environment)
-	
+
 	// Execute tasks
 	for _, task := range tasks {
 		fmt.Printf("Executing: %s\n", task.Name)
@@ -57,7 +58,7 @@ func (ad *AppDeployment) Deploy(ctx context.Context, inv *inventory.StaticInvent
 		if err != nil {
 			return fmt.Errorf("task '%s' failed: %w", task.Name, err)
 		}
-		
+
 		// Check results
 		for _, result := range results {
 			if !result.Success {
@@ -65,7 +66,7 @@ func (ad *AppDeployment) Deploy(ctx context.Context, inv *inventory.StaticInvent
 			}
 		}
 	}
-	
+
 	fmt.Println("Deployment completed successfully")
 	return nil
 }
@@ -73,10 +74,10 @@ func (ad *AppDeployment) Deploy(ctx context.Context, inv *inventory.StaticInvent
 // buildDeploymentTasks creates the task sequence for deployment
 func (ad *AppDeployment) buildDeploymentTasks(environment string) []types.Task {
 	var tasks []types.Task
-	
+
 	// 1. Pre-deployment backup
 	tasks = append(tasks, ad.createBackupTasks()...)
-	
+
 	// 2. Install dependencies
 	tasks = append(tasks, ad.ct.Package.ManagePackages([]string{
 		"nginx",
@@ -84,25 +85,25 @@ func (ad *AppDeployment) buildDeploymentTasks(environment string) []types.Task {
 		"npm",
 		"postgresql-client",
 	}, "present")...)
-	
+
 	// 3. Create application user and directories
 	tasks = append(tasks, ad.createAppStructureTasks()...)
-	
+
 	// 4. Deploy application code (in real app, this would be from git or download)
 	tasks = append(tasks, ad.deployApplicationTasks()...)
-	
+
 	// 5. Deploy configuration files
 	tasks = append(tasks, ad.deployConfigurationTasks(environment)...)
-	
+
 	// 6. Deploy and configure services
 	tasks = append(tasks, ad.deployServiceTasks()...)
-	
+
 	// 7. Configure web server
 	tasks = append(tasks, ad.configureNginxTasks()...)
-	
+
 	// 8. Post-deployment validation
 	tasks = append(tasks, ad.validationTasks()...)
-	
+
 	return tasks
 }
 
@@ -110,7 +111,7 @@ func (ad *AppDeployment) buildDeploymentTasks(environment string) []types.Task {
 func (ad *AppDeployment) createBackupTasks() []types.Task {
 	// Deploy backup script
 	tasks := ad.ec.DeployFile("scripts/backup.sh", "/usr/local/bin/backup.sh", "root", "root", "0755")
-	
+
 	// Run backup
 	tasks = append(tasks, types.Task{
 		Name:   "Create pre-deployment backup",
@@ -120,7 +121,7 @@ func (ad *AppDeployment) createBackupTasks() []types.Task {
 		},
 		IgnoreErrors: true, // Don't fail if this is first deployment
 	})
-	
+
 	return tasks
 }
 
@@ -139,7 +140,7 @@ func (ad *AppDeployment) createAppStructureTasks() []types.Task {
 			},
 		},
 	}
-	
+
 	// Create directory structure
 	dirs := []string{
 		fmt.Sprintf("/opt/%s", ad.name),
@@ -147,28 +148,28 @@ func (ad *AppDeployment) createAppStructureTasks() []types.Task {
 		fmt.Sprintf("/var/log/%s", ad.name),
 		fmt.Sprintf("/var/lib/%s", ad.name),
 	}
-	
+
 	for _, dir := range dirs {
 		tasks = append(tasks, ad.ct.File.EnsureDirectory(dir, ad.name, ad.name, "0755", false)...)
 	}
-	
+
 	return tasks
 }
 
 // deployApplicationTasks deploys the application files
 func (ad *AppDeployment) deployApplicationTasks() []types.Task {
 	var tasks []types.Task
-	
+
 	// Deploy scripts
-	tasks = append(tasks, ad.ec.DeployDirectory("scripts", fmt.Sprintf("/opt/%s/scripts", ad.name), 
+	tasks = append(tasks, ad.ec.DeployDirectory("scripts", fmt.Sprintf("/opt/%s/scripts", ad.name),
 		ad.name, ad.name, "0755", "0755")...)
-	
+
 	// In a real application, you would:
 	// - Clone from git repository
 	// - Download release artifacts
 	// - Extract archives
 	// - Install dependencies
-	
+
 	tasks = append(tasks, types.Task{
 		Name:   "Placeholder for application code deployment",
 		Module: "debug",
@@ -176,18 +177,18 @@ func (ad *AppDeployment) deployApplicationTasks() []types.Task {
 			"msg": fmt.Sprintf("Application %s v%s would be deployed here", ad.name, ad.version),
 		},
 	})
-	
+
 	return tasks
 }
 
 // deployConfigurationTasks deploys configuration files
 func (ad *AppDeployment) deployConfigurationTasks(environment string) []types.Task {
 	var tasks []types.Task
-	
+
 	// Deploy main configuration
 	configPath := fmt.Sprintf("/etc/%s/config.yml", ad.name)
 	tasks = append(tasks, ad.ec.DeployFile("configs/app.yml", configPath, ad.name, ad.name, "0644")...)
-	
+
 	// Override with environment-specific settings
 	tasks = append(tasks, types.Task{
 		Name:   "Set environment in configuration",
@@ -198,31 +199,31 @@ func (ad *AppDeployment) deployConfigurationTasks(environment string) []types.Ta
 			"line":   fmt.Sprintf("  environment: %s", environment),
 		},
 	})
-	
+
 	return tasks
 }
 
 // deployServiceTasks creates and configures the systemd service
 func (ad *AppDeployment) deployServiceTasks() []types.Task {
 	var tasks []types.Task
-	
+
 	// Template variables for service file
 	vars := map[string]interface{}{
-		"app_name": ad.name,
-		"app_user": ad.name,
-		"app_dir":  fmt.Sprintf("/opt/%s", ad.name),
-		"app_port": 3000,
+		"app_name":    ad.name,
+		"app_user":    ad.name,
+		"app_dir":     fmt.Sprintf("/opt/%s", ad.name),
+		"app_port":    3000,
 		"environment": "production",
 		"env_vars": map[string]string{
 			"CONFIG_PATH": fmt.Sprintf("/etc/%s/config.yml", ad.name),
 			"LOG_PATH":    fmt.Sprintf("/var/log/%s", ad.name),
 		},
 	}
-	
+
 	// Deploy service file from template
 	servicePath := fmt.Sprintf("/etc/systemd/system/%s.service", ad.name)
 	tasks = append(tasks, ad.ec.DeployTemplate("templates/app.service.j2", servicePath, vars, "root", "root", "0644")...)
-	
+
 	// Reload systemd and start service
 	tasks = append(tasks, types.Task{
 		Name:   "Reload systemd daemon",
@@ -231,7 +232,7 @@ func (ad *AppDeployment) deployServiceTasks() []types.Task {
 			"daemon_reload": true,
 		},
 	})
-	
+
 	tasks = append(tasks, types.Task{
 		Name:   fmt.Sprintf("Start and enable %s service", ad.name),
 		Module: "systemd",
@@ -241,28 +242,28 @@ func (ad *AppDeployment) deployServiceTasks() []types.Task {
 			"enabled": true,
 		},
 	})
-	
+
 	return tasks
 }
 
 // configureNginxTasks configures nginx as reverse proxy
 func (ad *AppDeployment) configureNginxTasks() []types.Task {
 	var tasks []types.Task
-	
+
 	// Template variables for nginx vhost
 	vars := map[string]interface{}{
-		"app_name":     ad.name,
-		"server_name":  fmt.Sprintf("%s.example.com", ad.name),
-		"backend_servers": []string{"localhost:3000"},
-		"ssl_enabled":  false,
-		"static_dir":   fmt.Sprintf("/opt/%s/public", ad.name),
+		"app_name":          ad.name,
+		"server_name":       fmt.Sprintf("%s.example.com", ad.name),
+		"backend_servers":   []string{"localhost:3000"},
+		"ssl_enabled":       false,
+		"static_dir":        fmt.Sprintf("/opt/%s/public", ad.name),
 		"health_check_path": "/health",
 	}
-	
+
 	// Deploy nginx vhost configuration
 	vhostPath := fmt.Sprintf("/etc/nginx/sites-available/%s", ad.name)
 	tasks = append(tasks, ad.ec.DeployTemplate("templates/nginx.vhost.j2", vhostPath, vars, "root", "root", "0644")...)
-	
+
 	// Enable the site
 	tasks = append(tasks, types.Task{
 		Name:   "Enable nginx site",
@@ -273,7 +274,7 @@ func (ad *AppDeployment) configureNginxTasks() []types.Task {
 			"state": "link",
 		},
 	})
-	
+
 	// Test nginx configuration
 	tasks = append(tasks, types.Task{
 		Name:   "Test nginx configuration",
@@ -282,7 +283,7 @@ func (ad *AppDeployment) configureNginxTasks() []types.Task {
 			"cmd": "nginx -t",
 		},
 	})
-	
+
 	// Reload nginx
 	tasks = append(tasks, types.Task{
 		Name:   "Reload nginx",
@@ -292,7 +293,7 @@ func (ad *AppDeployment) configureNginxTasks() []types.Task {
 			"state": "reloaded",
 		},
 	})
-	
+
 	return tasks
 }
 
@@ -340,12 +341,12 @@ func (ad *AppDeployment) validationTasks() []types.Task {
 // Rollback performs a rollback to previous version
 func (ad *AppDeployment) Rollback(ctx context.Context, inv *inventory.StaticInventory) error {
 	fmt.Printf("Rolling back %s deployment\n", ad.name)
-	
+
 	hosts, err := inv.GetHosts("webservers")
 	if err != nil {
 		return err
 	}
-	
+
 	// Rollback tasks
 	tasks := []types.Task{
 		{
@@ -379,7 +380,7 @@ func (ad *AppDeployment) Rollback(ctx context.Context, inv *inventory.StaticInve
 			},
 		},
 	}
-	
+
 	for _, task := range tasks {
 		fmt.Printf("Executing: %s\n", task.Name)
 		_, err := ad.runner.Run(ctx, task, hosts, nil)
@@ -387,24 +388,24 @@ func (ad *AppDeployment) Rollback(ctx context.Context, inv *inventory.StaticInve
 			return fmt.Errorf("rollback task '%s' failed: %w", task.Name, err)
 		}
 	}
-	
+
 	fmt.Println("Rollback completed")
 	return nil
 }
 
 func main() {
 	var (
-		appName     = flag.String("app", "myapp", "Application name")
-		version     = flag.String("version", "1.0.0", "Application version")
-		environment = flag.String("env", "staging", "Deployment environment")
+		appName       = flag.String("app", "myapp", "Application name")
+		version       = flag.String("version", "1.0.0", "Application version")
+		environment   = flag.String("env", "staging", "Deployment environment")
 		inventoryFile = flag.String("inventory", "hosts.yml", "Inventory file")
-		rollback    = flag.Bool("rollback", false, "Perform rollback")
+		rollback      = flag.Bool("rollback", false, "Perform rollback")
 	)
 	flag.Parse()
-	
+
 	// Create deployment manager
 	deployment := NewAppDeployment(*appName, *version)
-	
+
 	// Load inventory
 	inv, err := inventory.NewFromFile(*inventoryFile)
 	if err != nil {
@@ -420,9 +421,9 @@ all:
           ansible_host: 10.0.1.11
 `))
 	}
-	
+
 	ctx := context.Background()
-	
+
 	if *rollback {
 		// Perform rollback
 		if err := deployment.Rollback(ctx, inv); err != nil {

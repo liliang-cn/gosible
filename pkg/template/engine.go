@@ -1,4 +1,4 @@
-// Package template provides template rendering functionality for gosinble.
+// Package template provides template rendering functionality for gosible.
 package template
 
 import (
@@ -10,7 +10,7 @@ import (
 	"sync"
 	"text/template"
 
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosiblepkg/types"
 )
 
 // Engine implements the TemplateEngine interface
@@ -24,10 +24,10 @@ func NewEngine() *Engine {
 	engine := &Engine{
 		functions: make(map[string]interface{}),
 	}
-	
+
 	// Register built-in functions
 	engine.registerBuiltinFunctions()
-	
+
 	return engine
 }
 
@@ -91,7 +91,7 @@ func (e *Engine) AddFunction(name string, fn interface{}) error {
 
 	e.mu.Lock()
 	defer e.mu.Unlock()
-	
+
 	e.functions[name] = fn
 	return nil
 }
@@ -109,47 +109,47 @@ func (e *Engine) registerBuiltinFunctions() {
 	e.functions["contains"] = strings.Contains
 	e.functions["hasPrefix"] = strings.HasPrefix
 	e.functions["hasSuffix"] = strings.HasSuffix
-	
+
 	// Type conversion functions
 	e.functions["toString"] = e.toString
 	e.functions["toInt"] = e.toInt
 	e.functions["toBool"] = e.toBool
-	
+
 	// Collection functions
 	e.functions["length"] = e.length
 	e.functions["first"] = e.first
 	e.functions["last"] = e.last
 	e.functions["reverse"] = e.reverse
-	
+
 	// Logic functions
 	e.functions["default"] = e.defaultValue
 	e.functions["empty"] = e.isEmpty
 	e.functions["notEmpty"] = e.isNotEmpty
-	
+
 	// Path functions
 	e.functions["basename"] = filepath.Base
 	e.functions["dirname"] = filepath.Dir
 	e.functions["joinPath"] = filepath.Join
 	e.functions["cleanPath"] = filepath.Clean
-	
+
 	// Formatting functions
 	e.functions["quote"] = e.quote
 	e.functions["indent"] = e.indent
 	e.functions["nindent"] = e.nindent
-	
+
 	// Conditional functions
 	e.functions["ternary"] = e.ternary
-	
+
 	// Regular expression functions
 	e.functions["regexMatch"] = e.regexMatch
 	e.functions["regexReplace"] = e.regexReplace
-	
+
 	// URL functions
 	e.functions["urlParse"] = e.urlParse
-	
+
 	// Environment functions
 	e.functions["env"] = os.Getenv
-	
+
 	// List functions
 	e.functions["list"] = e.list
 	e.functions["dict"] = e.dict
@@ -173,7 +173,7 @@ func (e *Engine) length(v interface{}) int {
 	if v == nil {
 		return 0
 	}
-	
+
 	switch val := v.(type) {
 	case string:
 		return len(val)
@@ -243,7 +243,7 @@ func (e *Engine) isEmpty(v interface{}) bool {
 	if v == nil {
 		return true
 	}
-	
+
 	switch val := v.(type) {
 	case string:
 		return val == ""
@@ -306,13 +306,13 @@ func (e *Engine) regexReplace(pattern, replacement, text string) string {
 func (e *Engine) urlParse(urlStr string) map[string]interface{} {
 	// Simple URL parsing - in production, use net/url
 	result := make(map[string]interface{})
-	
+
 	// Extract protocol
 	if idx := strings.Index(urlStr, "://"); idx > 0 {
 		result["scheme"] = urlStr[:idx]
 		urlStr = urlStr[idx+3:]
 	}
-	
+
 	// Extract host and path
 	if idx := strings.Index(urlStr, "/"); idx > 0 {
 		result["host"] = urlStr[:idx]
@@ -321,7 +321,7 @@ func (e *Engine) urlParse(urlStr string) map[string]interface{} {
 		result["host"] = urlStr
 		result["path"] = "/"
 	}
-	
+
 	return result
 }
 
@@ -331,14 +331,14 @@ func (e *Engine) list(items ...interface{}) []interface{} {
 
 func (e *Engine) dict(items ...interface{}) map[string]interface{} {
 	result := make(map[string]interface{})
-	
+
 	// Items should come in key-value pairs
 	for i := 0; i < len(items)-1; i += 2 {
 		if key, ok := items[i].(string); ok {
 			result[key] = items[i+1]
 		}
 	}
-	
+
 	return result
 }
 
@@ -377,11 +377,11 @@ func (e *Engine) ValidateTemplate(templateStr string) error {
 		Delims("{{", "}}").
 		Funcs(functions).
 		Parse(templateStr)
-	
+
 	if err != nil {
 		return types.NewTemplateError("validation", 0, 0, "template validation failed", err)
 	}
-	
+
 	return nil
 }
 
@@ -406,12 +406,12 @@ func (e *Engine) ValidateTemplateFile(filepath string) error {
 func (e *Engine) ListFunctions() []string {
 	e.mu.RLock()
 	defer e.mu.RUnlock()
-	
+
 	var functions []string
 	for name := range e.functions {
 		functions = append(functions, name)
 	}
-	
+
 	return functions
 }
 
@@ -419,15 +419,15 @@ func (e *Engine) ListFunctions() []string {
 func (e *Engine) Clone() *Engine {
 	e.mu.RLock()
 	defer e.mu.RUnlock()
-	
+
 	clone := &Engine{
 		functions: make(map[string]interface{}),
 	}
-	
+
 	for k, v := range e.functions {
 		clone.functions[k] = v
 	}
-	
+
 	return clone
 }
 

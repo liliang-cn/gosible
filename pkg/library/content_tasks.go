@@ -4,7 +4,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"path/filepath"
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 // ContentTasks provides operations for distributing built-in files and folders
@@ -208,7 +208,7 @@ func (ct *ContentTasks) DeployTemplate(name, destPath string, vars map[string]in
 	}
 	
 	// First save the template to a temp location
-	tempPath := fmt.Sprintf("/tmp/gosinble_template_%s", name)
+	tempPath := fmt.Sprintf("/tmp/gosible_template_%s", name)
 	tasks := []types.Task{
 		{
 			Name:   fmt.Sprintf("Save template %s", name),

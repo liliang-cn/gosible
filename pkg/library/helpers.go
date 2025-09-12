@@ -2,7 +2,7 @@ package library
 
 import (
 	"fmt"
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 // TaskBuilder provides a fluent interface for building complex task sequences

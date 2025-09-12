@@ -1,11 +1,11 @@
-# Gosinble - Go Library for Infrastructure Automation
+# gosible - Go Library for Infrastructure Automation
 
 [![Go Version](https://img.shields.io/badge/Go-1.21%2B-blue)](https://golang.org)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
-Gosinble is a **Go library first, CLI second** that implements Ansible's core features for configuration management and automation. Built for Go developers who want to embed powerful automation capabilities directly into their applications.
+gosible is a **Go library first, CLI second** that implements Ansible's core features for configuration management and automation. Built for Go developers who want to embed powerful automation capabilities directly into their applications.
 
-## Why Gosinble?
+## Why gosible?
 
 - **Native Go Integration**: Import as a library, not a CLI wrapper
 - **Type-Safe**: Compile-time checking, IDE autocomplete, and Go doc support
@@ -17,7 +17,7 @@ Gosinble is a **Go library first, CLI second** that implements Ansible's core fe
 ## Installation
 
 ```bash
-go get github.com/liliang-cn/gosinble
+go get github.com/liliang-cn/gosible
 ```
 
 ## Quick Start
@@ -29,8 +29,8 @@ import (
     "context"
     "log"
 
-    "github.com/liliang-cn/gosinble/pkg/inventory"
-    "github.com/liliang-cn/gosinble/pkg/runner"
+    "github.com/liliang-cn/gosible/pkg/inventory"
+    "github.com/liliang-cn/gosible/pkg/runner"
 )
 
 func main() {
@@ -152,7 +152,7 @@ go test -cover ./...
 go test -bench=. ./...
 
 # Build CLI (optional)
-go build -o gosinble cmd/gosinble/main.go
+go build -o gosible cmd/gosible/main.go
 ```
 
 ## Performance
@@ -172,4 +172,4 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-**Gosinble** - Infrastructure automation as a Go library
+**gosible** - Infrastructure automation as a Go library

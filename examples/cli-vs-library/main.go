@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os/exec"
 
-	"github.com/liliang-cn/gosinble/examples/common"
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/examples/common"
+	"github.com/liliang-cn/gosiblepkg/types"
 )
 
 // This example demonstrates the difference between CLI and Library usage
@@ -24,12 +24,12 @@ func main() {
 	useLibrary()
 }
 
-// useCLI demonstrates calling gosinble as a CLI tool
+// useCLI demonstrates calling gosibleas a CLI tool
 func useCLI() {
 	// This is NOT recommended from Go code!
 	// Shows what happens when you shell out to CLI
 	
-	cmd := exec.Command("gosinble", 
+	cmd := exec.Command("gosible, 
 		"-i", "inventory.yml",
 		"-m", "package",
 		"-a", "name=nginx state=present",
@@ -47,7 +47,7 @@ func useCLI() {
 	fmt.Printf("CLI Output: %s\n", output)
 }
 
-// useLibrary demonstrates using gosinble as a library
+// useLibrary demonstrates using gosibleas a library
 func useLibrary() {
 	ctx := context.Background()
 	

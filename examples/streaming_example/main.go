@@ -1,4 +1,4 @@
-// Complete example demonstrating real-time output streaming in gosinble
+// Complete example demonstrating real-time output streaming in gosible
 package main
 
 import (
@@ -7,14 +7,14 @@ import (
 	"log"
 	"time"
 
-	"github.com/liliang-cn/gosinble/pkg/types"
-	"github.com/liliang-cn/gosinble/pkg/connection"
-	"github.com/liliang-cn/gosinble/pkg/inventory"
-	"github.com/liliang-cn/gosinble/pkg/runner"
+	"github.com/liliang-cn/gosiblepkg/connection"
+	"github.com/liliang-cn/gosiblepkg/inventory"
+	"github.com/liliang-cn/gosiblepkg/runner"
+	"github.com/liliang-cn/gosiblepkg/types"
 )
 
 func main() {
-	fmt.Println("🚀 Gosinble Real-Time Streaming Example")
+	fmt.Println("🚀 gosible Real-Time Streaming Example")
 	fmt.Println("======================================")
 
 	ctx := context.Background()
@@ -121,7 +121,7 @@ func advancedStreamingExample(ctx context.Context) error {
 			outputLines = append(outputLines, line)
 		},
 		ProgressCallback: func(progress types.ProgressInfo) {
-			fmt.Printf("   📊 Progress: %.1f%% - %s (%s)\n", 
+			fmt.Printf("   📊 Progress: %.1f%% - %s (%s)\n",
 				progress.Percentage, progress.Message, progress.Stage)
 			progressUpdates = append(progressUpdates, progress)
 		},
@@ -143,7 +143,7 @@ func advancedStreamingExample(ctx context.Context) error {
 	}
 
 	if finalResult != nil {
-		fmt.Printf("   📋 Summary: %d output lines, %d progress updates\n", 
+		fmt.Printf("   📋 Summary: %d output lines, %d progress updates\n",
 			len(outputLines), len(progressUpdates))
 	}
 
@@ -178,7 +178,7 @@ func taskRunnerStreamingExample(ctx context.Context) error {
 			Name:   "Create test directory",
 			Module: types.TypeFile,
 			Args: map[string]interface{}{
-				"path":  "/tmp/gosinble-streaming-test",
+				"path":  "/tmp/gosiblestreaming-test",
 				"state": types.StateDirectory,
 				"mode":  "0755",
 			},
@@ -196,7 +196,7 @@ func taskRunnerStreamingExample(ctx context.Context) error {
 			Name:   "Clean up test directory",
 			Module: types.TypeFile,
 			Args: map[string]interface{}{
-				"path":  "/tmp/gosinble-streaming-test",
+				"path":  "/tmp/gosiblestreaming-test",
 				"state": types.StateAbsent,
 			},
 		},
@@ -204,10 +204,10 @@ func taskRunnerStreamingExample(ctx context.Context) error {
 
 	// Execute tasks
 	fmt.Println("   Executing tasks with streaming support...")
-	
+
 	for i, task := range tasks {
 		fmt.Printf("   \n   [%d/4] %s\n", i+1, task.Name)
-		
+
 		hosts, _ := inv.GetHosts("all")
 		results, err := taskRunner.Run(ctx, task, hosts, nil)
 		if err != nil {
@@ -222,7 +222,7 @@ func taskRunnerStreamingExample(ctx context.Context) error {
 					status = "✅ Changed"
 				}
 				fmt.Printf("   %s: %s\n", status, result.Message)
-				
+
 				// Show streaming metadata if available
 				if streamingEnabled, ok := result.Data["streaming_enabled"].(bool); ok && streamingEnabled {
 					if eventCount, ok := result.Data["stream_events_received"].(int); ok {
@@ -361,7 +361,7 @@ func errorHandlingExample(ctx context.Context) error {
 	// Test 3: Context cancellation
 	fmt.Println("\n   Test 3: Context cancellation")
 	cancelCtx, cancel := context.WithCancel(ctx)
-	
+
 	options3 := types.ExecuteOptions{
 		StreamOutput: true,
 	}

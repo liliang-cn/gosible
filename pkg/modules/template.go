@@ -8,7 +8,7 @@ import (
 	"strings"
 	"text/template"
 	
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 // TemplateModule templates files to remote hosts

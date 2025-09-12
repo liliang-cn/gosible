@@ -7,9 +7,9 @@ import (
 	// "io/fs"  // Uncomment when we have embedded content
 	// "path/filepath"  // Uncomment when we have embedded content
 	"strings"
-	
+
 	// "gopkg.in/yaml.v3"  // Uncomment when we have embedded content
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/types"
 )
 
 // Commented out until we have actual embedded content
@@ -25,12 +25,12 @@ type Library struct {
 
 // Role represents a reusable role with tasks, handlers, defaults, etc.
 type Role struct {
-	Name      string
-	Tasks     []types.Task
-	Handlers  []types.Task
-	Defaults  map[string]interface{}
-	Vars      map[string]interface{}
-	Meta      RoleMeta
+	Name     string
+	Tasks    []types.Task
+	Handlers []types.Task
+	Defaults map[string]interface{}
+	Vars     map[string]interface{}
+	Meta     RoleMeta
 }
 
 // RoleMeta contains role metadata
@@ -69,59 +69,59 @@ func (l *Library) Load() error {
 	if err := l.loadPlaybooks(); err != nil {
 		return fmt.Errorf("failed to load playbooks: %w", err)
 	}
-	
+
 	// Load task collections
 	if err := l.loadTasks(); err != nil {
 		return fmt.Errorf("failed to load tasks: %w", err)
 	}
-	
+
 	// Load roles
 	if err := l.loadRoles(); err != nil {
 		return fmt.Errorf("failed to load roles: %w", err)
 	}
-	
+
 	return nil
 }
 
 // GetPlaybook returns a built-in playbook by name
 func (l *Library) GetPlaybook(name string) (*types.Playbook, error) {
-	// Handle gosinble:// prefix
-	name = strings.TrimPrefix(name, "gosinble://")
+	// Handle gosible// prefix
+	name = strings.TrimPrefix(name, "gosible//")
 	name = strings.TrimSuffix(name, ".yml")
-	
+
 	playbook, exists := l.playbooks[name]
 	if !exists {
 		return nil, fmt.Errorf("playbook '%s' not found in library", name)
 	}
-	
+
 	return playbook, nil
 }
 
 // GetTasks returns a built-in task collection by name
 func (l *Library) GetTasks(name string) ([]types.Task, error) {
-	// Handle gosinble:// prefix
-	name = strings.TrimPrefix(name, "gosinble://")
+	// Handle gosible// prefix
+	name = strings.TrimPrefix(name, "gosible//")
 	name = strings.TrimPrefix(name, "tasks/")
 	name = strings.TrimSuffix(name, ".yml")
-	
+
 	tasks, exists := l.tasks[name]
 	if !exists {
 		return nil, fmt.Errorf("task collection '%s' not found in library", name)
 	}
-	
+
 	return tasks, nil
 }
 
 // GetRole returns a built-in role by name
 func (l *Library) GetRole(name string) (*Role, error) {
-	// Handle gosinble. prefix
-	name = strings.TrimPrefix(name, "gosinble.")
-	
+	// Handle gosible prefix
+	name = strings.TrimPrefix(name, "gosible")
+
 	role, exists := l.roles[name]
 	if !exists {
 		return nil, fmt.Errorf("role '%s' not found in library", name)
 	}
-	
+
 	return role, nil
 }
 
@@ -156,35 +156,35 @@ func (l *Library) ListRoles() []string {
 func (l *Library) loadPlaybooks() error {
 	// TODO: Implement when we have actual embedded content
 	return nil
-	
+
 	/* Original implementation - uncomment when builtinContent is available:
 	entries, err := fs.ReadDir(builtinContent, "playbooks")
 	if err != nil {
 		return nil // No playbooks directory is OK
 	}
-	
+
 	for _, entry := range entries {
 		if !strings.HasSuffix(entry.Name(), ".yml") {
 			continue
 		}
-		
+
 		data, err := builtinContent.ReadFile(filepath.Join("playbooks", entry.Name()))
 		if err != nil {
 			continue
 		}
-		
+
 		var plays []types.Play
 		if err := yaml.Unmarshal(data, &plays); err != nil {
 			continue
 		}
-		
+
 		name := strings.TrimSuffix(entry.Name(), ".yml")
 		l.playbooks[name] = &types.Playbook{
 			Plays: plays,
 		}
 	}
 	*/
-	
+
 	// return nil
 }
 
@@ -192,33 +192,33 @@ func (l *Library) loadPlaybooks() error {
 func (l *Library) loadTasks() error {
 	// TODO: Implement when we have actual embedded content
 	return nil
-	
+
 	/* Original implementation - uncomment when builtinContent is available:
 	entries, err := fs.ReadDir(builtinContent, "tasks")
 	if err != nil {
 		return nil // No tasks directory is OK
 	}
-	
+
 	for _, entry := range entries {
 		if !strings.HasSuffix(entry.Name(), ".yml") {
 			continue
 		}
-		
+
 		data, err := builtinContent.ReadFile(filepath.Join("tasks", entry.Name()))
 		if err != nil {
 			continue
 		}
-		
+
 		var tasks []types.Task
 		if err := yaml.Unmarshal(data, &tasks); err != nil {
 			continue
 		}
-		
+
 		name := strings.TrimSuffix(entry.Name(), ".yml")
 		l.tasks[name] = tasks
 	}
 	*/
-	
+
 	// return nil
 }
 
@@ -226,26 +226,26 @@ func (l *Library) loadTasks() error {
 func (l *Library) loadRoles() error {
 	// TODO: Implement when we have actual embedded content
 	return nil
-	
+
 	/* Original implementation - uncomment when builtinContent is available:
 	// Read roles directory
 	roleEntries, err := fs.ReadDir(builtinContent, "roles")
 	if err != nil {
 		return nil // No roles directory is OK
 	}
-	
+
 	for _, roleEntry := range roleEntries {
 		if !roleEntry.IsDir() {
 			continue
 		}
-		
+
 		roleName := roleEntry.Name()
 		role := &Role{
 			Name:     roleName,
 			Defaults: make(map[string]interface{}),
 			Vars:     make(map[string]interface{}),
 		}
-		
+
 		// Load tasks
 		tasksFile := filepath.Join("roles", roleName, "tasks", "main.yml")
 		if data, err := builtinContent.ReadFile(tasksFile); err == nil {
@@ -254,7 +254,7 @@ func (l *Library) loadRoles() error {
 				role.Tasks = tasks
 			}
 		}
-		
+
 		// Load handlers
 		handlersFile := filepath.Join("roles", roleName, "handlers", "main.yml")
 		if data, err := builtinContent.ReadFile(handlersFile); err == nil {
@@ -263,7 +263,7 @@ func (l *Library) loadRoles() error {
 				role.Handlers = handlers
 			}
 		}
-		
+
 		// Load defaults
 		defaultsFile := filepath.Join("roles", roleName, "defaults", "main.yml")
 		if data, err := builtinContent.ReadFile(defaultsFile); err == nil {
@@ -271,11 +271,11 @@ func (l *Library) loadRoles() error {
 				// Defaults loaded
 			}
 		}
-		
+
 		l.roles[roleName] = role
 	}
 	*/
-	
+
 	// return nil
 }
 
@@ -285,7 +285,7 @@ func (l *Library) ApplyRole(roleName string, play *types.Play) error {
 	if err != nil {
 		return err
 	}
-	
+
 	// Add role defaults to play vars
 	if play.Vars == nil {
 		play.Vars = make(map[string]interface{})
@@ -295,13 +295,13 @@ func (l *Library) ApplyRole(roleName string, play *types.Play) error {
 			play.Vars[k] = v
 		}
 	}
-	
+
 	// Add role tasks to play
 	play.Tasks = append(play.Tasks, role.Tasks...)
-	
+
 	// Add role handlers to play
 	play.Handlers = append(play.Handlers, role.Handlers...)
-	
+
 	return nil
 }
 
@@ -311,7 +311,7 @@ func (l *Library) IncludeTasks(name string, vars map[string]interface{}) ([]type
 	if err != nil {
 		return nil, err
 	}
-	
+
 	// Apply provided variables to tasks
 	if vars != nil {
 		for i := range tasks {
@@ -323,7 +323,7 @@ func (l *Library) IncludeTasks(name string, vars map[string]interface{}) ([]type
 			}
 		}
 	}
-	
+
 	return tasks, nil
 }
 
@@ -334,17 +334,17 @@ func (l *Library) GeneratePlaybook(template string, params map[string]interface{
 	if err != nil {
 		return nil, err
 	}
-	
+
 	// Deep copy the playbook
 	playbook := &types.Playbook{
 		Plays: make([]types.Play, len(basePlaybook.Plays)),
 		Vars:  make(map[string]interface{}),
 	}
-	
+
 	// Copy and customize plays
 	for i, play := range basePlaybook.Plays {
 		playbook.Plays[i] = play
-		
+
 		// Apply parameters
 		if playbook.Plays[i].Vars == nil {
 			playbook.Plays[i].Vars = make(map[string]interface{})
@@ -353,6 +353,6 @@ func (l *Library) GeneratePlaybook(template string, params map[string]interface{
 			playbook.Plays[i].Vars[k] = v
 		}
 	}
-	
+
 	return playbook, nil
 }

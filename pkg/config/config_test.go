@@ -16,11 +16,11 @@ func TestNewConfig(t *testing.T) {
 	if config.GetInt("timeout") == 0 {
 		t.Error("default timeout should be set")
 	}
-	
+
 	if config.GetInt("forks") == 0 {
 		t.Error("default forks should be set")
 	}
-	
+
 	if !config.GetBool("gather_facts") {
 		t.Error("default gather_facts should be true")
 	}
@@ -87,7 +87,7 @@ func TestConfigGetStringSlice(t *testing.T) {
 
 func TestConfigLoadSave(t *testing.T) {
 	config := NewConfig()
-	
+
 	// Set some test values
 	config.SetString("test_key", "test_value")
 	config.SetInt("test_number", 123)
@@ -106,7 +106,7 @@ func TestConfigLoadSave(t *testing.T) {
 	// Create new config and load from file
 	newConfig := NewConfig()
 	newConfig.Clear() // Clear defaults
-	
+
 	err = newConfig.Load(configFile)
 	if err != nil {
 		t.Fatalf("Load failed: %v", err)
@@ -116,11 +116,11 @@ func TestConfigLoadSave(t *testing.T) {
 	if newConfig.GetString("test_key") != "test_value" {
 		t.Errorf("loaded string value mismatch")
 	}
-	
+
 	if newConfig.GetInt("test_number") != 123 {
 		t.Errorf("loaded int value mismatch")
 	}
-	
+
 	if !newConfig.GetBool("test_flag") {
 		t.Errorf("loaded bool value mismatch")
 	}
@@ -128,13 +128,13 @@ func TestConfigLoadSave(t *testing.T) {
 
 func TestConfigEnvironmentVariables(t *testing.T) {
 	// Set environment variables
-	os.Setenv("GOSINBLE_TIMEOUT", "60")
-	os.Setenv("GOSINBLE_FORKS", "10")
-	os.Setenv("GOSINBLE_GATHER_FACTS", "false")
+	os.Setenv("gosible_TIMEOUT", "60")
+	os.Setenv("gosible_FORKS", "10")
+	os.Setenv("gosible_GATHER_FACTS", "false")
 	defer func() {
-		os.Unsetenv("GOSINBLE_TIMEOUT")
-		os.Unsetenv("GOSINBLE_FORKS")
-		os.Unsetenv("GOSINBLE_GATHER_FACTS")
+		os.Unsetenv("gosible_TIMEOUT")
+		os.Unsetenv("gosible_FORKS")
+		os.Unsetenv("gosible_GATHER_FACTS")
 	}()
 
 	config := NewConfig()
@@ -143,11 +143,11 @@ func TestConfigEnvironmentVariables(t *testing.T) {
 	if config.GetInt("timeout") != 60 {
 		t.Errorf("expected timeout 60 from env, got %d", config.GetInt("timeout"))
 	}
-	
+
 	if config.GetInt("forks") != 10 {
 		t.Errorf("expected forks 10 from env, got %d", config.GetInt("forks"))
 	}
-	
+
 	if config.GetBool("gather_facts") {
 		t.Error("expected gather_facts false from env, got true")
 	}
@@ -292,7 +292,7 @@ func TestGetConfigPaths(t *testing.T) {
 	// Check that current directory paths are included
 	foundCurrentDir := false
 	for _, path := range paths {
-		if path == "./gosinble.yaml" || path == "./gosinble.yml" {
+		if path == "./gosible.yaml" || path == "./gosible.yml" {
 			foundCurrentDir = true
 			break
 		}
@@ -318,8 +318,8 @@ forks: 8
 gather_facts: false
 custom_setting: test_value
 `
-	
-	tempFile, err := os.CreateTemp(".", "gosinble-test-*.yaml")
+
+	tempFile, err := os.CreateTemp(".", "gosibletest-*.yaml")
 	if err != nil {
 		t.Fatalf("Failed to create temp config file: %v", err)
 	}
@@ -342,15 +342,15 @@ custom_setting: test_value
 	if testConfig.GetInt("timeout") != 120 {
 		t.Errorf("expected timeout 120, got %d", testConfig.GetInt("timeout"))
 	}
-	
+
 	if testConfig.GetInt("forks") != 8 {
 		t.Errorf("expected forks 8, got %d", testConfig.GetInt("forks"))
 	}
-	
+
 	if testConfig.GetBool("gather_facts") {
 		t.Error("expected gather_facts false")
 	}
-	
+
 	if testConfig.GetString("custom_setting") != "test_value" {
 		t.Errorf("expected custom_setting 'test_value', got %s", testConfig.GetString("custom_setting"))
 	}

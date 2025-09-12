@@ -18,8 +18,8 @@
 go.work
 
 # Build artifacts
-/gosinble
-/gosinble-vault
+/gosible
+/gosible-vault
 /step_tracking_example
 /type_safe_modules
 /deploy

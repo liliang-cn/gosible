@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 	
-	"github.com/liliang-cn/gosinble/pkg/vault"
+	"github.com/liliang-cn/gosible/pkg/vault"
 	"gopkg.in/yaml.v3"
 )
 

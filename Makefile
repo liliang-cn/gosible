@@ -1,10 +1,10 @@
-# Makefile for Gosinble - Go Automation Library & CLI
+# Makefile for gosible - Go Automation Library & CLI
 # ==================================================
 
 # Project Configuration
-PROJECT_NAME := gosinble
-CLI_BINARY := gosinble
-MODULE := github.com/liliang-cn/gosinble
+PROJECT_NAME := gosible
+CLI_BINARY := gosible
+MODULE := github.com/liliang-cn/gosible
 
 # Build Configuration
 BUILD_DIR := build
@@ -77,7 +77,7 @@ endif
 ##@ General
 
 help: ## Display this help message
-	@echo "$(BLUE)Gosinble - Go Automation Library & CLI$(RESET)"
+	@echo "$(BLUE)gosible - Go Automation Library & CLI$(RESET)"
 	@echo "=========================================="
 	@echo ""
 	@echo "$(GREEN)Usage:$(RESET) make <target> [options]"

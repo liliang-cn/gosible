@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	testhelper "github.com/liliang-cn/gosinble/pkg/testing"
-	"github.com/liliang-cn/gosinble/pkg/types"
+	testhelper "github.com/liliang-cn/gosible/pkg/testing"
+	"github.com/liliang-cn/gosiblepkg/types"
 )
 
 func TestReplaceModule(t *testing.T) {
@@ -171,12 +171,12 @@ func testReplaceOperations(t *testing.T, helper *testhelper.ModuleTestHelper) {
 					ExitCode: 0,
 					Stdout:   "setting=old_value\nother=keep",
 				})
-				
+
 				// Mock file write operations
 				h.GetConnection().ExpectCommandPattern(`echo -n '[\s\S]*' > /etc/config\.txt\.tmp\.\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
-				
+
 				h.GetConnection().ExpectCommandPattern(`mv /etc/config\.txt\.tmp\.\d+ /etc/config\.txt`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
@@ -200,12 +200,12 @@ func testReplaceOperations(t *testing.T, helper *testhelper.ModuleTestHelper) {
 					ExitCode: 0,
 					Stdout:   "127.0.0.1 localhost\n10.0.0.1 server",
 				})
-				
+
 				// Mock file write operations
 				h.GetConnection().ExpectCommandPattern(`echo -n '[\s\S]*' > /etc/hosts\.tmp\.\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
-				
+
 				h.GetConnection().ExpectCommandPattern(`mv /etc/hosts\.tmp\.\d+ /etc/hosts`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
@@ -229,12 +229,12 @@ func testReplaceOperations(t *testing.T, helper *testhelper.ModuleTestHelper) {
 					ExitCode: 0,
 					Stdout:   "INFO: start\nERROR: failed\nERROR: timeout\nINFO: end",
 				})
-				
+
 				// Mock file write operations
 				h.GetConnection().ExpectCommandPattern(`echo -n '[\s\S]*' > /var/log/test\.log\.tmp\.\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
-				
+
 				h.GetConnection().ExpectCommandPattern(`mv /var/log/test\.log\.tmp\.\d+ /var/log/test\.log`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
@@ -258,12 +258,12 @@ func testReplaceOperations(t *testing.T, helper *testhelper.ModuleTestHelper) {
 					ExitCode: 0,
 					Stdout:   "# Comment line\nsetting=value\n# Another comment\n",
 				})
-				
+
 				// Mock file write operations
 				h.GetConnection().ExpectCommandPattern(`echo -n '[\s\S]*' > /etc/config\.txt\.tmp\.\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
-				
+
 				h.GetConnection().ExpectCommandPattern(`mv /etc/config\.txt\.tmp\.\d+ /etc/config\.txt`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
@@ -315,17 +315,17 @@ func testReplaceBackup(t *testing.T, helper *testhelper.ModuleTestHelper) {
 					ExitCode: 0,
 					Stdout:   "value=old",
 				})
-				
+
 				// Mock backup creation
 				h.GetConnection().ExpectCommandPattern(`cp /etc/important\.conf /etc/important\.conf\.backup\.\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
-				
+
 				// Mock file write operations
 				h.GetConnection().ExpectCommandPattern(`echo -n '[\s\S]*' > /etc/important\.conf\.tmp\.\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
-				
+
 				h.GetConnection().ExpectCommandPattern(`mv /etc/important\.conf\.tmp\.\d+ /etc/important\.conf`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
@@ -389,12 +389,12 @@ func testReplaceDiffMode(t *testing.T, helper *testhelper.ModuleTestHelper) {
 					ExitCode: 0,
 					Stdout:   "name=myapp\ndebug=true\nport=8080",
 				})
-				
+
 				// Mock file write operations
 				h.GetConnection().ExpectCommandPattern(`echo -n '[\s\S]*' > /etc/app\.conf\.tmp\.\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
-				
+
 				h.GetConnection().ExpectCommandPattern(`mv /etc/app\.conf\.tmp\.\d+ /etc/app\.conf`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
@@ -442,7 +442,7 @@ func testReplaceErrorHandling(t *testing.T, helper *testhelper.ModuleTestHelper)
 					ExitCode: 0,
 					Stdout:   "setting=old",
 				})
-				
+
 				// Mock write failure
 				h.GetConnection().ExpectCommandPattern(`echo -n '[\s\S]*' > /etc/readonly\.conf\.tmp\.\d+`, &testhelper.CommandResponse{
 					ExitCode: 1,
@@ -465,7 +465,7 @@ func testReplaceErrorHandling(t *testing.T, helper *testhelper.ModuleTestHelper)
 					ExitCode: 0,
 					Stdout:   "setting=old",
 				})
-				
+
 				// Mock backup creation failure
 				h.GetConnection().ExpectCommandPattern(`cp /etc/test\.conf /etc/test\.conf\.backup\.\d+`, &testhelper.CommandResponse{
 					ExitCode: 1,
@@ -488,16 +488,16 @@ func testReplaceErrorHandling(t *testing.T, helper *testhelper.ModuleTestHelper)
 					ExitCode: 0,
 					Stdout:   "<config><old>value</old></config>",
 				})
-				
+
 				// Mock file write operations
 				h.GetConnection().ExpectCommandPattern(`echo -n '[\s\S]*' > /etc/config\.xml\.tmp\.\d+`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
-				
+
 				h.GetConnection().ExpectCommandPattern(`mv /etc/config\.xml\.tmp\.\d+ /etc/config\.xml`, &testhelper.CommandResponse{
 					ExitCode: 0,
 				}).AllowMultipleCalls()
-				
+
 				// Mock validation failure
 				h.GetConnection().ExpectCommand("xmllint /etc/config.xml", &testhelper.CommandResponse{
 					ExitCode: 1,

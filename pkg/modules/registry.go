@@ -1,11 +1,11 @@
-// Package modules provides the module system architecture for gosinble.
+// Package modules provides the module system architecture for gosible.
 package modules
 
 import (
 	"fmt"
 	"sync"
 
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosiblepkg/types"
 )
 
 // ModuleRegistry manages registered modules
@@ -19,10 +19,10 @@ func NewModuleRegistry() *ModuleRegistry {
 	registry := &ModuleRegistry{
 		modules: make(map[string]types.Module),
 	}
-	
+
 	// Register built-in modules
 	registry.registerBuiltinModules()
-	
+
 	return registry
 }
 
@@ -108,61 +108,61 @@ func (r *ModuleRegistry) ValidateModuleArgs(name string, args map[string]interfa
 func (r *ModuleRegistry) registerBuiltinModules() {
 	// Register ping module
 	r.RegisterModule(NewPingModule())
-	
+
 	// Register command module
 	r.RegisterModule(NewCommandModule())
-	
+
 	// Register copy module
 	r.RegisterModule(NewCopyModule())
-	
+
 	// Register template module
 	r.RegisterModule(NewTemplateModule())
-	
+
 	// Register file module
 	r.RegisterModule(NewFileModule())
-	
+
 	// Register setup module (fact gathering)
 	r.RegisterModule(NewSetupModule())
-	
+
 	// Register shell module
 	r.RegisterModule(NewShellModule())
-	
+
 	// Register debug module
 	r.RegisterModule(NewDebugModule())
-	
+
 	// Register service module
 	r.RegisterModule(NewServiceModule())
-	
+
 	// Register package module
 	r.RegisterModule(NewPackageModule())
-	
+
 	// Register user module
 	r.RegisterModule(NewUserModule())
-	
+
 	// Register group module
 	r.RegisterModule(NewGroupModule())
-	
+
 	// Register archive module
 	r.RegisterModule(NewArchiveModule())
-	
+
 	// Register unarchive module
 	r.RegisterModule(NewUnarchiveModule())
-	
+
 	// Register gem module
 	r.RegisterModule(NewGemModule())
-	
+
 	// Register mount module
 	r.RegisterModule(NewMountModule())
-	
+
 	// Register npm module
 	r.RegisterModule(NewNpmModule())
-	
+
 	// Register pip module
 	r.RegisterModule(NewPipModule())
-	
+
 	// Register sysctl module
 	r.RegisterModule(NewSysctlModule())
-	
+
 	// Register iptables module
 	r.RegisterModule(NewIPTablesModule())
 }

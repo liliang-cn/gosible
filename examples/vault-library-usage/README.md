@@ -1,6 +1,6 @@
 # Vault Library Usage
 
-This example demonstrates how to use the gosinble vault package as a Go library for programmatic encryption/decryption, without needing the CLI tool.
+This example demonstrates how to use the gosible vault package as a Go library for programmatic encryption/decryption, without needing the CLI tool.
 
 ## Features Demonstrated
 
@@ -24,13 +24,13 @@ Instead of using the CLI tool:
 
 ```bash
 # CLI approach (requires external command)
-gosinble-vault -action encrypt -password mysecret file.yml
+gosible-vault -action encrypt -password mysecret file.yml
 ```
 
 Use the library directly:
 
 ```go
-import "github.com/liliang-cn/gosinble/pkg/vault"
+import "github.com/liliang-cn/gosible/pkg/vault"
 
 func encryptConfig(data []byte, password string) (string, error) {
     v := vault.New(password)
@@ -141,9 +141,9 @@ func loadConfig(data []byte) ([]byte, error) {
 }
 ```
 
-## Integration with Gosinble
+## Integration with gosible
 
-The vault functionality integrates seamlessly with other gosinble components:
+The vault functionality integrates seamlessly with other gosible components:
 
 ```go
 // Use vault with playbooks

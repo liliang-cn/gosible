@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/liliang-cn/gosinble/pkg/types"
-	"github.com/liliang-cn/gosinble/pkg/inventory"
-	"github.com/liliang-cn/gosinble/pkg/runner"
+	"github.com/liliang-cn/gosible/pkg/types"
+	"github.com/liliang-cn/gosiblepkg/inventory"
+	"github.com/liliang-cn/gosiblepkg/runner"
 )
 
 func main() {
@@ -35,7 +35,7 @@ func main() {
 			Name:   "Create directory",
 			Module: types.TypeFile, // Type-safe module reference
 			Args: map[string]interface{}{
-				"path":  "/tmp/gosinble-test",
+				"path":  "/tmp/gosibletest",
 				"state": types.StateDirectory, // Type-safe state constant
 				"mode":  "0755",
 			},
@@ -44,8 +44,8 @@ func main() {
 			Name:   "Copy configuration file",
 			Module: types.TypeCopy,
 			Args: map[string]interface{}{
-				"content": "# Gosinble test configuration\nversion: 1.0\n",
-				"dest":    "/tmp/gosinble-test/config.yml",
+				"content": "# gosible test configuration\nversion: 1.0\n",
+				"dest":    "/tmp/gosibletest/config.yml",
 				"mode":    "0644",
 			},
 		},
@@ -53,7 +53,7 @@ func main() {
 			Name:   "Execute test command",
 			Module: types.TypeCommand,
 			Args: map[string]interface{}{
-				"cmd": "ls -la /tmp/gosinble-test",
+				"cmd": "ls -la /tmp/gosibletest",
 			},
 		},
 		{
@@ -99,7 +99,7 @@ func main() {
 
 	// Example 2: Using module validation
 	fmt.Println("\n📋 Module Type Validation Examples:")
-	
+
 	testModules := []types.ModuleType{
 		types.TypeService,
 		types.TypePackage,
@@ -123,9 +123,9 @@ func main() {
 
 	// Example 4: OBFY RustFS deployment example using type-safe modules
 	fmt.Println("\n🦀 OBFY RustFS Deployment Example:")
-	
+
 	rustfsDeploymentTasks := createRustFSDeploymentTasks()
-	
+
 	for _, task := range rustfsDeploymentTasks {
 		fmt.Printf("📋 Task: %s (Module: %s)\n", task.Name, task.Module.String())
 	}
@@ -140,7 +140,7 @@ func createRustFSDeploymentTasks() []types.Task {
 			Args:   map[string]interface{}{},
 		},
 		{
-			Name:   "Create RustFS directories", 
+			Name:   "Create RustFS directories",
 			Module: types.TypeFile,
 			Args: map[string]interface{}{
 				"path":  "{{ item }}",

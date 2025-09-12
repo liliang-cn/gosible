@@ -6,12 +6,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/liliang-cn/gosinble/pkg/connection"
-	"github.com/liliang-cn/gosinble/pkg/types"
+	"github.com/liliang-cn/gosible/pkg/connection"
+	"github.com/liliang-cn/gosiblepkg/types"
 )
 
 func main() {
-	fmt.Println("=== Gosinble Remote Execution Examples ===")
+	fmt.Println("=== gosible Remote Execution Examples ===")
 
 	// Example 1: Basic SSH connection and command execution
 	fmt.Println("\n1. Basic SSH Connection Example:")
@@ -37,15 +37,15 @@ func main() {
 func basicSSHExample() {
 	// Create SSH connection
 	conn := connection.NewSSHConnection()
-	
+
 	// Connection info for a hypothetical SSH server
 	info := types.ConnectionInfo{
-		Type:       "ssh",
-		Host:       "localhost", // Change to actual host
-		Port:       22,
-		User:       "testuser",
-		Password:   "testpass", // In production, use keys!
-		Timeout:    30 * time.Second,
+		Type:     "ssh",
+		Host:     "localhost", // Change to actual host
+		Port:     22,
+		User:     "testuser",
+		Password: "testpass", // In production, use keys!
+		Timeout:  30 * time.Second,
 	}
 
 	ctx := context.Background()
@@ -100,14 +100,14 @@ func connectionPoolExample() {
 
 	// Show pool statistics
 	stats := manager.Stats()
-	fmt.Printf("Pool stats - Total: %d, Active: %d, Idle: %d\n", 
+	fmt.Printf("Pool stats - Total: %d, Active: %d, Idle: %d\n",
 		stats.TotalConnections, stats.ActiveConnections, stats.IdleConnections)
 }
 
 func winrmExample() {
 	// Create WinRM connection
 	conn := connection.NewWinRMConnection()
-	
+
 	// Connection info for a Windows host
 	info := types.ConnectionInfo{
 		Type:       "winrm",
@@ -123,7 +123,7 @@ func winrmExample() {
 	ctx := context.Background()
 
 	fmt.Println("This example demonstrates WinRM connection setup (will fail without Windows host)")
-	
+
 	if err := conn.Connect(ctx, info); err != nil {
 		fmt.Printf("WinRM connection failed (expected): %v\n", err)
 		return
@@ -154,7 +154,7 @@ func winrmExample() {
 func streamingExample() {
 	// Use local connection for streaming example
 	conn := connection.NewLocalConnection()
-	
+
 	info := types.ConnectionInfo{Type: "local"}
 	ctx := context.Background()
 
@@ -175,14 +175,14 @@ func streamingExample() {
 			}
 		},
 		ProgressCallback: func(progress types.ProgressInfo) {
-			fmt.Printf("[PROGRESS] %s: %.1f%% - %s\n", 
+			fmt.Printf("[PROGRESS] %s: %.1f%% - %s\n",
 				progress.Stage, progress.Percentage, progress.Message)
 		},
 	}
 
 	// Local connection supports streaming
 	fmt.Println("Starting streaming command...")
-	
+
 	eventChan, err := conn.ExecuteStream(ctx, "echo 'Line 1'; sleep 1; echo 'Line 2'; sleep 1; echo 'Line 3'", options)
 	if err != nil {
 		fmt.Printf("Streaming failed: %v\n", err)
@@ -211,7 +211,7 @@ func streamingExample() {
 func fileOpsExample() {
 	// Use local connection for file operations example
 	conn := connection.NewLocalConnection()
-	
+
 	info := types.ConnectionInfo{Type: "local"}
 	ctx := context.Background()
 
@@ -222,8 +222,8 @@ func fileOpsExample() {
 	defer conn.Close()
 
 	// Create a test file
-	testContent := "Hello, Gosinble!\nThis is a test file.\n"
-	testPath := "/tmp/gosinble-test.txt"
+	testContent := "Hello, gosible!\nThis is a test file.\n"
+	testPath := "/tmp/gosibletest.txt"
 
 	fmt.Printf("Creating file: %s\n", testPath)
 	err := conn.Copy(ctx, strings.NewReader(testContent), testPath, 0644)
