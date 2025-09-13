@@ -72,7 +72,7 @@ func TestAllModuleTypes(t *testing.T) {
 	moduleTypes := AllModuleTypes()
 
 	// Check that we have all expected module types
-	expectedCount := 12 // Update this if we add more modules
+	expectedCount := 16 // Updated to include homebrew, apt, yum, dnf modules
 	if len(moduleTypes) != expectedCount {
 		t.Errorf("AllModuleTypes() returned %d types, want %d", len(moduleTypes), expectedCount)
 	}

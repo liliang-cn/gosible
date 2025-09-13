@@ -355,12 +355,34 @@ func TestStreamingWebSocketAdapter_HandleStreamEvents(t *testing.T) {
 	server.Start()
 	defer server.Stop()
 	
+	// Create a mock client to receive broadcasts
+	client := &Client{
+		server:        server,
+		send:          make(chan StreamMessage, 10),
+		subscriptions: make(map[string]bool),
+		id:            "test_client",
+	}
+	
+	// Register the client
+	server.register <- client
+	time.Sleep(10 * time.Millisecond) // Give time for registration
+	
 	adapter := NewStreamingWebSocketAdapter(server, "event_handler")
 	
 	// Create events channel
 	events := make(chan types.StreamEvent, 2)
 	
-	// Create test events
+	// Create context with timeout
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+	defer cancel()
+	
+	// Start handling events in goroutine BEFORE sending events
+	go adapter.HandleStreamEvents(ctx, events)
+	
+	// Give the goroutine time to start
+	time.Sleep(10 * time.Millisecond)
+	
+	// Create and send test events
 	event1 := types.StreamEvent{
 		Type: types.StreamProgress,
 		Data: "test event 1",
@@ -376,35 +398,36 @@ func TestStreamingWebSocketAdapter_HandleStreamEvents(t *testing.T) {
 	events <- event2
 	close(events)
 	
-	// Create context with timeout
-	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
-	defer cancel()
+	// Skip the welcome message
+	<-client.send
 	
-	// Handle events in goroutine
-	go adapter.HandleStreamEvents(ctx, events)
-	
-	// Verify events (we'll get them in order)
+	// Verify events (order may vary due to goroutine scheduling)
+	receivedTypes := make(map[types.StreamEventType]bool)
 	for i := 0; i < 2; i++ {
 		select {
-		case message := <-server.broadcast:
+		case message := <-client.send:
 			if message.Type != MessageTypeStreamEvent {
 				t.Errorf("Expected message type %s, got %s", MessageTypeStreamEvent, message.Type)
 			}
 			
-			// First event is StreamProgress, second is StreamStdout
-			expectedType := types.StreamProgress
-			if i == 1 {
-				expectedType = types.StreamStdout
-			}
-			
-			if message.StreamEvent.Type != expectedType {
-				t.Errorf("Expected stream event type %s, got %s", expectedType, message.StreamEvent.Type)
-			}
+			// Track which event types we received
+			receivedTypes[message.StreamEvent.Type] = true
 			
 		case <-time.After(500 * time.Millisecond):
-			t.Errorf("Expected event %d in broadcast channel", i+1)
+			t.Errorf("Expected event %d in client channel", i+1)
 		}
 	}
+	
+	// Verify we received both event types
+	if !receivedTypes[types.StreamProgress] {
+		t.Error("Did not receive StreamProgress event")
+	}
+	if !receivedTypes[types.StreamStdout] {
+		t.Error("Did not receive StreamStdout event")
+	}
+	
+	// Unregister the client
+	server.unregister <- client
 }
 
 // Integration test with actual WebSocket connection

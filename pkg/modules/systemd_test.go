@@ -484,6 +484,6 @@ func testSystemdErrorHandling(t *testing.T, helper *testhelper.ModuleTestHelper)
 }
 
 // Helper function to check if string contains substring
-func contains(s, substr string) bool {
+func containsSystemd(s, substr string) bool {
 	return strings.Contains(s, substr)
 }

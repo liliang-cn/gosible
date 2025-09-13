@@ -125,7 +125,9 @@ func (s *StreamServer) Stop() {
 		default:
 			close(client.send)
 		}
-		client.conn.Close()
+		if client.conn != nil {
+			client.conn.Close()
+		}
 	}
 	s.clientsMux.Unlock()
 
