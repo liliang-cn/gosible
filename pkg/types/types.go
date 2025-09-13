@@ -34,6 +34,12 @@ const (
 	TypePing  ModuleType = "ping"
 	TypeSetup ModuleType = "setup"
 	TypeDebug ModuleType = "debug"
+
+	// OS-specific package managers
+	TypeHomebrew ModuleType = "homebrew"
+	TypeApt      ModuleType = "apt"
+	TypeYum      ModuleType = "yum"
+	TypeDnf      ModuleType = "dnf"
 )
 
 // String returns the string representation of the module type
@@ -46,7 +52,8 @@ func (m ModuleType) IsValid() bool {
 	switch m {
 	case TypeFile, TypeService, TypePackage, TypeUser, TypeGroup,
 		TypeCopy, TypeTemplate, TypeCommand, TypeShell,
-		TypePing, TypeSetup, TypeDebug:
+		TypePing, TypeSetup, TypeDebug,
+		TypeHomebrew, TypeApt, TypeYum, TypeDnf:
 		return true
 	default:
 		return false
@@ -59,6 +66,7 @@ func AllModuleTypes() []ModuleType {
 		TypeFile, TypeService, TypePackage, TypeUser, TypeGroup,
 		TypeCopy, TypeTemplate, TypeCommand, TypeShell,
 		TypePing, TypeSetup, TypeDebug,
+		TypeHomebrew, TypeApt, TypeYum, TypeDnf,
 	}
 }
 

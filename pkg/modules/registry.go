@@ -165,6 +165,12 @@ func (r *ModuleRegistry) registerBuiltinModules() {
 
 	// Register iptables module
 	r.RegisterModule(NewIPTablesModule())
+
+	// Register OS-specific package managers
+	r.RegisterModule(NewHomebrewModule())
+	r.RegisterModule(NewAptModule())
+	r.RegisterModule(NewYumModule())
+	r.RegisterModule(NewDnfModule())
 }
 
 // DefaultModuleRegistry provides a default module registry instance
