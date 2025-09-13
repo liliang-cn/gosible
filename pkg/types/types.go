@@ -18,6 +18,7 @@ const (
 	// Core system modules
 	TypeFile    ModuleType = "file"
 	TypeService ModuleType = "service"
+	TypeSystemd ModuleType = "systemd"
 	TypePackage ModuleType = "package"
 	TypeUser    ModuleType = "user"
 	TypeGroup   ModuleType = "group"
@@ -50,7 +51,7 @@ func (m ModuleType) String() string {
 // IsValid checks if the module type is valid
 func (m ModuleType) IsValid() bool {
 	switch m {
-	case TypeFile, TypeService, TypePackage, TypeUser, TypeGroup,
+	case TypeFile, TypeService, TypeSystemd, TypePackage, TypeUser, TypeGroup,
 		TypeCopy, TypeTemplate, TypeCommand, TypeShell,
 		TypePing, TypeSetup, TypeDebug,
 		TypeHomebrew, TypeApt, TypeYum, TypeDnf:
@@ -63,7 +64,7 @@ func (m ModuleType) IsValid() bool {
 // AllModuleTypes returns all valid module types
 func AllModuleTypes() []ModuleType {
 	return []ModuleType{
-		TypeFile, TypeService, TypePackage, TypeUser, TypeGroup,
+		TypeFile, TypeService, TypeSystemd, TypePackage, TypeUser, TypeGroup,
 		TypeCopy, TypeTemplate, TypeCommand, TypeShell,
 		TypePing, TypeSetup, TypeDebug,
 		TypeHomebrew, TypeApt, TypeYum, TypeDnf,
