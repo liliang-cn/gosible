@@ -21,7 +21,7 @@ func NewModuleRegistry() *ModuleRegistry {
 	}
 
 	// Register built-in modules
-	registry.registerBuiltinModules()
+	registry.RegisterBuiltinModules()
 
 	return registry
 }
@@ -104,8 +104,8 @@ func (r *ModuleRegistry) ValidateModuleArgs(name string, args map[string]interfa
 	return module.Validate(args)
 }
 
-// registerBuiltinModules registers all built-in modules
-func (r *ModuleRegistry) registerBuiltinModules() {
+// RegisterBuiltinModules registers all built-in modules
+func (r *ModuleRegistry) RegisterBuiltinModules() {
 	// Register ping module
 	r.RegisterModule(NewPingModule())
 
@@ -166,6 +166,9 @@ func (r *ModuleRegistry) registerBuiltinModules() {
 	// Register iptables module
 	r.RegisterModule(NewIPTablesModule())
 
+	// Register systemd module
+	r.RegisterModule(NewSystemdModule())
+	
 	// Register OS-specific package managers
 	r.RegisterModule(NewHomebrewModule())
 	r.RegisterModule(NewAptModule())
