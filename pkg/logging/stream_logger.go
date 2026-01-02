@@ -382,8 +382,10 @@ func (l *StreamLogger) Close() error {
 		close(l.stopFlush)
 	}
 
-	// Flush remaining buffer (without additional locking since we already have the lock)
+	// Flush remaining buffer
+	l.bufferMu.Lock()
 	l.flushUnsafe()
+	l.bufferMu.Unlock()
 
 	// Close all outputs
 	var lastErr error
@@ -406,12 +408,11 @@ func (l *StreamLogger) shouldLog(level LogLevel) bool {
 
 func (l *StreamLogger) writeEntry(entry LogEntry) {
 	l.bufferMu.Lock()
-	defer l.bufferMu.Unlock()
-
 	l.buffer = append(l.buffer, entry)
+	full := len(l.buffer) >= l.bufferSize
+	l.bufferMu.Unlock()
 
-	// Flush if buffer is full
-	if len(l.buffer) >= l.bufferSize {
+	if full {
 		l.flush()
 	}
 }
@@ -424,6 +425,8 @@ func (l *StreamLogger) Flush() {
 func (l *StreamLogger) flush() {
 	l.mu.Lock()
 	defer l.mu.Unlock()
+	l.bufferMu.Lock()
+	defer l.bufferMu.Unlock()
 	l.flushUnsafe()
 }
 
@@ -432,7 +435,7 @@ func (l *StreamLogger) flushUnsafe() {
 		return
 	}
 
-	// We assume the caller has already acquired the necessary lock
+	// We assume the caller has already acquired the necessary locks (mu and bufferMu)
 	for _, output := range l.outputs {
 		for _, entry := range l.buffer {
 			output.Write(entry)
@@ -448,9 +451,7 @@ func (l *StreamLogger) startFlushTimer() {
 		for {
 			select {
 			case <-l.flushTicker.C:
-				l.bufferMu.Lock()
 				l.flush()
-				l.bufferMu.Unlock()
 			case <-l.stopFlush:
 				return
 			}

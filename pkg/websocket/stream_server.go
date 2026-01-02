@@ -279,7 +279,7 @@ func (s *StreamServer) run() {
 			log.Printf("Client disconnected: %s", client.id)
 
 		case message := <-s.broadcast:
-			s.clientsMux.RLock()
+			s.clientsMux.Lock()
 			for client := range s.clients {
 				// Check if client is subscribed to this message type
 				if len(client.subscriptions) > 0 && !client.subscriptions[message.Type] {
@@ -299,7 +299,7 @@ func (s *StreamServer) run() {
 					}
 				}
 			}
-			s.clientsMux.RUnlock()
+			s.clientsMux.Unlock()
 
 		case <-ticker.C:
 			// Periodic cleanup and ping

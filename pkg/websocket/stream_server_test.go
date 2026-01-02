@@ -314,8 +314,6 @@ func TestStreamingWebSocketAdapter(t *testing.T) {
 
 func TestStreamingWebSocketAdapter_CreateProgressCallback(t *testing.T) {
 	server := NewStreamServer()
-	server.Start()
-	defer server.Stop()
 	
 	adapter := NewStreamingWebSocketAdapter(server, "callback_test")
 	callback := adapter.CreateProgressCallback()
