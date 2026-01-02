@@ -11,6 +11,8 @@ import (
 	"net"
 	"os"
 	"path/filepath"
+	"regexp"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -35,6 +37,28 @@ func NewSSHConnection() *SSHConnection {
 // Connect establishes an SSH connection to the target host
 func (c *SSHConnection) Connect(ctx context.Context, info types.ConnectionInfo) error {
 	c.info = info
+
+	// Read SSH config and apply it
+	sshConfig, err := readSSHConfig(info.Host)
+	if err == nil && sshConfig != nil {
+		// Apply SSH config settings
+		if sshConfig.HostName != "" {
+			info.Host = sshConfig.HostName
+		}
+		if sshConfig.User != "" && info.User == "" {
+			info.User = sshConfig.User
+		}
+		if sshConfig.Port != 0 && info.Port == 0 {
+			info.Port = sshConfig.Port
+		}
+		if sshConfig.IdentityFile != "" && info.PrivateKey == "" {
+			// Read private key from file
+			keyContent, err := ioutil.ReadFile(sshConfig.IdentityFile)
+			if err == nil {
+				info.PrivateKey = string(keyContent)
+			}
+		}
+	}
 
 	// Set default timeout if not specified
 	timeout := info.Timeout
@@ -833,4 +857,131 @@ func (c *SSHConnection) PortForward(localAddr, remoteAddr string) error {
 	}()
 
 	return nil
+}
+
+// SSHConfigEntry represents a single SSH config host entry
+type SSHConfigEntry struct {
+	HostName      string
+	User          string
+	Port          int
+	IdentityFile  string
+	ForwardAgent  bool
+}
+
+// readSSHConfig reads and parses SSH config file for a given host
+func readSSHConfig(hostname string) (*SSHConfigEntry, error) {
+	// Get SSH config path
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		return nil, err
+	}
+
+	configPath := filepath.Join(homeDir, ".ssh", "config")
+	
+	// Check if config file exists
+	if _, err := os.Stat(configPath); os.IsNotExist(err) {
+		return nil, nil // No config file, not an error
+	}
+
+	// Read config file
+	file, err := os.Open(configPath)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	// Parse config
+	entries := make(map[string]*SSHConfigEntry)
+	currentEntry := &SSHConfigEntry{}
+	currentPattern := ""
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
+		
+		// Skip empty lines and comments
+		if line == "" || strings.HasPrefix(line, "#") {
+			continue
+		}
+
+		// Split line into key and value
+		parts := strings.Fields(line)
+		if len(parts) < 2 {
+			continue
+		}
+
+		key := strings.ToLower(parts[0])
+		value := strings.Join(parts[1:], " ")
+
+		switch key {
+		case "host":
+			// Save previous entry if exists
+			if currentPattern != "" {
+				entries[currentPattern] = currentEntry
+			}
+			// Start new entry
+			currentEntry = &SSHConfigEntry{}
+			currentPattern = value
+		case "hostname":
+			currentEntry.HostName = value
+		case "user":
+			currentEntry.User = value
+		case "port":
+			if port, err := strconv.Atoi(value); err == nil {
+				currentEntry.Port = port
+			}
+		case "identityfile":
+			// Expand ~ to home directory
+			if strings.HasPrefix(value, "~/") {
+				homeDir, _ := os.UserHomeDir()
+				value = filepath.Join(homeDir, value[2:])
+			}
+			currentEntry.IdentityFile = value
+		case "forwardagent":
+			currentEntry.ForwardAgent = strings.ToLower(value) == "yes"
+		}
+	}
+
+	// Save last entry
+	if currentPattern != "" {
+		entries[currentPattern] = currentEntry
+	}
+
+	// Find matching entry for hostname
+	return findMatchingEntry(entries, hostname), nil
+}
+
+// findMatchingEntry finds the best matching SSH config entry for a hostname
+func findMatchingEntry(entries map[string]*SSHConfigEntry, hostname string) *SSHConfigEntry {
+	// First, try exact match
+	if entry, exists := entries[hostname]; exists {
+		return entry
+	}
+
+	// Try wildcard patterns
+	for pattern, entry := range entries {
+		if matchHostPattern(pattern, hostname) {
+			return entry
+		}
+	}
+
+	return nil
+}
+
+// matchHostPattern checks if a hostname matches an SSH config pattern
+func matchHostPattern(pattern, hostname string) bool {
+	// Simple pattern matching
+	// Support * and ? wildcards
+	if pattern == "*" {
+		return true
+	}
+
+	if pattern == hostname {
+		return true
+	}
+
+	// Convert wildcard pattern to regex
+	regexPattern := "^" + strings.ReplaceAll(regexp.QuoteMeta(pattern), "*", ".*") + "$"
+	matched, _ := regexp.MatchString(regexPattern, hostname)
+	return matched
 }

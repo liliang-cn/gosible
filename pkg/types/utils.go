@@ -228,6 +228,46 @@ func ExpandVariables(text string, vars map[string]interface{}) string {
 	})
 }
 
+// ExpandVariablesInMap recursively expands all variables in a map
+func ExpandVariablesInMap(args map[string]interface{}, vars map[string]interface{}) map[string]interface{} {
+	result := make(map[string]interface{})
+
+	for key, value := range args {
+		switch v := value.(type) {
+		case string:
+			result[key] = ExpandVariables(v, vars)
+		case map[string]interface{}:
+			result[key] = ExpandVariablesInMap(v, vars)
+		case []interface{}:
+			result[key] = expandVariablesInSlice(v, vars)
+		default:
+			result[key] = value
+		}
+	}
+
+	return result
+}
+
+// expandVariablesInSlice recursively expands variables in a slice
+func expandVariablesInSlice(slice []interface{}, vars map[string]interface{}) []interface{} {
+	result := make([]interface{}, len(slice))
+
+	for i, value := range slice {
+		switch v := value.(type) {
+		case string:
+			result[i] = ExpandVariables(v, vars)
+		case map[string]interface{}:
+			result[i] = ExpandVariablesInMap(v, vars)
+		case []interface{}:
+			result[i] = expandVariablesInSlice(v, vars)
+		default:
+			result[i] = value
+		}
+	}
+
+	return result
+}
+
 // ValidateRequiredFields checks if required fields are present in a map
 func ValidateRequiredFields(args map[string]interface{}, required []string) error {
 	for _, field := range required {

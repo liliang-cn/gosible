@@ -158,6 +158,9 @@ func (r *TaskRunner) Run(ctx context.Context, task types.Task, hosts []types.Hos
 		}
 	}
 
+	// Expand variables in task args
+	expandedArgs := types.ExpandVariablesInMap(task.Args, mergedVars)
+
 	// Evaluate when condition
 	if task.When != nil {
 		evaluator := NewConditionEvaluator(mergedVars)
@@ -191,10 +194,13 @@ func (r *TaskRunner) Run(ctx context.Context, task types.Task, hosts []types.Hos
 		return nil, fmt.Errorf("module %s not found: %w", task.Module, err)
 	}
 
-	// Validate module arguments
-	if err := module.Validate(task.Args); err != nil {
+	// Validate module arguments with expanded variables
+	if err := module.Validate(expandedArgs); err != nil {
 		return nil, fmt.Errorf("module validation failed: %w", err)
 	}
+
+	// Update task args with expanded variables
+	task.Args = expandedArgs
 
 	// Handle loops
 	var results []types.Result
